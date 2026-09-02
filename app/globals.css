@@ -1,6 +1,25 @@
 @import "tailwindcss";
 
+/*
+ * Design tokens for the architecture-studio visual system.
+ * Alpha variants are pre-computed (rather than relying on Tailwind's
+ * opacity-modifier syntax on CSS variables) so they resolve reliably
+ * everywhere they're used.
+ */
+:root {
+  --stage: #0d0c0b; /* dark cinematic stage — hero, loading screen, navbar */
+  --stage-translucent: rgba(13, 12, 11, 0.9); /* navbar, scrolled */
+
+  --surface: #f4f1ea; /* warm neutral — content section backgrounds */
+
+  --ink: #17140f; /* primary text on warm surfaces */
+  --ink-muted: rgba(23, 20, 15, 0.55); /* secondary text on warm surfaces */
+  --ink-10: rgba(23, 20, 15, 0.1); /* hairline dividers on warm surfaces */
+  --ink-20: rgba(23, 20, 15, 0.2); /* dashed placeholder borders */
+  --ink-faint: rgba(23, 20, 15, 0.035); /* placeholder fill tint */
+}
+
 html,
 body {
-  background: #0d0c0b;
+  background: var(--stage);
 }

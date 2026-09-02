@@ -1,22 +1,39 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LoadingScreen } from "@/components/loading-screen";
+import { Hero } from "@/components/home/hero";
+import { IntroSection } from "@/components/home/intro-section";
+import { FeaturedProjects } from "@/components/home/featured-projects";
+import { ServicesPreview } from "@/components/home/services-preview";
+import { RecognitionPreview } from "@/components/home/recognition-preview";
+import { AboutPreview } from "@/components/home/about-preview";
+import { ContactCta } from "@/components/home/contact-cta";
 
-// Temporary: LoadingScreen is rendered directly from the root page, over a
-// minimal dark shell, so the loading sequence and its reveal can be
-// reviewed in the browser. Remove this wiring once the real homepage is built.
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
+
+  // Keep the page pinned in place behind the loading overlay so the reveal
+  // exposes the hero exactly as loaded, not wherever the page happened to
+  // be scrolled to underneath it.
+  useEffect(() => {
+    document.body.style.overflow = isLoading ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isLoading]);
 
   return (
     <>
       {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
 
-      <main className="flex min-h-screen flex-col items-center justify-center gap-2 bg-[#0d0c0b] text-white">
-        <h1 className="text-2xl font-semibold tracking-wide">ARCHITECTURE STUDIO</h1>
-        <p className="text-sm text-white/50">Project setup successful.</p>
-      </main>
+      <Hero />
+      <IntroSection />
+      <FeaturedProjects />
+      <ServicesPreview />
+      <RecognitionPreview />
+      <AboutPreview />
+      <ContactCta />
     </>
   );
 }

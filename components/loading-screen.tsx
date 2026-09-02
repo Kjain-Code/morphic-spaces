@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
 import { ImageTrail } from "@/components/ui/image-trail";
+import { LogoMark } from "@/components/ui/logo-mark";
 import { LOADING_IMAGES } from "@/lib/loading-images";
 
 /** Deterministic target duration — the sequence completes on this timer, not on pointer activity. */
@@ -155,28 +155,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
           }
           transition={isRevealing ? EXIT_TRANSITION : { duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
-          {/*
-            The source PNG has a light card baked around the mark. Inverting
-            the image, then compositing it with `screen` onto this dark
-            stage, turns that light card dark (so it recedes into the
-            background) while the black mark turns light (so it reads
-            clearly) — no white rectangle. A soft radial mask fades the
-            far edges to fully rule out any residual edge.
-          */}
-          <Image
-            src="/images/logo/logo.png"
-            alt="Morphic Spaces"
-            width={1024}
-            height={1536}
-            priority
-            className="h-auto w-[150px] sm:w-[175px] lg:w-[200px] xl:w-[220px]"
-            style={{
-              filter: "invert(1)",
-              mixBlendMode: "screen",
-              WebkitMaskImage: "radial-gradient(closest-side, black 62%, transparent 100%)",
-              maskImage: "radial-gradient(closest-side, black 62%, transparent 100%)",
-            }}
-          />
+          <LogoMark priority className="h-auto w-[150px] sm:w-[175px] lg:w-[200px] xl:w-[220px]" />
         </motion.div>
 
         <motion.div
