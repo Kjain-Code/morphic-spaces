@@ -1,18 +1,19 @@
 "use client";
 
-import { useRef } from "react";
+import { Fragment, useRef } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { CinematicVideoSequence } from "@/components/home/cinematic-video-sequence";
+import { CinematicMasterVideo } from "@/components/home/cinematic-master-video";
 import { JourneyProgress } from "@/components/home/journey-progress";
 import { JOURNEY_SCROLL_VH } from "@/lib/cinematic-journey";
+import { HERO_CONTENT } from "@/lib/hero-content";
 
 /**
  * The homepage's cinematic centerpiece: one continuous scroll-driven camera
- * move through the house, built from seven transition clips (configured in
- * lib/cinematic-journey.ts). The section stays pinned for JOURNEY_SCROLL_VH
- * of scroll while CinematicVideoSequence cross-fades and scrubs between
- * clips off the same scroll-progress value that drives JourneyProgress —
- * one shared MotionValue, so the video and the UI never fall out of sync.
+ * move through the house, played from a single master video (see
+ * CinematicMasterVideo / lib/cinematic-journey.ts). The section stays pinned
+ * for JOURNEY_SCROLL_VH of scroll while the video's currentTime and
+ * JourneyProgress's stage label both read off the same scroll-progress
+ * MotionValue, so they never fall out of sync.
  *
  * Scrolling down moves forward through the house; scrolling up moves back.
  * Nothing here autoplays independently of scroll.
@@ -36,23 +37,25 @@ export function CinematicHero() {
   return (
     <section ref={sectionRef} className="relative" style={{ height: `${JOURNEY_SCROLL_VH}vh` }}>
       <div className="sticky top-0 h-dvh w-full overflow-hidden bg-[var(--stage)]">
-        <CinematicVideoSequence scrollYProgress={scrollYProgress} />
+        <CinematicMasterVideo scrollYProgress={scrollYProgress} />
 
-        {/* BOTTOM LEFT — editorial statement, present only at the top of the journey */}
+        {/* TOP LEFT / LEFT-CENTER — studio identifier + editorial headline */}
         <motion.div
           style={{ opacity: introOpacity, y: prefersReducedMotion ? 0 : introY }}
           className="pointer-events-none absolute inset-x-0 bottom-0 z-10 px-6 pb-10 pr-24 sm:px-10 sm:pb-14 sm:pr-0 lg:pb-16"
         >
           <div className="mx-auto max-w-7xl">
-            <p className="text-[10px] uppercase tracking-[0.35em] text-white/45">Morphic Spaces</p>
-            <h1 className="mt-5 max-w-2xl font-serif text-4xl font-light leading-[1.05] text-white/90 sm:text-6xl lg:text-7xl">
-              Beyond space.
-              <br />
-              Shaping experience.
+            <p className="text-[10px] uppercase tracking-[0.35em] text-white/45">{HERO_CONTENT.identifier}</p>
+            <h1 className="mt-5 max-w-2xl font-serif text-4xl font-light uppercase leading-[1.05] text-white/90 sm:text-6xl lg:text-7xl">
+              {HERO_CONTENT.headlineLines.map((line, index) => (
+                <Fragment key={line}>
+                  {index > 0 && <br />}
+                  {line}
+                </Fragment>
+              ))}
             </h1>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-white/55 sm:text-base">
-              A premium spatial design studio focused on contemporary residential, commercial and hospitality
-              spaces.
+              {HERO_CONTENT.statement}
             </p>
           </div>
         </motion.div>

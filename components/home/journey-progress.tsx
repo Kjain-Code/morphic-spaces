@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import {
+  AnimatePresence,
   motion,
   useMotionValueEvent,
   useReducedMotion,
@@ -46,15 +47,20 @@ export function JourneyProgress({ scrollYProgress }: JourneyProgressProps) {
         <span className="text-[10px] tracking-[0.15em]">/ {String(JOURNEY_STAGES.length).padStart(2, "0")}</span>
       </div>
 
-      <motion.span
-        key={activeStage}
-        initial={prefersReducedMotion ? false : { opacity: 0, y: 6 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-        className="font-sans text-[11px] uppercase tracking-[0.3em] text-white/85"
-      >
-        {JOURNEY_STAGES[activeStage]}
-      </motion.span>
+      <div className="relative h-4 overflow-hidden">
+        <AnimatePresence mode="popLayout" initial={false}>
+          <motion.span
+            key={activeStage}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute right-0 whitespace-nowrap font-sans text-[11px] uppercase tracking-[0.3em] text-white/85"
+          >
+            {JOURNEY_STAGES[activeStage]}
+          </motion.span>
+        </AnimatePresence>
+      </div>
 
       <div className="relative h-36 w-px bg-white/15">
         <motion.div
