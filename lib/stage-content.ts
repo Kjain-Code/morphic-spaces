@@ -1,19 +1,19 @@
 /**
- * The editorial content shown over the cinematic video, one entry per stage
- * of the house journey. All placeholder pending final client copy except
- * stage 1 (hero) and stage 8 (the studio story, told as the journey's
- * resolution rather than a separate section below it).
+ * The editorial content shown over the cinematic video. This is Morphic
+ * Spaces' studio website — the video is atmospheric footage of one house,
+ * not a listing for it, so the copy is about the studio (its positioning,
+ * introduction, philosophy), never a room-by-room narration of the footage.
  *
- * `position` varies where each stage's content sits — both which side of the
- * screen (left/right) and how high (top/center/bottom) — so the block reads
- * as genuinely responding to the journey rather than static furniture
- * pinned to one corner. Every stage carries the same amount of copy (label
- * + headline + one supporting line) so no single stage looks heavier than
- * the rest.
+ * Only real client-provided copy is used, in three beats spread across the
+ * scroll range (`start`–`end`, both 0–1). `position` varies per beat — side
+ * (left/right) and height (top/center/bottom) — so the block doesn't read
+ * as pinned to one spot for the whole journey.
  */
 export type StagePosition = "bottom-left" | "bottom-right" | "top-left" | "top-right" | "center-left" | "center-right";
 
 export interface StageContent {
+  start: number;
+  end: number;
   position: StagePosition;
   label: string;
   headlineLines: string[];
@@ -22,63 +22,34 @@ export interface StageContent {
 
 export const STAGE_CONTENT: StageContent[] = [
   {
-    // 01 — Exterior
+    // Hero
+    start: 0,
+    end: 2 / 8,
     position: "bottom-left",
     label: "Morphic Spaces",
     headlineLines: ["BEYOND SPACE.", "SHAPING EXPERIENCE."],
+    // Positioning
     supportingText:
       "A premium spatial design studio focused on contemporary residential, commercial and hospitality spaces.",
   },
   {
-    // 02 — Entrance
-    position: "top-right",
-    label: "The Arrival",
-    headlineLines: ["DESIGNED TO WELCOME."],
-    supportingText: "A considered threshold where architecture, material and light begin the experience.",
-  },
-  {
-    // 03 — Living
-    position: "center-left",
-    label: "The Living Space",
-    headlineLines: ["SPACE SHAPES EXPERIENCE."],
-    supportingText:
-      "Proportion, materiality and natural light come together to create spaces with their own character.",
-  },
-  {
-    // 04 — Kitchen
-    position: "bottom-right",
-    label: "The Kitchen",
-    headlineLines: ["FUNCTION, REFINED."],
-    supportingText: "Thoughtful planning and material detail create a kitchen designed around everyday living.",
-  },
-  {
-    // 05 — Staircase
-    position: "top-left",
-    label: "The Staircase",
-    headlineLines: ["A JOURNEY BETWEEN SPACES."],
-    supportingText: "Circulation becomes architecture through proportion, light and carefully resolved detail.",
-  },
-  {
-    // 06 — Bedroom
-    position: "center-right",
-    label: "The Bedroom",
-    headlineLines: ["QUIET, BY DESIGN."],
-    supportingText:
-      "A calm private environment shaped by natural materials, soft light and considered proportions.",
-  },
-  {
-    // 07 — Terrace
-    position: "bottom-left",
-    label: "The Terrace",
-    headlineLines: ["WHERE SPACE MEETS OPEN AIR."],
-    supportingText: "Architecture extends beyond the walls, connecting interior life with landscape and sky.",
-  },
-  {
-    // 08 — Reveal: the studio story, told here rather than in a section below.
+    // Studio introduction
+    start: 2 / 8,
+    end: 5 / 8,
     position: "center-right",
     label: "Studio",
     headlineLines: ["DESIGNING SPACES", "WITH INTENTION."],
     supportingText:
-      "Morphic Spaces is a contemporary spatial design studio creating thoughtful environments for living, working and experiencing.",
+      "Morphic Spaces is a contemporary spatial design studio creating thoughtful environments for living, working and experiencing. We focus on functional planning, refined materiality and attention to detail to give every space its own character.",
+  },
+  {
+    // Design philosophy / approach
+    start: 5 / 8,
+    end: 1,
+    position: "top-left",
+    label: "Design Philosophy",
+    headlineLines: ["CONSIDERED.", "DISTINCTIVE. TIMELESS."],
+    supportingText:
+      "We believe good design begins with understanding the people, purpose and context of a space. Our approach combines functionality, proportion, materiality and detail to create spaces that feel considered, distinctive and timeless.",
   },
 ];

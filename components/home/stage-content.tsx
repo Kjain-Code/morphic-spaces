@@ -8,7 +8,13 @@ export interface StageContentProps {
   progress: MotionValue<number>;
 }
 
-const STAGE_COUNT = STAGE_CONTENT.length;
+/** The last beat whose `start` the given progress has reached. */
+function resolveActiveIndex(latest: number): number {
+  for (let i = STAGE_CONTENT.length - 1; i >= 0; i--) {
+    if (latest >= STAGE_CONTENT[i].start) return i;
+  }
+  return 0;
+}
 
 /** Where each stage's content sits — side and height both vary per stage. */
 const POSITION_CLASSES: Record<StagePosition, string> = {
@@ -21,19 +27,19 @@ const POSITION_CLASSES: Record<StagePosition, string> = {
 };
 
 /**
- * The editorial content block over the video. Unlike a fixed HUD, this is
- * the video's actual story: as the camera moves through each stage of the
- * house, both the copy and where it sits (which side, and how high — see
- * lib/stage-content.ts) change for that stage, animating out and back in
- * rather than sitting static in one spot for the journey. Every stage
- * carries the same amount of copy, so none reads as heavier than the rest.
+ * The editorial content block over the video: the studio's own story (hero,
+ * introduction, philosophy — see lib/stage-content.ts), told in three beats
+ * spread across the scroll range. The video is atmospheric footage, not
+ * something being narrated room by room. Both the copy and where it sits
+ * (which side, how high) change per beat, animating out and back in rather
+ * than sitting static for the whole journey.
  */
 export function StageContent({ progress }: StageContentProps) {
   const [activeStage, setActiveStage] = useState(0);
   const prefersReducedMotion = useReducedMotion();
 
   useMotionValueEvent(progress, "change", (latest) => {
-    const stage = Math.min(STAGE_COUNT - 1, Math.floor(latest * STAGE_COUNT));
+    const stage = resolveActiveIndex(latest);
     setActiveStage((prev) => (prev === stage ? prev : stage));
   });
 
