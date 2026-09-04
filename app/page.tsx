@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { LoadingScreen } from "@/components/loading-screen";
-import { Hero } from "@/components/home/hero";
+import { CinematicHero } from "@/components/home/cinematic-hero";
 import { IntroSection } from "@/components/home/intro-section";
 import { FeaturedProjects } from "@/components/home/featured-projects";
 import { ServicesPreview } from "@/components/home/services-preview";
@@ -27,7 +27,7 @@ export default function Home() {
     <>
       {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
 
-      <Hero />
+      <CinematicHero />
       <IntroSection />
       <FeaturedProjects />
       <ServicesPreview />

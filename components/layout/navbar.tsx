@@ -54,13 +54,21 @@ export function Navbar() {
 
         <nav className="hidden md:flex md:items-center md:gap-10">
           {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-[11px] uppercase tracking-[0.25em] text-white/70 transition-colors hover:text-white"
-            >
-              {link.label}
-            </Link>
+            <motion.div key={link.href} initial="rest" whileHover="hover" animate="rest" className="relative">
+              <Link
+                href={link.href}
+                className="inline-block text-[11px] uppercase tracking-[0.25em] text-white/70 transition-colors duration-300 hover:text-white"
+              >
+                {link.label}
+              </Link>
+              <motion.span
+                aria-hidden="true"
+                variants={{ rest: { scaleX: 0 }, hover: { scaleX: 1 } }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                style={{ transformOrigin: "left" }}
+                className="absolute -bottom-1 left-0 h-px w-full bg-[var(--stone)]"
+              />
+            </motion.div>
           ))}
         </nav>
 
