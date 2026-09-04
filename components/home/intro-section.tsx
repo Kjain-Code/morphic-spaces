@@ -15,13 +15,16 @@ export function IntroSection() {
           to give every space its own character.
         </p>
 
-        <p className="font-serif text-xl font-light leading-relaxed text-[var(--ink)] sm:col-span-6 sm:col-start-1 sm:text-2xl lg:col-span-5">
-          We believe good design begins with understanding the people, purpose and context of a space.
-        </p>
-        <p className="self-end text-sm leading-relaxed text-[var(--ink-muted)] sm:col-span-5 sm:col-start-8 sm:text-base">
-          Our approach combines functionality, proportion, materiality and detail to create spaces that feel
-          considered, distinctive and timeless.
-        </p>
+        <div className="sm:col-span-10 sm:col-start-1 lg:col-span-8">
+          <span className="block text-[11px] uppercase tracking-[0.3em] text-[var(--ink-muted)]">
+            Design Philosophy
+          </span>
+          <p className="mt-6 font-serif text-xl font-light leading-relaxed text-[var(--ink)] sm:text-2xl">
+            We believe good design begins with understanding the people, purpose and context of a space. Our
+            approach combines functionality, proportion, materiality and detail to create spaces that feel
+            considered, distinctive and timeless.
+          </p>
+        </div>
       </div>
     </Section>
   );
