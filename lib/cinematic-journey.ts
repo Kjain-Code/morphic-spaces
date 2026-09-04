@@ -1,8 +1,8 @@
 /**
  * Configuration for the homepage's cinematic house journey — one continuous
- * master video, scrubbed by scroll position. Everything about the journey
- * (which video plays, how long the pinned section holds it, which named
- * stages it passes through) lives here.
+ * master video, scrubbed by scroll position via GSAP ScrollTrigger (see
+ * components/home/video-scrubber.tsx). Everything about which video plays
+ * and which named stages it passes through lives here.
  *
  * public/videos/morphic-spaces-hero.mp4 is the seven Google Flow clips
  * (VID1–VID7, formerly in public/videos/) losslessly concatenated in order
@@ -31,6 +31,3 @@ export const JOURNEY_STAGES = [
   "Terrace",
   "Reveal",
 ] as const;
-
-/** How many viewport-heights of scroll the pinned cinematic section spans. */
-export const JOURNEY_SCROLL_VH = 700;

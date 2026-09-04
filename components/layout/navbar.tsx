@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { LogoMark } from "@/components/ui/logo-mark";
 
@@ -16,38 +15,17 @@ const NAV_LINKS = [
 ];
 
 /**
- * Fixed, transparent-over-hero navbar that picks up a solid dark backdrop
- * once the page scrolls (or on any route that doesn't have a dark hero to
- * sit over). Logo sizing lives in one className below, so it's a one-line
- * change to adjust later.
+ * The one global fixed navbar. Deliberately stateless with respect to
+ * scroll/route — same position, height, backdrop and typography everywhere,
+ * always. It does not resize, solidify, or otherwise react to the page
+ * scrolling underneath it (including the pinned cinematic hero).
  */
 export function Navbar() {
-  const pathname = usePathname();
-  const isHome = pathname === "/";
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const onScroll = () => {
-      const next = window.scrollY > 40;
-      setIsScrolled((prev) => (prev === next ? prev : next));
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // Secondary routes have no dark hero underneath to overlay, so the bar
-  // stays solid there regardless of scroll position.
-  const isSolid = isScrolled || !isHome;
-
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-40 border-b transition-colors duration-500 ${
-        isSolid ? "border-white/10 bg-[var(--stage-translucent)] backdrop-blur-md" : "border-transparent bg-transparent"
-      }`}
-    >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 sm:px-10">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[var(--stage-translucent)] backdrop-blur-md">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 sm:h-22 sm:px-10">
         <Link href="/" aria-label="Morphic Spaces — Home" className="relative z-10">
           <LogoMark className="h-auto w-9" />
         </Link>

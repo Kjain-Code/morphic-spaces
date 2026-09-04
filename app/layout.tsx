@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
 import { Navbar } from "@/components/layout/navbar";
+import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import "./globals.css";
 
 // Editorial display serif for large headings; body/UI sans below. Loaded as
@@ -32,7 +33,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={`${cormorant.variable} ${manrope.variable}`}>
       <body>
         <Navbar />
-        {children}
+        <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>
     </html>
   );

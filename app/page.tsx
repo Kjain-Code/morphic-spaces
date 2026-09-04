@@ -4,13 +4,12 @@ import { useEffect, useState } from "react";
 import { LoadingScreen } from "@/components/loading-screen";
 import { CinematicHero } from "@/components/home/cinematic-hero";
 import { IntroSection } from "@/components/home/intro-section";
-import { FeaturedProjects } from "@/components/home/featured-projects";
-import { ServicesPreview } from "@/components/home/services-preview";
-import { RecognitionPreview } from "@/components/home/recognition-preview";
-import { AboutPreview } from "@/components/home/about-preview";
-import { ContactCta } from "@/components/home/contact-cta";
 import { Footer } from "@/components/layout/footer";
 
+// The homepage is deliberately just these three: the cinematic house
+// journey IS the homepage experience, not one section among several.
+// Services/Recognition/Projects/About/Contact each have their own route
+// (unchanged) and are not rendered here.
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -30,11 +29,6 @@ export default function Home() {
 
       <CinematicHero />
       <IntroSection />
-      <FeaturedProjects />
-      <ServicesPreview />
-      <RecognitionPreview />
-      <AboutPreview />
-      <ContactCta />
       <Footer />
     </>
   );
