@@ -33,6 +33,15 @@ const POSITION_CLASSES: Record<StagePosition, string> = {
  * something being narrated room by room. Both the copy and where it sits
  * (which side, how high) change per beat, animating out and back in rather
  * than sitting static for the whole journey.
+ *
+ * Each beat's position classes live on its own motion.div (one per
+ * AnimatePresence child, absolutely stacked), not on a shared wrapper —
+ * a shared wrapper would re-render with the *new* beat's position the
+ * instant state changes, snapping the still-exiting old text into the new
+ * beat's spot before its fade-out even finished. No `mode="wait"` either:
+ * with both beats absolutely stacked in the same box, the default
+ * (simultaneous) exit/enter crossfades cleanly with no blank gap between
+ * them.
  */
 export function StageContent({ progress }: StageContentProps) {
   const [activeStage, setActiveStage] = useState(0);
@@ -47,32 +56,32 @@ export function StageContent({ progress }: StageContentProps) {
   const isRight = content.position.endsWith("right");
 
   return (
-    <div
-      className={`pointer-events-none absolute inset-0 z-10 mx-auto flex w-full max-w-7xl flex-col px-6 sm:px-10 ${POSITION_CLASSES[content.position]}`}
-    >
-      <AnimatePresence mode="wait" initial={false}>
+    <div className="pointer-events-none absolute inset-0 z-10">
+      <AnimatePresence initial={false}>
         <motion.div
           key={activeStage}
           initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -10 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-2xl"
+          className={`absolute inset-0 mx-auto flex w-full max-w-7xl flex-col px-6 sm:px-10 ${POSITION_CLASSES[content.position]}`}
         >
-          <p className="text-[10px] uppercase tracking-[0.35em] text-white/45">{content.label}</p>
-          <h1 className="mt-5 font-serif text-4xl font-light uppercase leading-[1.05] text-white/90 sm:text-6xl lg:text-7xl">
-            {content.headlineLines.map((line, index) => (
-              <Fragment key={line}>
-                {index > 0 && <br />}
-                {line}
-              </Fragment>
-            ))}
-          </h1>
-          <p
-            className={`mt-5 max-w-sm text-sm leading-relaxed text-white/55 sm:text-base ${isRight ? "ml-auto" : "mr-auto"}`}
-          >
-            {content.supportingText}
-          </p>
+          <div className="max-w-2xl">
+            <p className="text-[10px] uppercase tracking-[0.35em] text-white/45">{content.label}</p>
+            <h1 className="mt-5 font-serif text-4xl font-light uppercase leading-[1.05] text-white/90 sm:text-6xl lg:text-7xl">
+              {content.headlineLines.map((line, index) => (
+                <Fragment key={line}>
+                  {index > 0 && <br />}
+                  {line}
+                </Fragment>
+              ))}
+            </h1>
+            <p
+              className={`mt-5 max-w-sm text-sm leading-relaxed text-white/55 sm:text-base ${isRight ? "ml-auto" : "mr-auto"}`}
+            >
+              {content.supportingText}
+            </p>
+          </div>
         </motion.div>
       </AnimatePresence>
     </div>

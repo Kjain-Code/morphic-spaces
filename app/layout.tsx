@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
+import Script from "next/script";
 import { Navbar } from "@/components/layout/navbar";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import "./globals.css";
@@ -32,6 +33,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${cormorant.variable} ${manrope.variable}`}>
       <body>
+        {/* Every load (refresh included) starts at the top of the page —
+            without this, the browser's own scroll restoration re-applies
+            whatever scroll position was there before reload, which lands
+            the pinned cinematic hero (GSAP ScrollTrigger + Lenis) in an
+            arbitrary, uninitialized mid-journey state. Runs before
+            hydration so there's no visible jump back to the top. */}
+        <Script id="disable-scroll-restoration" strategy="beforeInteractive">
+          {`try {
+            if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+            window.scrollTo(0, 0);
+          } catch (e) {}`}
+        </Script>
         <Navbar />
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>
