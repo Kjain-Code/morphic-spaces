@@ -37,3 +37,16 @@ body {
 body {
   font-family: var(--font-sans);
 }
+
+/* Scrolling stays fully functional (wheel, keyboard, touch, Lenis) — only
+   the visible scrollbar track/thumb is hidden, on every axis. */
+html {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* legacy Edge/IE */
+}
+
+html::-webkit-scrollbar {
+  display: none; /* Chromium/WebKit */
+  width: 0;
+  height: 0;
+}

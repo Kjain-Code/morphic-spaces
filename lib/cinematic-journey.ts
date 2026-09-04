@@ -27,15 +27,3 @@
 
 export const MASTER_VIDEO_SRC = "/videos/morphic-spaces-master.mp4";
 export const MASTER_VIDEO_POSTER = "/images/hero/journey-poster.jpg";
-
-/** Named stages the camera passes through, in order, evenly spaced across the video's duration. */
-export const JOURNEY_STAGES = [
-  "Exterior",
-  "Entrance",
-  "Living",
-  "Kitchen",
-  "Staircase",
-  "Bedroom",
-  "Terrace",
-  "Reveal",
-] as const;

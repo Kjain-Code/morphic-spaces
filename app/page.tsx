@@ -3,11 +3,10 @@
 import { useEffect, useState } from "react";
 import { LoadingScreen } from "@/components/loading-screen";
 import { CinematicHero } from "@/components/home/cinematic-hero";
-import { IntroSection } from "@/components/home/intro-section";
-import { Footer } from "@/components/layout/footer";
 
-// The homepage is deliberately just these three: the cinematic house
-// journey IS the homepage experience, not one section among several.
+// The homepage IS the cinematic house journey — nothing else renders here.
+// The studio story is told as the journey's final stage (see
+// lib/stage-content.ts) rather than a separate section below it.
 // Services/Recognition/Projects/About/Contact each have their own route
 // (unchanged) and are not rendered here.
 export default function Home() {
@@ -28,8 +27,6 @@ export default function Home() {
       {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
 
       <CinematicHero />
-      <IntroSection />
-      <Footer />
     </>
   );
 }
