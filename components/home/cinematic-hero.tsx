@@ -29,7 +29,7 @@ export function CinematicHero() {
   const scrollHintOpacity = useTransform(progress, [0, 0.035], [1, 0]);
 
   return (
-    <section ref={sectionRef} className="relative h-dvh w-full overflow-hidden bg-[var(--stage)]">
+    <section ref={sectionRef} className="relative h-dvh w-full overflow-hidden bg-[var(--hero-deep)]">
       <VideoScrubber containerRef={sectionRef} progress={progress} />
 
       {/* Editorial content — position and copy both change with every stage */}
@@ -38,14 +38,14 @@ export function CinematicHero() {
       {/* BOTTOM RIGHT — scroll indicator, present only at the very top */}
       <motion.div
         style={{ opacity: scrollHintOpacity }}
-        className="pointer-events-none absolute bottom-10 right-6 z-10 flex flex-col items-center gap-3 text-white/50 sm:right-10"
+        className="pointer-events-none absolute bottom-10 right-6 z-10 flex flex-col items-center gap-3 text-[var(--hero-cream-55)] sm:right-10"
       >
         <span className="text-[10px] uppercase tracking-[0.35em]">Scroll</span>
-        <span className="relative block h-10 w-px overflow-hidden bg-white/20">
+        <span className="relative block h-10 w-px overflow-hidden bg-[var(--hero-cream-20)]">
           <motion.span
             animate={prefersReducedMotion ? undefined : { y: ["-100%", "100%"] }}
             transition={{ duration: 1.8, repeat: Infinity, ease: "linear" }}
-            className="absolute inset-x-0 top-0 h-1/2 bg-white/70"
+            className="absolute inset-x-0 top-0 h-1/2 bg-[var(--hero-cream-70)]"
           />
         </span>
       </motion.div>

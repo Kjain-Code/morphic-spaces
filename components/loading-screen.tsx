@@ -106,15 +106,16 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
       onAnimationComplete={() => {
         if (isRevealing) handleRevealComplete();
       }}
-      className="fixed inset-0 z-50 overflow-hidden bg-[#0d0c0b]"
+      className="fixed inset-0 z-50 overflow-hidden bg-[var(--hero-deep)]"
     >
-      {/* Cinematic vignette: warm charcoal, darker at the edges. */}
+      {/* Cinematic vignette: black stays the dominant field — just a soft
+          warm-brown glow behind the logo, not a brown background. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(120% 90% at 50% 45%, #17140f 0%, #0d0c0b 55%, #080706 100%)",
+            "radial-gradient(70% 55% at 50% 45%, var(--hero-warm) 0%, var(--hero-dark) 25%, var(--hero-deep) 60%)",
         }}
       />
       {/* Faint architectural facets, almost imperceptible. */}
@@ -163,16 +164,16 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
           transition={{ duration: 0.3 }}
           className="flex w-[110px] flex-col items-center gap-2"
         >
-          <div className="h-px w-full overflow-hidden bg-white/10">
+          <div className="h-px w-full overflow-hidden bg-[var(--hero-cream-10)]">
             <motion.div
-              className="h-full origin-left bg-white/60"
+              className="h-full origin-left bg-[var(--hero-cream-70)]"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               transition={{ duration: TARGET_DURATION_MS / 1000, ease: "linear" }}
               style={{ transformOrigin: "left" }}
             />
           </div>
-          <span className="text-[10px] font-light tracking-[0.3em] text-white/35">
+          <span className="text-[10px] font-light tracking-[0.3em] text-[var(--hero-cream-45)]">
             {String(displayedPercent).padStart(2, "0")}
           </span>
         </motion.div>

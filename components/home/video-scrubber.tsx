@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import type { RefObject } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -72,28 +72,42 @@ export function VideoScrubber({ containerRef, progress }: VideoScrubberProps) {
   // Reduced motion: skip pinning/scrubbing entirely and leave a single
   // stable frame (the poster) in a normal, non-pinned section — a "stable
   // cinematic frame" rather than a scroll-scrubbed one.
-  useEffect(() => {
+  useLayoutEffect(() => {
     const section = containerRef.current;
     if (!section) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const trigger = ScrollTrigger.create({
-      trigger: section,
-      start: "top top",
-      end: () => `+=${Math.round(window.innerHeight * PIN_DISTANCE_VH)}`,
-      pin: true,
-      pinSpacing: true,
-      scrub: true,
-      invalidateOnRefresh: true,
-      onUpdate: (self) => {
-        progress.set(self.progress);
-        if (durationRef.current > 0) {
-          targetTimeRef.current = self.progress * durationRef.current;
-        }
-      },
-    });
+    // gsap.context()/ctx.revert() rather than a bare trigger.kill(): pin:
+    // true has GSAP insert a "pin-spacer" wrapper around the section,
+    // reparenting it outside React's knowledge. A plain useEffect's
+    // cleanup (and kill() alone) doesn't reliably unwind that before
+    // React's own unmount pass runs on a client-side route change, which
+    // crashed with "Failed to execute 'removeChild' on 'Node': the node
+    // to be removed is not a child of this node" — reproducible on every
+    // navigation away from "/" (to /projects, /services, /about —
+    // anywhere), confirmed unrelated to any particular destination page.
+    // useLayoutEffect's cleanup fires synchronously, earlier in React's
+    // commit than useEffect's, giving ctx.revert() a chance to restore the
+    // DOM (spacer included) before React starts its own deletion walk.
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top top",
+        end: () => `+=${Math.round(window.innerHeight * PIN_DISTANCE_VH)}`,
+        pin: true,
+        pinSpacing: true,
+        scrub: true,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          progress.set(self.progress);
+          if (durationRef.current > 0) {
+            targetTimeRef.current = self.progress * durationRef.current;
+          }
+        },
+      });
+    }, section);
 
-    return () => trigger.kill();
+    return () => ctx.revert();
   }, [containerRef, progress]);
 
   // The lerp loop: eases currentTime toward targetTime every frame. Fully

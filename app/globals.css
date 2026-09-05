@@ -47,6 +47,23 @@
   --linen-55: rgba(255, 248, 240, 0.55); /* body text on --espresso */
   --linen-45: rgba(255, 248, 240, 0.4);
   --linen-10: rgba(255, 248, 240, 0.1); /* hairlines on --espresso */
+
+  /*
+   * Homepage / loading-screen palette — client-provided, for the cinematic
+   * video hero and its preloader specifically (they read as flat black
+   * before). Scoped to those two surfaces only: Navbar/Footer/Projects
+   * keep --stage exactly as it was.
+   */
+  --hero-deep: #000000; /* outermost vignette edge, letterbox */
+  --hero-dark: #1f150c; /* main preloader/hero fallback background */
+  --hero-warm: #412d15; /* lighter warm-brown, vignette center / gradients */
+  --hero-cream: #e1dcc9; /* warm off-white — replaces stark white on this surface */
+
+  --hero-cream-70: rgba(225, 220, 201, 0.7);
+  --hero-cream-55: rgba(225, 220, 201, 0.55);
+  --hero-cream-45: rgba(225, 220, 201, 0.45);
+  --hero-cream-20: rgba(225, 220, 201, 0.2);
+  --hero-cream-10: rgba(225, 220, 201, 0.1);
 }
 
 @theme inline {
