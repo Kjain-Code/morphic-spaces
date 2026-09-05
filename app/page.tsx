@@ -10,16 +10,34 @@ import { CinematicHero } from "@/components/home/cinematic-hero";
 // Services/Recognition/Projects/About/Contact each have their own route
 // (unchanged) and are not rendered here.
 
-// Module-scope, not state/sessionStorage: this flips to true once the
-// preloader has played and stays true for the lifetime of this JS bundle —
-// i.e. across every client-side navigation back to "/" (clicking "Home" in
-// the navbar re-mounts this component but doesn't reload the module). Only
-// an actual hard refresh re-evaluates the module and resets it, which is
-// exactly when the preloader should be allowed to play again.
-let hasPlayedLoadingScreen = false;
+// A flag on `window` itself, not a module-scope `let` and not sessionStorage:
+//
+// - Module-scope state (the previous approach here) doesn't survive in Next
+//   dev — App Router re-evaluates a route's client module on every visit in
+//   development, silently resetting a plain `let` back to its initial value,
+//   so the preloader replayed on every "Home" click even though it worked
+//   as intended in a production build. `window` is the one thing that's
+//   guaranteed to persist for the entire life of the current document
+//   regardless of how Next re-executes route modules underneath it.
+// - sessionStorage would survive an actual refresh too, which is exactly the
+//   one case that should replay the preloader — a real reload/new tab opens
+//   a brand-new `window`, so this flag is gone and the preloader plays
+//   again, same as a fresh visit.
+//
+// Net effect: plays once per real page load (first visit or a hard
+// refresh), never again for client-side navigation back to "/" within that
+// same load — including via the navbar's "Home" link.
+function hasPlayedLoadingScreen() {
+  return typeof window !== "undefined" && (window as { __msLoadingScreenPlayed?: boolean }).__msLoadingScreenPlayed === true;
+}
+function markLoadingScreenPlayed() {
+  if (typeof window !== "undefined") {
+    (window as { __msLoadingScreenPlayed?: boolean }).__msLoadingScreenPlayed = true;
+  }
+}
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(!hasPlayedLoadingScreen);
+  const [isLoading, setIsLoading] = useState(() => !hasPlayedLoadingScreen());
 
   // Keep the page pinned in place behind the loading overlay so the reveal
   // exposes the hero exactly as loaded, not wherever the page happened to
@@ -32,7 +50,7 @@ export default function Home() {
   }, [isLoading]);
 
   const handleLoadingComplete = () => {
-    hasPlayedLoadingScreen = true;
+    markLoadingScreenPlayed();
     setIsLoading(false);
   };
 

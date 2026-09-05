@@ -66,6 +66,9 @@ export function ArchitecturalAssembly() {
   if (prefersReducedMotion) {
     return (
       <section className="relative w-full overflow-hidden bg-[var(--graphite)] px-6 py-24 sm:px-10 sm:py-32">
+        <span className="relative z-10 mx-auto block max-w-6xl text-[10px] uppercase tracking-[0.3em] text-[var(--ivory-45)]">
+          Massing Study — 01
+        </span>
         <StaticComposition />
         <div className="relative z-10 mx-auto mt-16 max-w-6xl">
           <Caption />
@@ -78,6 +81,13 @@ export function ArchitecturalAssembly() {
     <section ref={wrapperRef} className="relative h-[240vh] w-full sm:h-[280vh]">
       <div className="sticky top-0 h-dvh w-full overflow-hidden bg-[var(--graphite)]">
         <LineworkGrid opacity={lineworkOpacity} />
+
+        {/* Small diagram title, in the same register as a drawing's title block —
+            the plainest possible signal that the shapes below are a deliberate
+            architectural abstraction, not unfinished placeholders. */}
+        <div className="absolute inset-x-6 top-24 z-10 sm:inset-x-10 sm:top-28">
+          <span className="text-[10px] uppercase tracking-[0.3em] text-[var(--ivory-45)]">Massing Study — 01</span>
+        </div>
 
         <div className="absolute inset-6 sm:inset-16">
           {MASSES.map((mass, index) => (
@@ -130,6 +140,42 @@ function LineworkGrid({ opacity }: { opacity: MotionValue<number> }) {
   );
 }
 
+/**
+ * Small L-shaped registration marks at each corner — the same device used on
+ * architectural drawings and camera viewfinders to say "this is a bounded,
+ * deliberate frame." Reads the solid masses as measured volumes (not stray
+ * color swatches) and the outline masses as plates under active reference.
+ */
+function CornerMarks({ color }: { color: string }) {
+  const arm = 9;
+  const thickness = 1.5;
+  const base = { position: "absolute" as const, width: arm, height: arm };
+  return (
+    <>
+      <span aria-hidden="true" style={{ ...base, top: -1, left: -1, borderTop: `${thickness}px solid ${color}`, borderLeft: `${thickness}px solid ${color}` }} />
+      <span aria-hidden="true" style={{ ...base, top: -1, right: -1, borderTop: `${thickness}px solid ${color}`, borderRight: `${thickness}px solid ${color}` }} />
+      <span aria-hidden="true" style={{ ...base, bottom: -1, left: -1, borderBottom: `${thickness}px solid ${color}`, borderLeft: `${thickness}px solid ${color}` }} />
+      <span aria-hidden="true" style={{ ...base, bottom: -1, right: -1, borderBottom: `${thickness}px solid ${color}`, borderRight: `${thickness}px solid ${color}` }} />
+    </>
+  );
+}
+
+/** The fill + shadow + corner marks shared between the scroll-driven and static renders — kept in one place so the two never drift apart. */
+function MassFace({ fill }: { fill: Mass["fill"] }) {
+  const fillStyle =
+    fill === "ivory"
+      ? { background: "var(--ivory)", boxShadow: "0 22px 44px -22px rgba(0,0,0,0.5)" }
+      : fill === "stone"
+        ? { background: "var(--stone-warm)", boxShadow: "0 22px 44px -22px rgba(0,0,0,0.5)" }
+        : { background: "transparent", border: "1px solid var(--ivory-20)" };
+
+  return (
+    <div className="relative h-full w-full" style={fillStyle}>
+      <CornerMarks color={fill === "outline" ? "var(--ivory-45)" : "var(--bronze)"} />
+    </div>
+  );
+}
+
 function MassBlock({ mass, scrollYProgress }: { mass: Mass; scrollYProgress: MotionValue<number> }) {
   const [start, end] = mass.range;
   // Every keyframe list ends exactly at progress 1 (not just at this mass's
@@ -142,13 +188,6 @@ function MassBlock({ mass, scrollYProgress }: { mass: Mass; scrollYProgress: Mot
   const y = useTransform(scrollYProgress, [start, end, 1], [mass.from.y ?? 0, 0, 0]);
   const rotate = useTransform(scrollYProgress, [start, end, 1], [mass.from.rotate ?? 0, 0, 0]);
   const opacity = useTransform(scrollYProgress, [start, start + (end - start) * 0.4, 1], [0, 1, 1]);
-
-  const fillStyle =
-    mass.fill === "ivory"
-      ? { background: "var(--ivory)" }
-      : mass.fill === "stone"
-        ? { background: "var(--stone-warm)" }
-        : { background: "transparent", border: "1px solid var(--ivory-45)" };
 
   return (
     <motion.div
@@ -163,9 +202,10 @@ function MassBlock({ mass, scrollYProgress }: { mass: Mass; scrollYProgress: Mot
         y,
         rotate,
         opacity,
-        ...fillStyle,
       }}
-    />
+    >
+      <MassFace fill={mass.fill} />
+    </motion.div>
   );
 }
 
@@ -173,28 +213,21 @@ function MassBlock({ mass, scrollYProgress }: { mass: Mass; scrollYProgress: Mot
 function StaticComposition() {
   return (
     <div className="relative mx-auto aspect-[16/9] w-full max-w-4xl">
-      {MASSES.map((mass, index) => {
-        const fillStyle =
-          mass.fill === "ivory"
-            ? { background: "var(--ivory)" }
-            : mass.fill === "stone"
-              ? { background: "var(--stone-warm)" }
-              : { background: "transparent", border: "1px solid var(--ivory-45)" };
-        return (
-          <div
-            key={index}
-            aria-hidden="true"
-            style={{
-              position: "absolute",
-              left: `${mass.left}%`,
-              top: `${mass.top}%`,
-              width: `${mass.width}%`,
-              height: `${mass.height}%`,
-              ...fillStyle,
-            }}
-          />
-        );
-      })}
+      {MASSES.map((mass, index) => (
+        <div
+          key={index}
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            left: `${mass.left}%`,
+            top: `${mass.top}%`,
+            width: `${mass.width}%`,
+            height: `${mass.height}%`,
+          }}
+        >
+          <MassFace fill={mass.fill} />
+        </div>
+      ))}
     </div>
   );
 }

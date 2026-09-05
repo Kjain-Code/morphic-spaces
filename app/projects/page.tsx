@@ -14,7 +14,7 @@ export default function ProjectsPage() {
   return (
     <main className="bg-[var(--charcoal)]">
       <ProjectsHero />
-      <section className="bg-[var(--charcoal)] pb-32 sm:pb-40">
+      <section className="bg-[var(--charcoal)] pb-16 sm:pb-20">
         <ProjectOrbit projects={PROJECTS} />
       </section>
       <ProjectsClosing />

@@ -11,15 +11,31 @@ import { useIsReducedMotion } from "@/lib/use-reduced-motion";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-/** One full orbit revolution, in seconds — slow enough to read the work, fast enough to feel alive. */
-const FULL_CYCLE_SECONDS = 32;
-/** How long, in ms, a hover/focus pause lingers before motion eases back in. */
-const RESUME_DELAY = 350;
+/** Card box, in px. Fixed pixel sizing (not vh/%) keeps the curve math exact at every viewport. */
+const CARD_WIDTH = 272;
+const CARD_HEIGHT = 360;
+const GAP = 52;
+const SLOT = CARD_WIDTH + GAP;
+
+/** Base drift speed, in px/second — slow enough to read every frame, never idle. */
+const BASE_SPEED = 40;
+/** How long, in ms, a hover/focus pause lingers before the drift eases back in. */
+const RESUME_DELAY = 300;
 /** How long, in ms, the eased ramp back to full speed takes once resuming starts. */
 const RESUME_RAMP = 900;
-/** Card box, in px, at the orbit's nearest point (depth 1). Scales down toward the far side. */
-const CARD_WIDTH = 232;
-const CARD_HEIGHT = 306;
+/**
+ * Vertical rise, in px, at the far edge of the row (the row's "smile" depth).
+ * Deliberately no rotation here — a rotated card's corners grow past its own
+ * footprint and can nick a neighbour's edge even with a healthy gap; a pure
+ * vertical curve reads just as intentional and never risks that.
+ */
+const CURVE_DEPTH = 26;
+/** Scale at the far edge of the row — 1 at dead center. */
+const EDGE_SCALE = 0.93;
+/** Opacity at the far edge of the row — 1 at dead center. */
+const EDGE_OPACITY = 0.85;
+/** Repeated tile copies rendered per project so the strip always covers the viewport, however wide. */
+const COPY_OFFSETS = [-1, 0, 1] as const;
 
 function ArrowIcon() {
   return (
@@ -29,12 +45,20 @@ function ArrowIcon() {
   );
 }
 
-interface OrbitCardProps {
+/** Normalized position of a card across the visible row, in [-1, 1] — 0 is dead center. */
+function curveT(cardLeftX: number, containerWidth: number) {
+  const half = containerWidth / 2 || 1;
+  const center = cardLeftX + CARD_WIDTH / 2;
+  const raw = (center - half) / half;
+  return Math.max(-1, Math.min(1, raw));
+}
+
+interface MarqueeCardProps {
   project: Project;
-  index: number;
-  total: number;
+  baseLeft: number;
+  copyOffset: number;
+  trackWidth: number;
   progress: MotionValue<number>;
-  dim: MotionValue<number>;
   sizeRef: RefObject<{ width: number; height: number }>;
   isHovered: boolean;
   isSelected: boolean;
@@ -46,19 +70,22 @@ interface OrbitCardProps {
 }
 
 /**
- * One project, positioned on a shared elliptical orbit. The outer wrapper's
- * x/y/scale/opacity/zIndex are pure functions of the shared `progress` angle
- * (plus this card's own fixed phase) and the shared `dim`/expand state — all
- * MotionValues, so a full lap never triggers a React re-render. Hover/focus
- * layer a small extra lift on top via ordinary Motion variants on the inner
- * element, which is the only part that owns real interactive state.
+ * One project image, riding a shared horizontal strip that loops forever.
+ * The strip's raw scroll offset lives in one shared `progress` MotionValue
+ * (advanced every frame via `useAnimationFrame` on the parent); each card
+ * derives its own left position from that value plus its fixed slot, wraps
+ * it into view with simple modulo arithmetic, and then derives a gentle
+ * "smile" curve — a small rise, scale-down and fade, no rotation — purely
+ * from where that position sits across the visible row. None of this
+ * touches React state, so a full pass down the row never triggers a
+ * re-render.
  */
-function OrbitCard({
+function MarqueeCard({
   project,
-  index,
-  total,
+  baseLeft,
+  copyOffset,
+  trackWidth,
   progress,
-  dim,
   sizeRef,
   isHovered,
   isSelected,
@@ -67,54 +94,49 @@ function OrbitCard({
   onHoverEnd,
   onSelect,
   priority,
-}: OrbitCardProps) {
-  const baseAngle = (index / total) * Math.PI * 2;
+}: MarqueeCardProps) {
   const expand = useMotionValue(0);
 
   useEffect(() => {
     const controls = animate(expand, isSelected ? 1 : 0, {
-      duration: isSelected ? 0.7 : 0.4,
+      duration: isSelected ? 0.6 : 0.3,
       ease: EASE,
     });
     return () => controls.stop();
   }, [isSelected, expand]);
 
-  const angle = useTransform(progress, (p) => p + baseAngle);
-  const depth = useTransform(angle, (a) => Math.sin(a)); // -1 (far) .. 1 (near)
+  // Raw left position on an infinitely repeating strip: wrap into [0, trackWidth)
+  // then shift by this node's tile copy, so three copies together always tile
+  // from -trackWidth to +2×trackWidth — comfortably wider than any viewport.
+  const x = useTransform(progress, (p) => {
+    const wrapped = (((baseLeft - p) % trackWidth) + trackWidth) % trackWidth;
+    return wrapped + copyOffset * trackWidth;
+  });
 
-  const orbitX = useTransform(angle, (a) => {
-    const { width } = sizeRef.current;
-    return Math.cos(a) * width * 0.36;
+  const curveY = useTransform(x, (xv) => {
+    const t = curveT(xv, sizeRef.current.width);
+    return CURVE_DEPTH * t * t - CURVE_DEPTH * 0.2;
   });
-  const orbitY = useTransform(depth, (d) => {
-    const { height } = sizeRef.current;
-    return d * height * 0.3;
+  const baseScale = useTransform(x, (xv) => {
+    const t = Math.abs(curveT(xv, sizeRef.current.width));
+    return 1 - t * (1 - EDGE_SCALE);
   });
-  const orbitScale = useTransform(depth, [-1, 1], [0.7, 1.1]);
-  const orbitOpacity = useTransform(depth, [-1, 1], [0.5, 1]);
-  const zIndex = useTransform(depth, [-1, 1], [1, 40]);
+  const baseOpacity = useTransform(x, (xv) => {
+    const t = Math.abs(curveT(xv, sizeRef.current.width));
+    return 1 - t * (1 - EDGE_OPACITY);
+  });
+  const baseZIndex = useTransform(x, (xv) => {
+    const t = Math.abs(curveT(xv, sizeRef.current.width));
+    return Math.round((1 - t) * 40) + 1;
+  });
 
-  // Blend the ambient orbit position with the click-triggered "expand toward
-  // center" — plain motion-value arithmetic rather than Framer's `layout`/
-  // `layoutId` system, which fights with hand-driven x/y transforms like
-  // these. `expand` runs 0 -> 1 on select; at 1 the card sits dead-center,
-  // scaled up, regardless of where its orbit slot currently is.
-  const EXPANDED_SCALE = 2.3;
-  const x = useTransform([orbitX, expand], ([ox, e]) => (ox as number) * (1 - (e as number)));
-  const y = useTransform([orbitY, expand], ([oy, e]) => (oy as number) * (1 - (e as number)));
-  const scale = useTransform(
-    [orbitScale, expand],
-    ([os, e]) => (os as number) + (EXPANDED_SCALE - (os as number)) * (e as number),
-  );
-  const opacity = useTransform([orbitOpacity, dim, expand], ([oo, d, e]) => {
-    if ((e as number) > 0) return 1;
-    return (oo as number) * (1 - (d as number) * 0.85);
-  });
-  const finalZIndex = useTransform([zIndex, expand], ([z, e]) => ((e as number) > 0.01 ? 100 : (z as number)));
+  const scale = useTransform([baseScale, expand], ([s, e]) => (s as number) + (1.16 - (s as number)) * (e as number));
+  const opacity = useTransform([baseOpacity, expand], ([o, e]) => Math.max(o as number, e as number));
+  const zIndex = useTransform([baseZIndex, expand], ([z, e]) => ((e as number) > 0.01 ? 200 : (z as number)));
 
   return (
     <motion.div
-      style={{ position: "absolute", left: "50%", top: "50%", x, y, scale, opacity, zIndex: finalZIndex }}
+      style={{ position: "absolute", left: 0, top: "50%", x, y: curveY, scale, opacity, zIndex }}
       className={isAnySelected && !isSelected ? "pointer-events-none" : ""}
     >
       <motion.div
@@ -123,7 +145,10 @@ function OrbitCard({
         aria-label={`${project.title} — ${project.category}, ${project.location}, ${project.year}`}
         initial="rest"
         animate={isHovered ? "hover" : "rest"}
-        variants={{ rest: { scale: 1 }, hover: { scale: 1.1 } }}
+        variants={{
+          rest: { y: "-50%", scale: 1, boxShadow: "0 10px 30px -18px rgba(0,0,0,0.5)" },
+          hover: { y: "-52%", scale: 1.045, boxShadow: "0 34px 60px -20px rgba(0,0,0,0.65)" },
+        }}
         transition={{ duration: 0.5, ease: EASE }}
         onHoverStart={onHoverStart}
         onHoverEnd={onHoverEnd}
@@ -136,28 +161,37 @@ function OrbitCard({
             onSelect();
           }
         }}
-        style={{ x: "-50%", y: "-50%", width: CARD_WIDTH, height: CARD_HEIGHT }}
-        className="group relative cursor-pointer overflow-hidden bg-[var(--graphite)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--bronze)]"
+        style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}
+        className="group relative cursor-pointer overflow-hidden rounded-2xl bg-[var(--graphite)] ring-1 ring-[var(--ivory-10)] transition-[box-shadow] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--bronze)]"
       >
         <div className="absolute inset-0">
           <Image
             src={project.image}
-            alt=""
+            alt={`${project.title} — ${project.category} project in ${project.location}`}
             fill
             sizes={`${CARD_WIDTH}px`}
             priority={priority}
-            className="object-cover"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
           />
         </div>
 
         {/* A light gradient confined to where text sits — the architecture stays legible, not darkened wholesale. */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
+
+        {/* Bronze hairline that draws in along the top edge on hover — the same accent-underline motif used on About's pillar cards. */}
+        <motion.span
+          aria-hidden="true"
+          variants={{ rest: { scaleX: 0 }, hover: { scaleX: 1 } }}
+          transition={{ duration: 0.45, ease: EASE }}
+          style={{ transformOrigin: "left" }}
+          className="absolute inset-x-0 top-0 h-[3px] bg-[var(--bronze)]"
+        />
 
         <motion.div
           aria-hidden="true"
           variants={{
             rest: { opacity: 0, scale: 0.7, rotate: -35 },
-            hover: { opacity: 1, scale: 1, rotate: 0, backgroundColor: "var(--ivory)", color: "var(--charcoal)" },
+            hover: { opacity: 1, scale: 1, rotate: 0, backgroundColor: "var(--bronze)", color: "var(--charcoal)" },
           }}
           transition={{ duration: 0.35, ease: EASE }}
           className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full border border-[var(--ivory-45)] text-[var(--ivory-90)]"
@@ -165,23 +199,23 @@ function OrbitCard({
           <ArrowIcon />
         </motion.div>
 
-        <div className="absolute inset-x-0 bottom-0 p-4">
+        <div className="absolute inset-x-0 bottom-0 p-5">
           <motion.p
-            variants={{ rest: { opacity: 0.65 }, hover: { opacity: 1 } }}
+            variants={{ rest: { opacity: 0.75 }, hover: { opacity: 1 } }}
             transition={{ duration: 0.35 }}
-            className="text-[9px] uppercase tracking-[0.22em] text-[var(--ivory-70)]"
+            className="text-[9px] uppercase tracking-[0.22em] text-[var(--bronze)]"
           >
             {project.number} — {project.category}
           </motion.p>
           <motion.h3
-            variants={{ rest: { opacity: 0.7, y: 0 }, hover: { opacity: 1, y: -3 } }}
+            variants={{ rest: { opacity: 0.75, y: 0 }, hover: { opacity: 1, y: -3 } }}
             transition={{ duration: 0.4, ease: EASE }}
-            className="mt-1.5 font-serif text-base font-light leading-tight text-[var(--ivory-90)]"
+            className="mt-1.5 font-serif text-lg font-light leading-tight text-[var(--ivory-90)]"
           >
             {project.title}
           </motion.h3>
           <motion.p
-            variants={{ rest: { opacity: 0.5 }, hover: { opacity: 1 } }}
+            variants={{ rest: { opacity: 0.55 }, hover: { opacity: 1 } }}
             transition={{ duration: 0.35 }}
             className="mt-1 text-[9px] uppercase tracking-[0.18em] text-[var(--ivory-45)]"
           >
@@ -198,15 +232,16 @@ export interface ProjectOrbitProps {
 }
 
 /**
- * The Projects page's main gallery — project images travelling along a
- * shared, gently tilted elliptical orbit (not a carousel, not a marquee):
- * one shared `progress` MotionValue advances the angle every frame via
+ * The Projects page's main gallery — every project riding one continuous,
+ * gently curved strip that drifts sideways forever (not a full orbit, not a
+ * grid): one shared `progress` MotionValue advances every frame via
  * `useAnimationFrame`, and each card derives its own x/y/scale/opacity/
- * z-index from that single value plus its fixed phase offset, so a full
- * revolution never touches React state. Hover pauses the shared angle in
- * place (no reset, no jump) and brings that card forward; a click blends
- * the same card toward the stage's center and, once settled, navigates to
- * its detail route.
+ * z-index from that single value plus its fixed slot, so a full pass never
+ * touches React state. Hovering (or focusing) any card eases the whole
+ * strip to a stop in place — no reset, no jump — and lifts that card
+ * forward; moving on (or blurring) eases the drift back in. A click blends
+ * the same card slightly forward and, once settled, navigates to its detail
+ * route.
  */
 export function ProjectOrbit({ projects }: ProjectOrbitProps) {
   // See lib/use-reduced-motion.ts — not Motion's own useReducedMotion(),
@@ -214,11 +249,11 @@ export function ProjectOrbit({ projects }: ProjectOrbitProps) {
   const prefersReducedMotion = useIsReducedMotion();
   const router = useRouter();
   const stageRef = useRef<HTMLDivElement>(null);
-  const sizeRef = useRef({ width: 1200, height: 620 });
+  const sizeRef = useRef({ width: 1200, height: 580 });
   const isVisibleRef = useRef(true);
 
+  const trackWidth = projects.length * SLOT;
   const progress = useMotionValue(0);
-  const dim = useMotionValue(0);
   const pausedRef = useRef(false);
   const resumeAtRef = useRef(0);
   const resumeStartRef = useRef(0);
@@ -245,11 +280,6 @@ export function ProjectOrbit({ projects }: ProjectOrbitProps) {
     };
   }, []);
 
-  useEffect(() => {
-    const controls = animate(dim, selectedId ? 1 : 0, { duration: 0.5, ease: EASE });
-    return () => controls.stop();
-  }, [selectedId, dim]);
-
   useAnimationFrame((time, delta) => {
     if (prefersReducedMotion || !isVisibleRef.current || selectedId) return;
 
@@ -264,8 +294,8 @@ export function ProjectOrbit({ projects }: ProjectOrbitProps) {
 
     const sinceResume = resumeStartRef.current ? time - resumeStartRef.current : RESUME_RAMP;
     const ramp = resumeStartRef.current ? Math.min(1, sinceResume / RESUME_RAMP) : 1;
-    const angularSpeedPerMs = (Math.PI * 2) / (FULL_CYCLE_SECONDS * 1000);
-    progress.set(progress.get() + angularSpeedPerMs * delta * ramp);
+    const next = progress.get() + BASE_SPEED * (delta / 1000) * ramp;
+    progress.set(((next % trackWidth) + trackWidth) % trackWidth);
   });
 
   const pause = () => {
@@ -280,7 +310,7 @@ export function ProjectOrbit({ projects }: ProjectOrbitProps) {
     pause();
     setHoveredId(null);
     setSelectedId(id);
-    window.setTimeout(() => router.push(`/projects/${id}`), 650);
+    window.setTimeout(() => router.push(`/projects/${id}`), 550);
   };
 
   if (prefersReducedMotion) {
@@ -295,42 +325,48 @@ export function ProjectOrbit({ projects }: ProjectOrbitProps) {
 
   return (
     <>
-      <div ref={stageRef} className="relative hidden h-[74vh] w-full overflow-hidden lg:block">
-        {projects.map((project, index) => (
-          <OrbitCard
-            key={project.id}
-            project={project}
-            index={index}
-            total={projects.length}
-            progress={progress}
-            dim={dim}
-            sizeRef={sizeRef}
-            priority={index === 0}
-            isHovered={hoveredId === project.id}
-            isSelected={selectedId === project.id}
-            isAnySelected={selectedId !== null}
-            onHoverStart={() => {
-              setHoveredId(project.id);
-              pause();
-            }}
-            onHoverEnd={() => {
-              setHoveredId(null);
-              scheduleResume();
-            }}
-            onSelect={() => handleSelect(project.id)}
-          />
-        ))}
+      <div ref={stageRef} className="relative hidden h-[520px] w-full overflow-hidden lg:block xl:h-[580px]">
+        {projects.map((project, index) =>
+          COPY_OFFSETS.map((copyOffset) => (
+            <MarqueeCard
+              key={`${project.id}-${copyOffset}`}
+              project={project}
+              baseLeft={index * SLOT}
+              copyOffset={copyOffset}
+              trackWidth={trackWidth}
+              progress={progress}
+              sizeRef={sizeRef}
+              priority={index === 0 && copyOffset === 0}
+              isHovered={hoveredId === project.id}
+              isSelected={selectedId === project.id}
+              isAnySelected={selectedId !== null}
+              onHoverStart={() => {
+                setHoveredId(project.id);
+                pause();
+              }}
+              onHoverEnd={() => {
+                setHoveredId(null);
+                scheduleResume();
+              }}
+              onSelect={() => handleSelect(project.id)}
+            />
+          )),
+        )}
       </div>
 
       {/* Mobile / small tablet — calm static sequence, alternating offset, tap to open */}
       <div className="flex flex-col gap-8 px-6 sm:px-10 lg:hidden">
         {projects.map((project, index) => (
-          <StaticCard
+          <motion.div
             key={project.id}
-            project={project}
-            priority={index === 0}
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-10% 0px" }}
+            transition={{ duration: 0.7, ease: EASE, delay: (index % 2) * 0.08 }}
             className={index % 2 === 0 ? "self-start" : "self-end"}
-          />
+          >
+            <StaticCard project={project} priority={index === 0} />
+          </motion.div>
         ))}
       </div>
     </>
@@ -350,12 +386,19 @@ function StaticCard({
     <a
       href={`/projects/${project.id}`}
       aria-label={`${project.title} — ${project.category}, ${project.location}, ${project.year}`}
-      className={`group relative block aspect-[3/4] w-full max-w-sm overflow-hidden bg-[var(--graphite)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--bronze)] ${className}`}
+      className={`group relative block aspect-[3/4] w-full max-w-sm overflow-hidden rounded-2xl bg-[var(--graphite)] ring-1 ring-[var(--ivory-10)] shadow-[0_10px_30px_-18px_rgba(0,0,0,0.5)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--bronze)] ${className}`}
     >
-      <Image src={project.image} alt="" fill sizes="(min-width: 640px) 340px, 82vw" priority={priority} className="object-cover" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+      <Image
+        src={project.image}
+        alt={`${project.title} — ${project.category} project in ${project.location}`}
+        fill
+        sizes="(min-width: 640px) 340px, 82vw"
+        priority={priority}
+        className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+      />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
       <div className="absolute inset-x-0 bottom-0 p-5">
-        <p className="text-[10px] uppercase tracking-[0.25em] text-[var(--ivory-70)]">
+        <p className="text-[10px] uppercase tracking-[0.25em] text-[var(--bronze)]">
           {project.number} — {project.category}
         </p>
         <h3 className="mt-2 font-serif text-lg font-light leading-tight text-[var(--ivory-90)] sm:text-2xl">

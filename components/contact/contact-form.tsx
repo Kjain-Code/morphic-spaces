@@ -38,7 +38,7 @@ function FloatingField({
   className?: string;
 }) {
   const fieldClassName =
-    "peer w-full resize-none border-b border-[var(--espresso-20)] bg-transparent pb-3 pt-7 text-base text-[var(--espresso)] outline-none transition-colors placeholder:text-transparent focus:border-[var(--espresso-20)]";
+    "peer w-full resize-none border-b border-[var(--charcoal-20)] bg-transparent pb-3 pt-7 text-base text-[var(--charcoal)] outline-none transition-colors placeholder:text-transparent focus:border-[var(--charcoal-20)]";
 
   return (
     <motion.div variants={fieldItem} className={`relative ${className}`}>
@@ -49,11 +49,11 @@ function FloatingField({
       )}
       <label
         htmlFor={id}
-        className="pointer-events-none absolute left-0 top-7 origin-left text-base text-[var(--espresso-muted)] transition-all duration-300 peer-focus:top-0 peer-focus:text-[11px] peer-focus:uppercase peer-focus:tracking-[0.2em] peer-focus:text-[var(--clay)] peer-[&:not(:placeholder-shown)]:top-0 peer-[&:not(:placeholder-shown)]:text-[11px] peer-[&:not(:placeholder-shown)]:uppercase peer-[&:not(:placeholder-shown)]:tracking-[0.2em]"
+        className="pointer-events-none absolute left-0 top-7 origin-left text-base text-[var(--taupe)] transition-all duration-300 peer-focus:top-0 peer-focus:text-[11px] peer-focus:uppercase peer-focus:tracking-[0.2em] peer-focus:text-[var(--bronze)] peer-[&:not(:placeholder-shown)]:top-0 peer-[&:not(:placeholder-shown)]:text-[11px] peer-[&:not(:placeholder-shown)]:uppercase peer-[&:not(:placeholder-shown)]:tracking-[0.2em]"
       >
         {label}
       </label>
-      <span className="pointer-events-none absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-[var(--clay)] transition-transform duration-300 peer-focus:scale-x-100" />
+      <span className="pointer-events-none absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-[var(--bronze)] transition-transform duration-300 peer-focus:scale-x-100" />
     </motion.div>
   );
 }
@@ -61,13 +61,13 @@ function FloatingField({
 function FloatingSelect({ id, label, options }: { id: string; label: string; options: string[] }) {
   return (
     <motion.div variants={fieldItem} className="relative">
-      <span className="block text-[11px] uppercase tracking-[0.2em] text-[var(--clay)]">{label}</span>
+      <span className="block text-[11px] uppercase tracking-[0.2em] text-[var(--bronze)]">{label}</span>
       <select
         id={id}
         name={id}
         required
         defaultValue=""
-        className="peer mt-3 w-full cursor-pointer appearance-none border-b border-[var(--espresso-20)] bg-transparent pb-3 pt-1 text-base text-[var(--espresso)] outline-none transition-colors focus:border-[var(--espresso-20)]"
+        className="peer mt-3 w-full cursor-pointer appearance-none border-b border-[var(--charcoal-20)] bg-transparent pb-3 pt-1 text-base text-[var(--charcoal)] outline-none transition-colors focus:border-[var(--charcoal-20)]"
       >
         <option value="" disabled>
           Select a service
@@ -78,10 +78,10 @@ function FloatingSelect({ id, label, options }: { id: string; label: string; opt
           </option>
         ))}
       </select>
-      <span aria-hidden="true" className="pointer-events-none absolute bottom-3 right-0 text-[var(--espresso-muted)]">
+      <span aria-hidden="true" className="pointer-events-none absolute bottom-3 right-0 text-[var(--taupe)]">
         ↓
       </span>
-      <span className="pointer-events-none absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-[var(--clay)] transition-transform duration-300 peer-focus:scale-x-100" />
+      <span className="pointer-events-none absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-[var(--bronze)] transition-transform duration-300 peer-focus:scale-x-100" />
     </motion.div>
   );
 }
@@ -91,7 +91,7 @@ function SubmitButton({ children }: { children: ReactNode }) {
     <motion.button
       variants={fieldItem}
       type="submit"
-      className="group mt-4 inline-flex w-fit items-center gap-3 border-b border-[var(--espresso)] pb-2 text-[11px] uppercase tracking-[0.25em] text-[var(--espresso)] transition-colors hover:border-[var(--clay)] hover:text-[var(--clay)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--clay)]"
+      className="group mt-4 inline-flex w-fit items-center gap-3 border-b border-[var(--charcoal)] pb-2 text-[11px] uppercase tracking-[0.25em] text-[var(--charcoal)] transition-colors hover:border-[var(--bronze)] hover:text-[var(--bronze)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--bronze)]"
     >
       {children}
       <motion.span aria-hidden="true" className="inline-block" whileHover={{ x: 5 }} transition={{ duration: 0.25 }}>
@@ -134,7 +134,7 @@ export function ContactForm() {
   }
 
   return (
-    <div className="flex h-full min-h-[36rem] flex-col justify-center bg-[var(--linen)] px-6 pb-16 pt-28 sm:px-10 sm:pb-20 sm:pt-32 lg:px-14 lg:pb-24">
+    <div className="flex h-full min-h-[36rem] flex-col justify-center bg-[var(--ivory)] px-6 pb-16 pt-28 sm:px-10 sm:pb-20 sm:pt-32 lg:px-14 lg:pb-24">
       <AnimatePresence mode="popLayout">
         {submitted ? (
           <motion.div
@@ -146,33 +146,33 @@ export function ContactForm() {
           >
             <span
               aria-hidden="true"
-              className="flex h-14 w-14 items-center justify-center rounded-full border border-[var(--clay)] font-serif text-2xl font-light text-[var(--clay)]"
+              className="flex h-14 w-14 items-center justify-center rounded-full border border-[var(--bronze)] font-serif text-2xl font-light text-[var(--bronze)]"
             >
               ✓
             </span>
-            <h2 className="mt-8 max-w-sm font-serif text-3xl font-light leading-[1.2] text-[var(--espresso)] sm:text-4xl">
+            <h2 className="mt-8 max-w-sm font-serif text-3xl font-light leading-[1.2] text-[var(--charcoal)] sm:text-4xl">
               Thank you for contacting us.
             </h2>
-            <p className="mt-5 max-w-sm text-base leading-relaxed text-[var(--espresso-muted)]">
+            <p className="mt-5 max-w-sm text-base leading-relaxed text-[var(--taupe)]">
               We will get back to you soon. A WhatsApp chat with your details has opened in a new tab — send it
               across and we&rsquo;ll take it from there.
             </p>
             <button
               type="button"
               onClick={() => setSubmitted(false)}
-              className="group mt-10 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.25em] text-[var(--espresso-muted)] transition-colors hover:text-[var(--clay)]"
+              className="group mt-10 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.25em] text-[var(--taupe)] transition-colors hover:text-[var(--bronze)]"
             >
               Send another message
             </button>
           </motion.div>
         ) : (
           <motion.form key="form" onSubmit={handleSubmit} initial="hidden" animate="show" variants={fieldContainer}>
-            <motion.span variants={fieldItem} className="block text-[11px] uppercase tracking-[0.3em] text-[var(--clay)]">
+            <motion.span variants={fieldItem} className="block text-[11px] uppercase tracking-[0.3em] text-[var(--bronze)]">
               Enquiry Form
             </motion.span>
             <motion.h2
               variants={fieldItem}
-              className="mt-4 font-serif text-2xl font-light text-[var(--espresso)] sm:text-3xl"
+              className="mt-4 font-serif text-2xl font-light text-[var(--charcoal)] sm:text-3xl"
             >
               Tell us about your project.
             </motion.h2>

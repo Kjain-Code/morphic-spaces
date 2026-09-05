@@ -26,11 +26,12 @@
   /*
    * Warm terracotta system — client-provided brand colors, given its own
    * identity distinct from the homepage's cinematic black/off-white
-   * (--stage/--surface above, which stay exactly as they are). Used on
-   * content pages (About and onward) where that near-black/near-white
-   * treatment reads as flat rather than premium. The four base colors form
-   * a single tonal ramp — cream, terracotta, sienna, espresso — so any
-   * pairing from this set stays harmonious.
+   * (--stage/--surface above, which stay exactly as they are). Superseded
+   * on every page by the charcoal/graphite/ivory/bronze system below (kept
+   * defined here, unused, only in case old copy/paste references it — no
+   * component should pick these up going forward). The four base colors
+   * form a single tonal ramp — cream, terracotta, sienna, espresso — so
+   * any pairing from this set stays harmonious.
    */
   --linen: #fff8f0; /* warm cream — light section backgrounds */
   --clay: #c08552; /* terracotta — primary accent: numerals, links, hovers */
@@ -67,10 +68,10 @@
 
   /*
    * Charcoal/graphite/ivory/bronze system — the studio's updated brand
-   * direction for About and Projects, replacing the terracotta system
-   * above on those two pages specifically (Contact keeps --linen/--clay/
-   * --espresso for now; Home keeps --stage/--surface exactly as-is — none
-   * of that changes here). Same tonal-ramp idea as the terracotta set:
+   * direction, now used consistently across Projects, About and Contact
+   * (replacing the terracotta system above on all three; Home keeps
+   * --stage/--surface exactly as-is — none of that changes here). Same
+   * tonal-ramp idea as the terracotta set:
    * two dark neutrals that alternate as section backgrounds (charcoal,
    * graphite), two light neutrals that alternate the same way (ivory,
    * stone), and one warm accent used sparingly (bronze) rather than as a

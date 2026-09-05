@@ -10,11 +10,13 @@ const FOOTER_LINKS = [
   { label: "Contact Us", href: "/contact" },
 ];
 
-/**
- * Minimal closing footer: logo, nav links, and a copyright line. No
- * fabricated contact details — real ones go here once the client provides
- * them.
- */
+const CONTACT_LINKS = [
+  { label: "+91 90535 11417", href: "tel:+919053511417" },
+  { label: "morphicspaces@gmail.com", href: "mailto:morphicspaces@gmail.com" },
+  { label: "Instagram", href: "https://www.instagram.com/morphic_spaces", external: true },
+];
+
+/** Minimal closing footer: logo, studio address, real contact links, nav links, and a copyright line. */
 export function Footer() {
   return (
     <footer className="border-t border-white/10 bg-[var(--stage)] px-6 py-16 sm:px-10">
@@ -24,6 +26,19 @@ export function Footer() {
           <p className="mt-6 text-[11px] uppercase tracking-[0.3em] text-white/35">
             &copy; {new Date().getFullYear()} Morphic Spaces
           </p>
+          <p className="mt-2 text-[11px] uppercase tracking-[0.25em] text-white/35">Shop No. 18, Dhakoli, Punjab</p>
+          <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
+            {CONTACT_LINKS.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                className="text-[11px] uppercase tracking-[0.25em] text-white/35 transition-colors hover:text-white"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
         </div>
 
         <nav aria-label="Footer" className="flex flex-wrap gap-x-8 gap-y-3">
