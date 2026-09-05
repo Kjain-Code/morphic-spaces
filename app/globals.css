@@ -22,6 +22,31 @@
   --ink-10: rgba(23, 20, 15, 0.1); /* hairline dividers on warm surfaces */
   --ink-20: rgba(23, 20, 15, 0.2); /* dashed placeholder borders */
   --ink-faint: rgba(23, 20, 15, 0.035); /* placeholder fill tint */
+
+  /*
+   * Warm terracotta system — client-provided brand colors, given its own
+   * identity distinct from the homepage's cinematic black/off-white
+   * (--stage/--surface above, which stay exactly as they are). Used on
+   * content pages (About and onward) where that near-black/near-white
+   * treatment reads as flat rather than premium. The four base colors form
+   * a single tonal ramp — cream, terracotta, sienna, espresso — so any
+   * pairing from this set stays harmonious.
+   */
+  --linen: #fff8f0; /* warm cream — light section backgrounds */
+  --clay: #c08552; /* terracotta — primary accent: numerals, links, hovers */
+  --umber: #8c5a3c; /* deeper sienna — secondary accent, borders, gradients */
+  --espresso: #4b2e2b; /* deep warm brown — dark section backgrounds */
+  --clay-wash: #f7ece0; /* linen tinted faintly with clay — alternate light section bg */
+
+  --espresso-muted: rgba(75, 46, 43, 0.62); /* body text on --linen/--clay-wash */
+  --espresso-10: rgba(75, 46, 43, 0.12); /* hairlines on --linen/--clay-wash */
+  --espresso-20: rgba(75, 46, 43, 0.22);
+
+  --linen-90: rgba(255, 248, 240, 0.9); /* headings on --espresso */
+  --linen-70: rgba(255, 248, 240, 0.7);
+  --linen-55: rgba(255, 248, 240, 0.55); /* body text on --espresso */
+  --linen-45: rgba(255, 248, 240, 0.4);
+  --linen-10: rgba(255, 248, 240, 0.1); /* hairlines on --espresso */
 }
 
 @theme inline {

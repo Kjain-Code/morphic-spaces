@@ -155,7 +155,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
           }
           transition={isRevealing ? EXIT_TRANSITION : { duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
-          <LogoMark priority className="h-auto w-[150px] sm:w-[175px] lg:w-[200px] xl:w-[220px]" />
+          <LogoMark priority className="h-16 w-auto sm:h-20 lg:h-24 xl:h-28" />
         </motion.div>
 
         <motion.div

@@ -34,7 +34,7 @@ export function Navbar() {
       />
       <div className="relative mx-auto flex h-20 max-w-7xl items-center justify-between px-6 sm:h-22 sm:px-10">
         <Link href="/" aria-label="Morphic Spaces — Home" className="relative z-10">
-          <LogoMark className="h-auto w-9" />
+          <LogoMark className="h-8 w-auto sm:h-9" />
         </Link>
 
         <nav className="hidden md:flex md:items-center md:gap-10">

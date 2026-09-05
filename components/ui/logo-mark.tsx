@@ -6,34 +6,35 @@ export interface LogoMarkProps {
 }
 
 /**
- * The Morphic Spaces logomark, treated to sit cleanly on dark surfaces.
+ * The Morphic Spaces logomark.
  *
- * The source PNG has a light card baked in behind the mark. Inverting the
- * image, then compositing it with `screen`, turns that light card dark (so
- * it recedes into whatever dark surface it's placed on) while the black
- * mark turns light (so it reads clearly) — no visible white rectangle. A
- * soft radial mask fades the far edges as a safety net against any
- * residual edge.
+ * `logo-mark-white.png` is a pre-processed asset, not the raw brand file:
+ * the source (`logo/logo.png`) is a tall 1024×1536 canvas with the actual
+ * "M | S — MORPHIC SPACES" mark occupying only a small centered fraction of
+ * it, sitting on a light faceted-paper texture. Displayed directly at
+ * navbar scale, that wasted canvas made the mark unreadably tiny, and the
+ * previous invert()+screen-blend treatment (turning the paper texture dark
+ * so it "receded") left a faint textured smudge around it instead of a
+ * clean edge. This asset is cropped tight to the mark and its luminance
+ * matted straight to white-on-transparent (dark glyph → opaque white,
+ * light background → fully transparent), so the whole image is the mark —
+ * no invisible padding — and it composites cleanly onto dark surfaces with
+ * no filter/blend-mode tricks needed.
  *
  * Intended for dark/near-black backgrounds only (the loading screen, the
- * navbar). Sizing is controlled entirely via `className` (e.g. `w-9`) —
- * intrinsic width/height are just the source aspect ratio (2:3).
+ * navbar, the footer) since the mark is baked white. Size via `className`
+ * — prefer a height utility (`h-8`) with `w-auto` given the mark's wide
+ * (696:399) aspect ratio, rather than constraining by width.
  */
 export function LogoMark({ className, priority = false }: LogoMarkProps) {
   return (
     <Image
-      src="/images/logo/logo.png"
+      src="/images/logo/logo-mark-white.png"
       alt="Morphic Spaces"
-      width={1024}
-      height={1536}
+      width={696}
+      height={399}
       priority={priority}
       className={className}
-      style={{
-        filter: "invert(1)",
-        mixBlendMode: "screen",
-        WebkitMaskImage: "radial-gradient(closest-side, black 62%, transparent 100%)",
-        maskImage: "radial-gradient(closest-side, black 62%, transparent 100%)",
-      }}
     />
   );
 }

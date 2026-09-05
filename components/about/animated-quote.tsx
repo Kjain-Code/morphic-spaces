@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 
 export interface AnimatedQuoteProps {
   lines: string[];
@@ -23,22 +23,17 @@ const line = {
  * pull-quotes that close the About Studio and Our Story sections on
  * /about. Deliberately not used for body paragraphs (too many lines would
  * make the stagger feel sluggish rather than emphatic).
+ *
+ * No prefers-reduced-motion branch here (same as Section/ProjectsHero
+ * elsewhere in this codebase, which also don't branch their whileInView
+ * fades): a modest opacity/16px fade is the kind of motion those pages
+ * already treat as fine either way, and branching the returned element
+ * tree on a client-only media query — rather than just varying animation
+ * values on the same elements — caused a real SSR/client hydration
+ * mismatch here (the server can't know the OS's reduced-motion setting,
+ * but the client's first render already does).
  */
 export function AnimatedQuote({ lines, className = "", lineClassName = "" }: AnimatedQuoteProps) {
-  const prefersReducedMotion = useReducedMotion();
-
-  if (prefersReducedMotion) {
-    return (
-      <p className={className}>
-        {lines.map((text, index) => (
-          <span key={index} className={`block ${lineClassName}`}>
-            {text}
-          </span>
-        ))}
-      </p>
-    );
-  }
-
   return (
     <motion.p
       initial="hidden"

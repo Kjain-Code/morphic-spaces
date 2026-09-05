@@ -20,7 +20,7 @@ export function Footer() {
     <footer className="border-t border-white/10 bg-[var(--stage)] px-6 py-16 sm:px-10">
       <div className="mx-auto flex max-w-6xl flex-col gap-10 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <LogoMark className="h-auto w-8" />
+          <LogoMark className="h-6 w-auto" />
           <p className="mt-6 text-[11px] uppercase tracking-[0.3em] text-white/35">
             &copy; {new Date().getFullYear()} Morphic Spaces
           </p>
