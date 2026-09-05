@@ -22,7 +22,7 @@ export interface ProjectDetailProps {
 export function ProjectDetail({ project, previous, next }: ProjectDetailProps) {
   return (
     <>
-      <section className="relative h-[85svh] w-full overflow-hidden bg-[var(--stage)] sm:h-dvh">
+      <section className="relative h-[85svh] w-full overflow-hidden bg-[var(--charcoal)] sm:h-dvh">
         <Image
           src={project.image}
           alt={`${project.title} — ${project.category}`}
@@ -39,7 +39,7 @@ export function ProjectDetail({ project, previous, next }: ProjectDetailProps) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[11px] uppercase tracking-[0.3em] text-white/60"
+              className="text-[11px] uppercase tracking-[0.3em] text-[var(--ivory-70)]"
             >
               {project.number} / {String(PROJECT_COUNT).padStart(2, "0")} — {project.category}
             </motion.p>
@@ -47,15 +47,23 @@ export function ProjectDetail({ project, previous, next }: ProjectDetailProps) {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-              className="mt-5 max-w-3xl font-serif text-4xl font-light leading-[1.1] text-white/95 sm:text-6xl lg:text-7xl"
+              className="mt-5 max-w-3xl font-serif text-4xl font-light leading-[1.1] text-[var(--ivory-90)] sm:text-6xl lg:text-7xl"
             >
               {project.title}
             </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+              className="mt-5 text-[11px] uppercase tracking-[0.25em] text-[var(--ivory-45)]"
+            >
+              {project.location} · {project.year}
+            </motion.p>
           </div>
         </div>
       </section>
 
-      <section className="bg-[var(--surface)] px-6 py-24 sm:px-10 sm:py-32">
+      <section className="bg-[var(--ivory)] px-6 py-24 sm:px-10 sm:py-32">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -65,7 +73,7 @@ export function ProjectDetail({ project, previous, next }: ProjectDetailProps) {
         >
           <Link
             href="/projects"
-            className="group inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.25em] text-[var(--ink-muted)] transition-colors hover:text-[var(--ink)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--stone)]"
+            className="group inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.25em] text-[var(--taupe)] transition-colors hover:text-[var(--charcoal)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--bronze)]"
           >
             <motion.span aria-hidden="true" className="inline-block" whileHover={{ x: -4 }} transition={{ duration: 0.25 }}>
               ←
@@ -73,16 +81,16 @@ export function ProjectDetail({ project, previous, next }: ProjectDetailProps) {
             All Projects
           </Link>
 
-          <p className="mt-10 text-[11px] uppercase tracking-[0.25em] text-[var(--ink-muted)]">
-            Architecture / {project.category}
+          <p className="mt-10 text-[11px] uppercase tracking-[0.25em] text-[var(--taupe)]">
+            Architecture / {project.category} — {project.location}, {project.year}
           </p>
-          <p className="mt-6 text-lg leading-relaxed text-[var(--ink)] sm:text-xl">{project.description}</p>
+          <p className="mt-6 text-lg leading-relaxed text-[var(--charcoal)] sm:text-xl">{project.description}</p>
         </motion.div>
       </section>
 
-      <section className="border-t border-white/10 bg-[var(--stage)] px-6 sm:px-10">
+      <section className="border-t border-[var(--ivory-10)] bg-[var(--charcoal)] px-6 sm:px-10">
         <div className="mx-auto grid max-w-7xl grid-cols-1 sm:grid-cols-2">
-          <ProjectNavLink label="Previous" project={previous} className="sm:border-r sm:border-white/10" />
+          <ProjectNavLink label="Previous" project={previous} className="sm:border-r sm:border-[var(--ivory-10)]" />
           <ProjectNavLink label="Next" project={next} align="right" />
         </div>
       </section>
@@ -104,15 +112,15 @@ function ProjectNavLink({
   return (
     <Link
       href={`/projects/${project.id}`}
-      className={`group flex flex-col gap-6 py-14 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--stone)] sm:py-20 ${
+      className={`group flex flex-col gap-6 py-14 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--bronze)] sm:py-20 ${
         align === "right" ? "items-end text-right" : "items-start text-left"
       } ${className}`}
     >
-      <span className="text-[11px] uppercase tracking-[0.3em] text-white/45">{label}</span>
-      <span className="font-serif text-2xl font-light text-white/90 transition-colors group-hover:text-white sm:text-3xl">
+      <span className="text-[11px] uppercase tracking-[0.3em] text-[var(--ivory-45)]">{label}</span>
+      <span className="font-serif text-2xl font-light text-[var(--ivory-90)] transition-colors group-hover:text-[var(--ivory)] sm:text-3xl">
         {project.title}
       </span>
-      <span className="text-[11px] uppercase tracking-[0.25em] text-white/40">
+      <span className="text-[11px] uppercase tracking-[0.25em] text-[var(--ivory-45)]">
         {project.number} — {project.category}
       </span>
     </Link>

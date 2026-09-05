@@ -115,14 +115,14 @@ const underlineVariants = {
  */
 export function StudioPillars() {
   return (
-    <section className="border-t border-[var(--espresso-10)] bg-[var(--linen)] px-6 py-20 sm:px-10 sm:py-28">
+    <section className="border-t border-[var(--charcoal-10)] bg-[var(--ivory)] px-6 py-20 sm:px-10 sm:py-28">
       <div className="mx-auto max-w-6xl">
         <motion.span
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10% 0px" }}
           transition={{ duration: 0.7, ease: EASE }}
-          className="block text-[11px] uppercase tracking-[0.3em] text-[var(--espresso-muted)]"
+          className="block text-[11px] uppercase tracking-[0.3em] text-[var(--taupe)]"
         >
           What We Believe
         </motion.span>
@@ -137,24 +137,24 @@ export function StudioPillars() {
               whileHover="hover"
               viewport={{ once: true, margin: "-10% 0px" }}
               variants={cardVariants}
-              className="relative overflow-hidden border-t border-[var(--espresso-10)] pt-8"
+              className="relative overflow-hidden border-t border-[var(--charcoal-10)] pt-8"
             >
               <motion.span
                 aria-hidden="true"
                 variants={underlineVariants}
                 style={{ transformOrigin: "left" }}
-                className="absolute left-0 top-0 h-[2px] w-full bg-[var(--clay)]"
+                className="absolute left-0 top-0 h-[2px] w-full bg-[var(--bronze)]"
               />
               <div className="flex items-start justify-between">
                 <motion.div variants={iconVariants}>
-                  <pillar.Icon className="h-8 w-8 text-[var(--clay)]" />
+                  <pillar.Icon className="h-8 w-8 text-[var(--bronze)]" />
                 </motion.div>
-                <span className="font-serif text-2xl font-light text-[var(--espresso-20)]">{pillar.number}</span>
+                <span className="font-serif text-2xl font-light text-[var(--charcoal-20)]">{pillar.number}</span>
               </div>
-              <h3 className="mt-6 font-serif text-2xl font-light text-[var(--espresso)] sm:text-[1.7rem]">
+              <h3 className="mt-6 font-serif text-2xl font-light text-[var(--charcoal)] sm:text-[1.7rem]">
                 {pillar.title}
               </h3>
-              <p className="mt-3 max-w-sm text-sm leading-relaxed text-[var(--espresso-muted)]">{pillar.caption}</p>
+              <p className="mt-3 max-w-sm text-sm leading-relaxed text-[var(--taupe)]">{pillar.caption}</p>
             </motion.div>
           ))}
         </div>

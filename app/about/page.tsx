@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AboutHero } from "@/components/about/about-hero";
 import { StudioPillars } from "@/components/about/studio-pillars";
+import { ArchitecturalAssembly } from "@/components/about/architectural-assembly";
 import { AboutPhilosophy } from "@/components/about/about-philosophy";
 import { FounderStory } from "@/components/about/founder-story";
 import { StudioInfo } from "@/components/about/studio-info";
@@ -18,6 +19,7 @@ export default function AboutPage() {
     <main>
       <AboutHero />
       <StudioPillars />
+      <ArchitecturalAssembly />
       <AboutPhilosophy />
       <FounderStory />
       <StudioInfo />

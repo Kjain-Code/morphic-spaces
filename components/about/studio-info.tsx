@@ -46,7 +46,7 @@ function EstablishedYear({ year }: { year: number }) {
  */
 export function StudioInfo() {
   return (
-    <section className="relative overflow-hidden border-t border-[var(--linen-10)] bg-[var(--espresso)] px-6 sm:px-10">
+    <section className="relative overflow-hidden border-t border-[var(--ivory-10)] bg-[var(--graphite)] px-6 sm:px-10">
       <GrainOverlay />
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 sm:grid-cols-2">
         <motion.div
@@ -54,13 +54,13 @@ export function StudioInfo() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10% 0px" }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="border-b border-[var(--linen-10)] py-16 sm:border-b-0 sm:border-r sm:border-[var(--linen-10)] sm:py-24 sm:pr-14"
+          className="border-b border-[var(--ivory-10)] py-16 sm:border-b-0 sm:border-r sm:border-[var(--ivory-10)] sm:py-24 sm:pr-14"
         >
-          <span className="text-[11px] uppercase tracking-[0.3em] text-[var(--linen-45)]">Established</span>
-          <p className="mt-5 font-serif text-6xl font-light text-[var(--clay)] sm:text-7xl">
+          <span className="text-[11px] uppercase tracking-[0.3em] text-[var(--ivory-45)]">Established</span>
+          <p className="mt-5 font-serif text-6xl font-light text-[var(--bronze)] sm:text-7xl">
             <EstablishedYear year={ESTABLISHED_YEAR} />
           </p>
-          <p className="mt-6 max-w-sm text-sm leading-relaxed text-[var(--linen-55)]">
+          <p className="mt-6 max-w-sm text-sm leading-relaxed text-[var(--ivory-55)]">
             Morphic Spaces was founded in {ESTABLISHED_YEAR} with a vision to create thoughtful, distinctive and
             enduring spaces.
           </p>
@@ -73,18 +73,18 @@ export function StudioInfo() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
           className="py-16 sm:py-24 sm:pl-14"
         >
-          <span className="text-[11px] uppercase tracking-[0.3em] text-[var(--linen-45)]">Where We Work</span>
+          <span className="text-[11px] uppercase tracking-[0.3em] text-[var(--ivory-45)]">Where We Work</span>
           <ul className="mt-5 flex flex-wrap gap-x-3 gap-y-2">
             {LOCATIONS.map((city, index) => (
               <li key={city} className="flex items-center gap-3">
-                <span className="font-serif text-2xl font-light text-[var(--linen-90)] sm:text-3xl">{city}</span>
+                <span className="font-serif text-2xl font-light text-[var(--ivory-90)] sm:text-3xl">{city}</span>
                 {index < LOCATIONS.length - 1 && (
-                  <span aria-hidden="true" className="h-1 w-1 rounded-full bg-[var(--clay)]" />
+                  <span aria-hidden="true" className="h-1 w-1 rounded-full bg-[var(--bronze)]" />
                 )}
               </li>
             ))}
           </ul>
-          <p className="mt-6 max-w-sm text-sm leading-relaxed text-[var(--linen-55)]">
+          <p className="mt-6 max-w-sm text-sm leading-relaxed text-[var(--ivory-55)]">
             Rooted in the Chandigarh Tricity — Chandigarh, Panchkula and Mohali — Morphic Spaces extends its work to
             Gurugram, bringing a consistent yet context-driven design approach across each location.
           </p>

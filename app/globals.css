@@ -64,6 +64,38 @@
   --hero-cream-45: rgba(225, 220, 201, 0.45);
   --hero-cream-20: rgba(225, 220, 201, 0.2);
   --hero-cream-10: rgba(225, 220, 201, 0.1);
+
+  /*
+   * Charcoal/graphite/ivory/bronze system — the studio's updated brand
+   * direction for About and Projects, replacing the terracotta system
+   * above on those two pages specifically (Contact keeps --linen/--clay/
+   * --espresso for now; Home keeps --stage/--surface exactly as-is — none
+   * of that changes here). Same tonal-ramp idea as the terracotta set:
+   * two dark neutrals that alternate as section backgrounds (charcoal,
+   * graphite), two light neutrals that alternate the same way (ivory,
+   * stone), and one warm accent used sparingly (bronze) rather than as a
+   * fill color. Think natural stone / aged metal / warm light, not brown.
+   */
+  --charcoal: #171614; /* deep architectural charcoal — dark section backgrounds */
+  --graphite: #25211d; /* warm graphite — alternate dark section background */
+  --ivory: #f3eee7; /* warm ivory — light section backgrounds */
+  --stone-warm: #d8cec1; /* secondary light surface — alternates with ivory */
+  --bronze: #a87955; /* muted bronze accent — numerals, hairlines, hover states only */
+  --taupe: #8e8175; /* soft taupe — secondary/body text on ivory or stone-warm */
+
+  --charcoal-muted: rgba(23, 22, 20, 0.55); /* unused body text on ivory/stone — prefer --taupe */
+  --charcoal-10: rgba(23, 22, 20, 0.1); /* hairlines on ivory/stone-warm */
+  --charcoal-20: rgba(23, 22, 20, 0.2);
+
+  --ivory-90: rgba(243, 238, 231, 0.9); /* headings on charcoal/graphite */
+  --ivory-70: rgba(243, 238, 231, 0.7);
+  --ivory-55: rgba(243, 238, 231, 0.55); /* body text on charcoal/graphite */
+  --ivory-45: rgba(243, 238, 231, 0.45);
+  --ivory-20: rgba(243, 238, 231, 0.2);
+  --ivory-10: rgba(243, 238, 231, 0.1); /* hairlines on charcoal/graphite */
+
+  --bronze-30: rgba(168, 121, 85, 0.3);
+  --bronze-15: rgba(168, 121, 85, 0.15);
 }
 
 @theme inline {
