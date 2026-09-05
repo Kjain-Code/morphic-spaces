@@ -113,7 +113,15 @@ export function VideoScrubber({ wrapperRef, progress }: VideoScrubberProps) {
       const video = videoRef.current;
       if (video && durationRef.current > 0) {
         currentTimeRef.current += (targetTimeRef.current - currentTimeRef.current) * DAMPING;
-        if (Math.abs(video.currentTime - currentTimeRef.current) > 0.01) {
+        // Only issue a new seek once the browser has finished the last one.
+        // Writing currentTime every rAF tick (~16ms) regardless of `seeking`
+        // works locally because a filesystem read resolves well inside that
+        // window, but over a real network each write aborts the previous
+        // range request before its data arrives — the video never advances
+        // past its first frame (confirmed on the deployed site via repeated
+        // net::ERR_ABORTED on the video request while scrolling). Skipping
+        // writes while a seek is in flight lets each one actually complete.
+        if (!video.seeking && Math.abs(video.currentTime - currentTimeRef.current) > 0.01) {
           video.currentTime = currentTimeRef.current;
         }
       }
@@ -132,7 +140,7 @@ export function VideoScrubber({ wrapperRef, progress }: VideoScrubberProps) {
         poster={MASTER_VIDEO_POSTER}
         muted
         playsInline
-        preload="metadata"
+        preload="auto"
         className="absolute inset-0 h-full w-full object-cover"
         aria-hidden="true"
         tabIndex={-1}
