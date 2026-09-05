@@ -15,16 +15,29 @@ export interface ArchitecturalSceneProps {
  * already carries GSAP + Motion + Lenis, and a raw WebGL canvas mounted
  * once in a ref is fewer moving parts than a second React renderer.
  *
+ * The `<canvas>` is a real JSX element (via `canvasRef`), not one created
+ * with `document.createElement` and manually appended/removed — Three.js
+ * is only ever handed the element to draw into. Letting React own that
+ * node's lifecycle avoids fighting the framework's own DOM management
+ * during route transitions: an earlier version called
+ * `container.appendChild`/`removeChild` itself, which crashed with
+ * "Failed to execute 'removeChild' on 'Node': the node to be removed is
+ * not a child of this node" the moment a client-side navigation unmounted
+ * this component (Next 16's App Router does more of its own DOM
+ * reconciliation around route changes than earlier versions).
+ *
  * Respects prefers-reduced-motion (renders one static frame, no rAF loop)
  * and pauses the render loop via IntersectionObserver while the hero is
  * scrolled out of view. Everything is torn down on unmount.
  */
 export function ArchitecturalScene({ className = "" }: ArchitecturalSceneProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    const canvas = canvasRef.current;
+    if (!container || !canvas) return;
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -34,10 +47,9 @@ export function ArchitecturalScene({ className = "" }: ArchitecturalSceneProps) 
     const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 50);
     camera.position.set(0, 0.8, 8);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    container.appendChild(renderer.domElement);
 
     const group = new THREE.Group();
     scene.add(group);
@@ -144,11 +156,12 @@ export function ArchitecturalScene({ className = "" }: ArchitecturalSceneProps) 
         }
       });
       renderer.dispose();
-      if (renderer.domElement.parentElement === container) {
-        container.removeChild(renderer.domElement);
-      }
     };
   }, []);
 
-  return <div ref={containerRef} className={className} aria-hidden="true" />;
+  return (
+    <div ref={containerRef} className={className} aria-hidden="true">
+      <canvas ref={canvasRef} className="h-full w-full" />
+    </div>
+  );
 }

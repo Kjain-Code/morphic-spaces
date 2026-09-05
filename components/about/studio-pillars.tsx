@@ -77,11 +77,41 @@ const PILLARS: Pillar[] = [
   },
 ];
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+/** Card entrance + hover, orchestrated as one variants map so the icon and
+ * underline (children with no `animate` of their own) inherit whichever
+ * state — hidden/visible/hover — the card itself is in. */
+const cardVariants = {
+  hidden: { opacity: 0, y: 28 },
+  visible: (delay: number) => ({ opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE, delay } }),
+  hover: { y: -6, transition: { duration: 0.4, ease: EASE } },
+};
+
+const iconVariants = {
+  hidden: { opacity: 0, rotate: -18, scale: 0.6 },
+  visible: (delay: number) => ({
+    opacity: 1,
+    rotate: 0,
+    scale: 1,
+    transition: { duration: 0.6, ease: EASE, delay: delay + 0.15 },
+  }),
+  hover: { rotate: 8, scale: 1.12, transition: { duration: 0.4, ease: EASE } },
+};
+
+const underlineVariants = {
+  hidden: { scaleX: 0 },
+  visible: { scaleX: 0 },
+  hover: { scaleX: 1, transition: { duration: 0.45, ease: EASE } },
+};
+
 /**
  * A scannable "who we are" digest, sitting between the hero and the full
  * About Studio narrative — four pillars distilled from that same copy's
  * recurring themes (light, material, context, detail), given their own
- * cards rather than staying buried in paragraphs.
+ * cards rather than staying buried in paragraphs. Each card lifts, its icon
+ * tilts, and a clay underline draws in on hover, on top of the staggered
+ * entrance.
  */
 export function StudioPillars() {
   return (
@@ -91,7 +121,7 @@ export function StudioPillars() {
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10% 0px" }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, ease: EASE }}
           className="block text-[11px] uppercase tracking-[0.3em] text-[var(--espresso-muted)]"
         >
           What We Believe
@@ -101,14 +131,24 @@ export function StudioPillars() {
           {PILLARS.map((pillar, index) => (
             <motion.div
               key={pillar.number}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              custom={index * 0.08}
+              initial="hidden"
+              whileInView="visible"
+              whileHover="hover"
               viewport={{ once: true, margin: "-10% 0px" }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: index * 0.08 }}
-              className="group border-t border-[var(--espresso-10)] pt-8"
+              variants={cardVariants}
+              className="relative overflow-hidden border-t border-[var(--espresso-10)] pt-8"
             >
+              <motion.span
+                aria-hidden="true"
+                variants={underlineVariants}
+                style={{ transformOrigin: "left" }}
+                className="absolute left-0 top-0 h-[2px] w-full bg-[var(--clay)]"
+              />
               <div className="flex items-start justify-between">
-                <pillar.Icon className="h-8 w-8 text-[var(--clay)] transition-transform duration-500 group-hover:-translate-y-1" />
+                <motion.div variants={iconVariants}>
+                  <pillar.Icon className="h-8 w-8 text-[var(--clay)]" />
+                </motion.div>
                 <span className="font-serif text-2xl font-light text-[var(--espresso-20)]">{pillar.number}</span>
               </div>
               <h3 className="mt-6 font-serif text-2xl font-light text-[var(--espresso)] sm:text-[1.7rem]">

@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import type { ReactNode } from "react";
 import { AnimatedQuote } from "@/components/about/animated-quote";
 
 interface PhilosophyBlock {
@@ -8,35 +9,65 @@ interface PhilosophyBlock {
   text: string;
 }
 
+// Condensed from the full "About Studio" copy — the original ran 3-4
+// sentences per block, which read as too much text back to back. Trimmed
+// to the essential clause of each while keeping the client's own phrasing
+// wherever possible (the opening statement and closing pull-quote above/
+// below stay verbatim).
 const BLOCKS: PhilosophyBlock[] = [
   {
     label: "Approach",
-    text: "Our work is rooted in the interplay of space, light, material and experience. We do not follow a fixed design language or impose a predetermined aesthetic on every project. Instead, we allow each space to evolve through its context, purpose, character and possibilities. This approach enables us to create environments that feel individual, relevant and deeply connected to the way they are meant to be used.",
+    text: "We do not follow a fixed design language. Each space evolves through its own context, purpose and character — creating environments that feel individual and deeply connected to how they're meant to be used.",
   },
   {
     label: "Process",
-    text: "From the initial idea to the final detail, our process is guided by curiosity, clarity and careful observation. We study the site, understand the people, question the obvious and explore the potential within every brief. Proportion, texture, natural light, circulation and materiality are considered not as isolated elements, but as parts of a larger experience.",
+    text: "Guided by curiosity and careful observation, we study the site, understand the people and question the obvious — treating proportion, light and materiality as parts of one larger experience, not isolated choices.",
   },
   {
     label: "Experience",
-    text: "For us, design is not only about how a space looks. It is about how it feels when someone enters it, moves through it, pauses within it and remembers it. A well-designed space should be functional yet expressive, refined yet comfortable, contemporary yet capable of lasting beyond trends.",
+    text: "Design is not only how a space looks — it's how it feels to enter it, move through it and remember it. Functional yet expressive, refined yet comfortable, contemporary yet built to last beyond trends.",
   },
   {
     label: "Scope",
-    text: "Based in India, Morphic Spaces works across residential, commercial and bespoke spatial environments. Our projects range from intimate interiors to larger architectural and experiential spaces, each approached with the same commitment to detail, purpose and individuality.",
+    text: "Based in India, we work across residential, commercial and bespoke spaces — from intimate interiors to larger architectural projects, each approached with the same commitment to detail and individuality.",
   },
   {
     label: "Balance",
-    text: "We believe that the most memorable spaces are created when design is allowed to be both thoughtful and instinctive. They emerge from a balance between imagination and discipline, between material honesty and visual expression, between what is required and what is possible. At Morphic Spaces, we are constantly exploring how spaces can influence the way people live, work, connect and feel.",
+    text: "The most memorable spaces emerge from balance — between imagination and discipline, material honesty and visual expression. We're constantly exploring how design can shape the way people live, work and feel.",
   },
 ];
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+/** Clips its child to the container and slides it up into view from below, rather than a plain fade. */
+function RevealUp({
+  children,
+  delay = 0,
+  className = "",
+}: {
+  children: ReactNode;
+  delay?: number;
+  className?: string;
+}) {
+  return (
+    <div className={`overflow-hidden ${className}`}>
+      <motion.div
+        initial={{ y: "100%" }}
+        whileInView={{ y: "0%" }}
+        viewport={{ once: true, margin: "-10% 0px" }}
+        transition={{ duration: 0.8, ease: EASE, delay }}
+      >
+        {children}
+      </motion.div>
+    </div>
+  );
+}
+
 /**
- * The "About Studio" copy in full, read as an editorial spread rather than
- * a wall of text: an opening statement, then five labeled blocks (each
- * reveals independently as it scrolls into view), closing on the studio's
- * own signature line as a large pull-quote. Every word here is the
- * client-provided copy — nothing paraphrased or invented. Sits on the soft
+ * The "About Studio" section, read as an editorial spread rather than a
+ * wall of text: an opening statement, then five labeled blocks (each
+ * masked and sliding up into view as it scrolls in), closing on the
+ * studio's own signature line as a large pull-quote. Sits on the soft
  * clay-tinted wash (not plain linen) so it reads as its own beat between
  * StudioPillars and FounderStory rather than one long white stretch.
  */
@@ -48,7 +79,7 @@ export function AboutPhilosophy() {
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10% 0px" }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.8, ease: EASE }}
         >
           <span className="block text-[11px] uppercase tracking-[0.3em] text-[var(--espresso-muted)]">
             About Studio
@@ -65,21 +96,16 @@ export function AboutPhilosophy() {
 
         <div className="mt-20 flex flex-col divide-y divide-[var(--espresso-10)] sm:mt-28">
           {BLOCKS.map((block) => (
-            <motion.div
-              key={block.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-10% 0px" }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="grid grid-cols-1 gap-4 py-10 sm:grid-cols-12 sm:gap-8 sm:py-12"
-            >
-              <span className="text-[11px] uppercase tracking-[0.25em] text-[var(--clay)] sm:col-span-3">
-                {block.label}
-              </span>
-              <p className="text-sm leading-relaxed text-[var(--espresso-muted)] sm:col-span-9 sm:text-base">
-                {block.text}
-              </p>
-            </motion.div>
+            <div key={block.label} className="grid grid-cols-1 gap-4 py-10 sm:grid-cols-12 sm:gap-8 sm:py-12">
+              <RevealUp className="sm:col-span-3">
+                <span className="block text-[11px] uppercase tracking-[0.25em] text-[var(--clay)]">
+                  {block.label}
+                </span>
+              </RevealUp>
+              <RevealUp delay={0.08} className="sm:col-span-9">
+                <p className="text-sm leading-relaxed text-[var(--espresso-muted)] sm:text-base">{block.text}</p>
+              </RevealUp>
+            </div>
           ))}
         </div>
 
