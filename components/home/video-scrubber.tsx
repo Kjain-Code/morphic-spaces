@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import type { RefObject } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -12,15 +12,15 @@ if (typeof window !== "undefined") {
 }
 
 export interface VideoScrubberProps {
-  /** The section GSAP pins and measures scroll distance against. */
-  containerRef: RefObject<HTMLElement | null>;
+  /** The tall wrapper CinematicHero sizes and measures scroll distance against (see that file for why this replaced GSAP's `pin: true`). */
+  wrapperRef: RefObject<HTMLElement | null>;
   /** Fed with raw scroll progress (0–1) each frame, for UI to read off. */
   progress: MotionValue<number>;
 }
 
 /** currentTime eases toward targetTime by this fraction per frame — the "scrub feel." Tuned within the requested 0.08–0.18 range. */
 const DAMPING = 0.12;
-/** How many viewport-heights of extra scroll the pin holds for. */
+/** How many viewport-heights of extra scroll the sticky section holds for. CinematicHero's wrapper height (700dvh = (1 + this) × 100dvh) must be kept in sync with this if it ever changes. */
 const PIN_DISTANCE_VH = 6;
 
 /**
@@ -31,7 +31,7 @@ const PIN_DISTANCE_VH = 6;
  * pin/progress tracking). The video never plays on its own; scroll position,
  * smoothed by Lenis upstream, is the only thing that moves it.
  */
-export function VideoScrubber({ containerRef, progress }: VideoScrubberProps) {
+export function VideoScrubber({ wrapperRef, progress }: VideoScrubberProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const durationRef = useRef(0);
   const targetTimeRef = useRef(0);
@@ -64,51 +64,45 @@ export function VideoScrubber({ containerRef, progress }: VideoScrubberProps) {
     return () => video.removeEventListener("loadedmetadata", applyDuration);
   }, []);
 
-  // ScrollTrigger: pins the section and reports raw scroll progress each
-  // update. This is the single source of truth for scroll progression —
-  // Lenis feeds it (see SmoothScrollProvider), and both the video's target
-  // time and every piece of hero UI read off this same progress value.
+  // Scroll progress: tracks the wrapper's position against the viewport —
+  // NOT GSAP's `pin: true`, which was the previous approach here. Pinning
+  // has GSAP insert a "pin-spacer" wrapper and reparent the section into
+  // it, outside React's knowledge; on a client-side route navigation away
+  // from "/", React's own unmount then tried to remove nodes based on its
+  // now-stale fiber tree and crashed with "Failed to execute 'removeChild'
+  // on 'Node': the node to be removed is not a child of this node" —
+  // breaking the whole destination page, confirmed in both dev and a
+  // production build, on every route away from home. The section is
+  // pinned with plain CSS `position: sticky` instead (see CinematicHero,
+  // which sizes this wrapper so the sticky section holds for exactly
+  // PIN_DISTANCE_VH viewport-heights) — GSAP here only *reads* scroll
+  // position via `onUpdate`, never touches the DOM, so there's nothing
+  // left for React to conflict with.
   //
-  // Reduced motion: skip pinning/scrubbing entirely and leave a single
-  // stable frame (the poster) in a normal, non-pinned section — a "stable
-  // cinematic frame" rather than a scroll-scrubbed one.
-  useLayoutEffect(() => {
-    const section = containerRef.current;
-    if (!section) return;
+  // Reduced motion: skip the scroll-tracking entirely — CinematicHero
+  // collapses the wrapper to a single viewport-height for that case, so
+  // there's no extra scroll distance to track anyway.
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    // gsap.context()/ctx.revert() rather than a bare trigger.kill(): pin:
-    // true has GSAP insert a "pin-spacer" wrapper around the section,
-    // reparenting it outside React's knowledge. A plain useEffect's
-    // cleanup (and kill() alone) doesn't reliably unwind that before
-    // React's own unmount pass runs on a client-side route change, which
-    // crashed with "Failed to execute 'removeChild' on 'Node': the node
-    // to be removed is not a child of this node" — reproducible on every
-    // navigation away from "/" (to /projects, /services, /about —
-    // anywhere), confirmed unrelated to any particular destination page.
-    // useLayoutEffect's cleanup fires synchronously, earlier in React's
-    // commit than useEffect's, giving ctx.revert() a chance to restore the
-    // DOM (spacer included) before React starts its own deletion walk.
-    const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: section,
-        start: "top top",
-        end: () => `+=${Math.round(window.innerHeight * PIN_DISTANCE_VH)}`,
-        pin: true,
-        pinSpacing: true,
-        scrub: true,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          progress.set(self.progress);
-          if (durationRef.current > 0) {
-            targetTimeRef.current = self.progress * durationRef.current;
-          }
-        },
-      });
-    }, section);
+    const trigger = ScrollTrigger.create({
+      trigger: wrapper,
+      start: "top top",
+      end: () => `+=${Math.round(window.innerHeight * PIN_DISTANCE_VH)}`,
+      scrub: true,
+      invalidateOnRefresh: true,
+      onUpdate: (self) => {
+        progress.set(self.progress);
+        if (durationRef.current > 0) {
+          targetTimeRef.current = self.progress * durationRef.current;
+        }
+      },
+    });
 
-    return () => ctx.revert();
-  }, [containerRef, progress]);
+    return () => trigger.kill();
+  }, [wrapperRef, progress]);
 
   // The lerp loop: eases currentTime toward targetTime every frame. Fully
   // imperative — refs only, no React state, so this never triggers a render.
