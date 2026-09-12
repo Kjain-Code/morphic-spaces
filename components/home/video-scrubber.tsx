@@ -20,6 +20,8 @@ export interface VideoScrubberProps {
 
 /** currentTime eases toward targetTime by this fraction per frame — the "scrub feel." Tuned within the requested 0.08–0.18 range. */
 const DAMPING = 0.12;
+/** Avoid issuing a new network/decode seek immediately after every completed seek. */
+const MIN_SEEK_INTERVAL_MS = 50;
 /** How many viewport-heights of extra scroll the sticky section holds for. CinematicHero's wrapper height (700dvh = (1 + this) × 100dvh) must be kept in sync with this if it ever changes. */
 const PIN_DISTANCE_VH = 6;
 
@@ -36,6 +38,7 @@ export function VideoScrubber({ wrapperRef, progress }: VideoScrubberProps) {
   const durationRef = useRef(0);
   const targetTimeRef = useRef(0);
   const currentTimeRef = useRef(0);
+  const lastSeekAtRef = useRef(0);
 
   // Duration detection: read readyState directly rather than relying solely
   // on the (non-bubbling) loadedmetadata event, which can fire before a
@@ -121,8 +124,14 @@ export function VideoScrubber({ wrapperRef, progress }: VideoScrubberProps) {
         // past its first frame (confirmed on the deployed site via repeated
         // net::ERR_ABORTED on the video request while scrolling). Skipping
         // writes while a seek is in flight lets each one actually complete.
-        if (!video.seeking && Math.abs(video.currentTime - currentTimeRef.current) > 0.01) {
+        const now = performance.now();
+        if (
+          !video.seeking &&
+          now - lastSeekAtRef.current >= MIN_SEEK_INTERVAL_MS &&
+          Math.abs(video.currentTime - currentTimeRef.current) > 0.01
+        ) {
           video.currentTime = currentTimeRef.current;
+          lastSeekAtRef.current = now;
         }
       }
       frame = requestAnimationFrame(tick);
@@ -140,7 +149,7 @@ export function VideoScrubber({ wrapperRef, progress }: VideoScrubberProps) {
         poster={MASTER_VIDEO_POSTER}
         muted
         playsInline
-        preload="metadata"
+        preload="auto"
         className="absolute inset-0 h-full w-full object-cover"
         aria-hidden="true"
         tabIndex={-1}
