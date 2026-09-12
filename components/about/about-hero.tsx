@@ -54,110 +54,70 @@ export function AboutHero() {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <section className="relative w-full overflow-hidden bg-[var(--charcoal)]">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-12">
-        {/* Text column */}
-        <div className="relative z-10 flex flex-col justify-center px-6 py-24 sm:px-10 sm:py-28 lg:col-span-6 lg:py-32">
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: prefersReducedMotion ? 0 : 0.7, ease: EASE }}
-            className="flex items-center gap-3 text-[11px] uppercase tracking-[0.3em] text-[var(--gold)]"
-          >
-            About Us
-            <span aria-hidden="true" className="h-px w-10 bg-[var(--gold-40)]" />
-          </motion.p>
+    <section className="relative min-h-[min(900px,100svh)] w-full overflow-hidden bg-[var(--charcoal)]">
+      <motion.div
+        initial={{ scale: 1.12, opacity: 0.6 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: prefersReducedMotion ? 0 : 1.8, ease: EASE }}
+        className="absolute inset-x-0 bottom-0 top-[9%] w-full lg:left-[25%] lg:right-[4%] lg:top-[13%] lg:w-auto"
+      >
+        <Image
+          src="/images/loading/8th.png"
+          alt="A Morphic Spaces interior with warm timber ceiling and staircase detail"
+          fill
+          sizes="(min-width: 1024px) 80vw, 100vw"
+          className="object-cover"
+          style={{ objectPosition: "78% 35%" }}
+          priority
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(90deg, var(--charcoal) 0%, rgba(23,22,20,0.92) 18%, rgba(23,22,20,0.08) 62%, rgba(23,22,20,0.3) 100%), linear-gradient(0deg, rgba(23,22,20,0.9) 0%, transparent 40%, rgba(23,22,20,0.28) 100%)",
+          }}
+        />
+      </motion.div>
 
-          <h1
-            className={`${fraunces.className} mt-6 max-w-xl text-4xl font-light leading-[1.15] tracking-tight text-[var(--ivory-90)] sm:text-5xl lg:text-6xl`}
-          >
+      <div aria-hidden="true" className="absolute right-[8%] top-1/2 hidden h-56 w-56 -translate-y-1/2 rounded-full border border-[var(--gold-30)] lg:block" />
+
+      <div className="relative z-10 mx-auto flex min-h-[min(900px,100svh)] max-w-7xl flex-col px-6 pb-8 pt-28 sm:px-10 sm:pb-10 lg:px-16 lg:pt-36">
+        <div className="flex items-start justify-end">
+          <span className="hidden text-right text-[10px] uppercase tracking-[0.3em] text-[var(--ivory-55)] sm:block">Spaces<br />People<br />Stories</span>
+        </div>
+
+        <div className="relative mt-auto max-w-4xl pb-16 pt-20 sm:pb-20 sm:pt-24 lg:pb-24 lg:pt-28">
+          <h1 className={`${fraunces.className} text-[clamp(2.7rem,5.6vw,5.8rem)] font-light leading-[0.94] tracking-[-0.035em] text-[var(--ivory-90)]`}>
             <HeadlineLine delay={0.1}>{HEADLINE_LINES[0]}</HeadlineLine>
             <HeadlineLine delay={0.2}>{HEADLINE_LINES[1]}</HeadlineLine>
-            <HeadlineLine delay={0.3}>
-              <span className="italic text-[var(--gold)]">{HEADLINE_LINES[2]}</span>
-            </HeadlineLine>
+            <HeadlineLine delay={0.3}><span className="ml-[6%] italic text-[var(--gold)]">{HEADLINE_LINES[2]}</span></HeadlineLine>
           </h1>
-
           <motion.p
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: prefersReducedMotion ? 0 : 0.7, ease: EASE, delay: prefersReducedMotion ? 0 : 0.5 }}
-            className="mt-8 max-w-md text-sm leading-relaxed text-[var(--ivory-55)] sm:text-base"
+            className="mt-8 max-w-sm text-sm leading-relaxed text-[var(--ivory-70)] sm:ml-[16%] sm:text-base"
           >
-            Morphic Spaces is born from a simple belief — space is not merely something we occupy, it is something
-            we experience.
+            Morphic Spaces is born from a simple belief — space is not merely something we occupy, it is something we experience.
           </motion.p>
+        </div>
 
+        <div className="flex flex-col gap-7 border-t border-[var(--ivory-20)] pt-5 sm:flex-row sm:items-end sm:justify-between">
           <motion.a
             href="#our-story"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: prefersReducedMotion ? 0 : 0.7, ease: EASE, delay: prefersReducedMotion ? 0 : 0.6 }}
-            className="group mt-10 inline-flex items-center gap-4 text-[11px] uppercase tracking-[0.25em] text-[var(--ivory-70)] transition-colors hover:text-[var(--ivory-90)]"
+            className="group inline-flex items-center gap-4 text-[10px] uppercase tracking-[0.3em] text-[var(--ivory-70)] transition-colors hover:text-[var(--gold)]"
           >
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[var(--gold-40)] text-[var(--gold)] transition-transform duration-300 group-hover:translate-x-0.5">
-              →
-            </span>
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[var(--gold-40)] text-[var(--gold)] transition-transform duration-300 group-hover:translate-x-1">→</span>
             Our Story
           </motion.a>
-        </div>
-
-        {/* Photo column */}
-        <div className="relative min-h-[50vh] overflow-hidden lg:col-span-6 lg:min-h-0">
-          <motion.div
-            initial={{ clipPath: "inset(0 0 100% 0)" }}
-            animate={{ clipPath: "inset(0 0 0% 0)" }}
-            transition={{ duration: prefersReducedMotion ? 0 : 1.3, ease: EASE, delay: prefersReducedMotion ? 0 : 0.2 }}
-            className="absolute inset-0"
-          >
-            <motion.div
-              initial={{ scale: 1.15 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 1.6, ease: EASE, delay: prefersReducedMotion ? 0 : 0.2 }}
-              className="absolute inset-0"
-            >
-              <Image
-                src="/images/loading/8th.png"
-                alt="A Morphic Spaces interior — warm timber ceiling and staircase detail"
-                fill
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                className="object-cover"
-                style={{ objectPosition: "78% 35%" }}
-                priority
-              />
-            </motion.div>
-            {/* Charcoal wash so the photo reads as part of this page's palette rather than a bright drop-in, and blends into the text column on desktop. */}
-            <div
-              aria-hidden="true"
-              className="absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(115deg, var(--charcoal) 0%, transparent 22%), linear-gradient(0deg, rgba(23,22,20,0.55) 0%, transparent 45%)",
-              }}
-            />
-          </motion.div>
-
-          {/* Decorative gold ring, echoing the same device on /contact and elsewhere on this page. */}
-          <motion.span
-            aria-hidden="true"
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: prefersReducedMotion ? 0 : 1.2, ease: EASE, delay: prefersReducedMotion ? 0 : 0.4 }}
-            className="pointer-events-none absolute -left-16 -top-16 hidden h-64 w-64 rounded-full border border-[var(--gold-30)] sm:block"
-          />
-
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute right-6 top-1/2 hidden -translate-y-1/2 rotate-90 text-[11px] uppercase tracking-[0.35em] text-[var(--ivory-55)] sm:block"
-            style={{ transformOrigin: "center" }}
-          >
-            Spaces That Inspire
-          </span>
-
-          <div className="pointer-events-none absolute bottom-8 right-8 text-right">
-            <span className={`${fraunces.className} text-sm text-[var(--ivory-55)]`}>
-              01<span className="text-[var(--ivory-45)]">/04</span>
-            </span>
+          <div className="flex items-center gap-5 text-[10px] uppercase tracking-[0.28em] text-[var(--ivory-55)]">
+            <span className="h-10 w-px bg-[var(--gold)]" />
+            <span>Designing<br />spaces that feel human.</span>
+            <span className={`${fraunces.className} text-sm text-[var(--ivory-70)]`}>01<span className="text-[var(--ivory-45)]">/04</span></span>
           </div>
         </div>
       </div>
