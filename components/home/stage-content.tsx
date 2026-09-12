@@ -2,6 +2,7 @@
 
 import { Fragment, useState } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, type MotionValue } from "motion/react";
+import { fraunces } from "@/lib/fonts";
 import { STAGE_CONTENT, type StagePosition } from "@/lib/stage-content";
 
 export interface StageContentProps {
@@ -67,8 +68,10 @@ export function StageContent({ progress }: StageContentProps) {
           className={`absolute inset-0 mx-auto flex w-full max-w-7xl flex-col px-6 sm:px-10 ${POSITION_CLASSES[content.position]}`}
         >
           <div className="max-w-2xl">
-            <p className="text-[10px] uppercase tracking-[0.35em] text-white/45">{content.label}</p>
-            <h1 className="mt-5 font-serif text-4xl font-light uppercase leading-[1.05] text-white/90 sm:text-6xl lg:text-7xl">
+            <p className="text-[11px] uppercase tracking-[0.4em] text-white/45">{content.label}</p>
+            <h1
+              className={`${fraunces.className} mt-5 text-4xl font-light uppercase leading-[0.98] tracking-tight text-white/90 sm:text-6xl lg:text-8xl`}
+            >
               {content.headlineLines.map((line, index) => (
                 <Fragment key={line}>
                   {index > 0 && <br />}
@@ -77,7 +80,7 @@ export function StageContent({ progress }: StageContentProps) {
               ))}
             </h1>
             <p
-              className={`mt-5 max-w-sm text-sm leading-relaxed text-white/55 sm:text-base ${isRight ? "ml-auto" : "mr-auto"}`}
+              className={`mt-6 max-w-md text-sm leading-relaxed text-white/55 sm:text-lg ${isRight ? "ml-auto" : "mr-auto"}`}
             >
               {content.supportingText}
             </p>

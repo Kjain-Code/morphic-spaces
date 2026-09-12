@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "motion/react";
 import type { SVGProps } from "react";
 import { GrainOverlay } from "@/components/about/grain-overlay";
@@ -13,14 +14,6 @@ const INSTAGRAM_URL = "https://www.instagram.com/morphic_spaces";
 const STUDIO_ADDRESS = "Shop No. 18, Dhakoli, Punjab";
 
 const LOCATIONS = ["Chandigarh", "Panchkula", "Mohali", "Gurugram"];
-
-function IconChat(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 32 32" fill="none" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round" {...props}>
-      <path stroke="currentColor" d="M6 8h20v13H14l-5 4v-4H6Z" />
-    </svg>
-  );
-}
 
 function IconPhone(props: SVGProps<SVGSVGElement>) {
   return (
@@ -61,24 +54,57 @@ function IconInstagram(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+/** Diagonal arrow — the WhatsApp button icon, sized down for inline hover arrows too. */
+function IconArrowUpRight(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path stroke="currentColor" d="M7 17 17 7M9 7h8v8" />
+    </svg>
+  );
+}
+
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
  * The left half of /contact — the studio's real contact channels
  * (WhatsApp, phone, email, studio address, Instagram, the cities it works
- * in). Deep architectural charcoal, mirroring the About and Projects
- * pages' palette so /contact reads as part of the same system.
+ * in). A moody photograph of the studio's own work sits behind a deep
+ * charcoal wash (client asked for this page to read as more "designed" —
+ * see the vivid --gold accent below, replacing the previous --bronze here
+ * first) rather than the flat charcoal fill used elsewhere on the site.
  */
 export function ContactDetails() {
   const waLink = `https://wa.me/${WHATSAPP_NUMBER}`;
 
   return (
-    <div className="relative flex h-full flex-col justify-between overflow-hidden bg-[var(--charcoal)] px-6 pb-16 pt-28 sm:px-10 sm:pb-20 sm:pt-32 lg:px-14 lg:pb-24">
+    <div className="relative flex h-full min-h-[40rem] flex-col justify-between overflow-hidden bg-[var(--charcoal)] px-6 pb-14 pt-28 sm:px-10 sm:pb-16 sm:pt-32 lg:px-14 lg:pb-20">
+      {/* Ambient photo backdrop — one of the studio's own renders, kept
+          low-opacity and heavily washed so it reads as texture/mood, never
+          competing with the text on top of it. */}
+      <Image
+        src="/images/loading/7th.png"
+        alt=""
+        fill
+        priority
+        sizes="(min-width: 1024px) 42vw, 100vw"
+        className="absolute inset-0 -z-20 object-cover opacity-[0.32]"
+      />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[var(--charcoal)] via-[var(--charcoal)]/90 to-[var(--charcoal)]" />
       <GrainOverlay />
-      <div
+
+      {/* Decorative gold ring + glow — purely atmospheric, echoes the arcs
+          used across the reference design language. */}
+      <motion.span
         aria-hidden="true"
-        className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full opacity-[0.12] blur-3xl"
-        style={{ background: "var(--bronze)" }}
+        initial={{ opacity: 0, scale: 0.85 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.2, ease: EASE }}
+        className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full border border-[var(--gold-30)] sm:-right-24 sm:-top-24 sm:h-80 sm:w-80"
+      />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-28 top-1/3 h-72 w-72 rounded-full opacity-[0.16] blur-3xl"
+        style={{ background: "var(--gold)" }}
       />
 
       <motion.div
@@ -87,9 +113,12 @@ export function ContactDetails() {
         transition={{ duration: 0.8, ease: EASE }}
         className="relative"
       >
-        <span className="block text-[11px] uppercase tracking-[0.3em] text-[var(--bronze)]">Contact</span>
+        <span className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.3em] text-[var(--gold)]">
+          Contact Us
+          <span aria-hidden="true" className="h-px w-8 bg-[var(--gold-40)]" />
+        </span>
         <h1 className="mt-6 max-w-sm font-serif text-4xl font-light leading-[1.15] text-[var(--ivory-90)] sm:text-5xl">
-          Let&rsquo;s start a conversation.
+          Let&rsquo;s start a <em className="italic text-[var(--gold)]">conversation.</em>
         </h1>
         <p className="mt-6 max-w-sm text-sm leading-relaxed text-[var(--ivory-55)]">
           Tell us about your space, your site and what you have in mind — we read every enquiry ourselves.
@@ -100,25 +129,26 @@ export function ContactDetails() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: EASE, delay: 0.15 }}
-        className="relative mt-16 flex flex-col gap-12"
+        className="relative mt-14 flex flex-col gap-9"
       >
         <div>
           <span className="text-[11px] uppercase tracking-[0.3em] text-[var(--ivory-45)]">Message Us Directly</span>
-          <a
-            href={waLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group mt-4 flex items-center gap-4 text-[var(--ivory-90)] transition-colors hover:text-[var(--bronze)]"
-          >
-            <IconChat className="h-7 w-7 shrink-0 text-[var(--bronze)]" />
-            <span className="font-serif text-2xl font-light sm:text-3xl">WhatsApp</span>
-            <motion.span aria-hidden="true" className="inline-block" whileHover={{ x: 5 }} transition={{ duration: 0.25 }}>
-              →
+          <a href={waLink} target="_blank" rel="noopener noreferrer" className="group mt-4 flex items-center gap-4 w-fit">
+            <motion.span
+              whileHover={{ scale: 1.08, rotate: 6 }}
+              whileTap={{ scale: 0.94 }}
+              transition={{ duration: 0.25, ease: EASE }}
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--gold)] text-[var(--charcoal)] shadow-[0_8px_24px_-8px_rgba(230,197,128,0.55)]"
+            >
+              <IconArrowUpRight className="h-5 w-5" />
             </motion.span>
+            <span className="font-serif text-2xl font-light text-[var(--ivory-90)] transition-colors group-hover:text-[var(--gold)] sm:text-3xl">
+              WhatsApp
+            </span>
           </a>
         </div>
 
-        <div className="flex flex-col gap-8 sm:flex-row sm:gap-16">
+        <div className="flex flex-col gap-6 border-t border-[var(--ivory-10)] pt-8 sm:flex-row sm:gap-14">
           <div>
             <span className="text-[11px] uppercase tracking-[0.3em] text-[var(--ivory-45)]">Call Us</span>
             <div className="mt-4 flex flex-col gap-2">
@@ -126,9 +156,9 @@ export function ContactDetails() {
                 <a
                   key={number}
                   href={`tel:+${number.replace(/[^\d]/g, "")}`}
-                  className="group flex items-center gap-3 text-[var(--ivory-70)] transition-colors hover:text-[var(--bronze)]"
+                  className="group flex items-center gap-3 text-[var(--ivory-70)] transition-colors hover:text-[var(--gold)]"
                 >
-                  <IconPhone className="h-4 w-4 shrink-0 text-[var(--bronze)]" />
+                  <IconPhone className="h-4 w-4 shrink-0 text-[var(--gold)]" />
                   <span className="text-sm tracking-wide">{number}</span>
                 </a>
               ))}
@@ -139,19 +169,19 @@ export function ContactDetails() {
             <span className="text-[11px] uppercase tracking-[0.3em] text-[var(--ivory-45)]">Email</span>
             <a
               href={`mailto:${EMAIL}`}
-              className="group mt-4 flex items-center gap-3 text-[var(--ivory-70)] transition-colors hover:text-[var(--bronze)]"
+              className="group mt-4 flex items-center gap-3 text-[var(--ivory-70)] transition-colors hover:text-[var(--gold)]"
             >
-              <IconMail className="h-4 w-4 shrink-0 text-[var(--bronze)]" />
+              <IconMail className="h-4 w-4 shrink-0 text-[var(--gold)]" />
               <span className="text-sm tracking-wide">{EMAIL}</span>
             </a>
           </div>
         </div>
 
-        <div className="flex flex-col gap-8 sm:flex-row sm:gap-16">
+        <div className="flex flex-col gap-6 sm:flex-row sm:gap-14">
           <div>
             <span className="text-[11px] uppercase tracking-[0.3em] text-[var(--ivory-45)]">Studio</span>
             <div className="mt-4 flex items-start gap-3 text-[var(--ivory-70)]">
-              <IconPin className="mt-0.5 h-4 w-4 shrink-0 text-[var(--bronze)]" />
+              <IconPin className="mt-0.5 h-4 w-4 shrink-0 text-[var(--gold)]" />
               <span className="max-w-[16rem] text-sm leading-relaxed tracking-wide">{STUDIO_ADDRESS}</span>
             </div>
           </div>
@@ -162,9 +192,9 @@ export function ContactDetails() {
               href={INSTAGRAM_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="group mt-4 flex items-center gap-3 text-[var(--ivory-70)] transition-colors hover:text-[var(--bronze)]"
+              className="group mt-4 flex items-center gap-3 text-[var(--ivory-70)] transition-colors hover:text-[var(--gold)]"
             >
-              <IconInstagram className="h-4 w-4 shrink-0 text-[var(--bronze)]" />
+              <IconInstagram className="h-4 w-4 shrink-0 text-[var(--gold)]" />
               <span className="text-sm tracking-wide">Instagram</span>
             </a>
           </div>
@@ -177,7 +207,7 @@ export function ContactDetails() {
               <li key={city} className="flex items-center gap-3">
                 <span className="font-serif text-lg font-light text-[var(--ivory-70)] sm:text-xl">{city}</span>
                 {index < LOCATIONS.length - 1 && (
-                  <span aria-hidden="true" className="h-1 w-1 rounded-full bg-[var(--bronze)]" />
+                  <span aria-hidden="true" className="h-1 w-1 rounded-full bg-[var(--gold)]" />
                 )}
               </li>
             ))}

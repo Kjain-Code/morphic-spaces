@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
 import { AnimatedQuote } from "@/components/about/animated-quote";
+import { fraunces } from "@/lib/fonts";
 
 const FRAGMENTS = [
   "A quiet moment of light.",
@@ -16,7 +17,7 @@ const FRAGMENTS = [
  * founder. Condensed from the full client copy to what's essential for a
  * page (the repeated "no fixed language" theme already appears in
  * AboutPhilosophy's "Approach" block, so it isn't restated here). The
- * portrait reveals behind a bronze-colored panel that wipes away on scroll,
+ * portrait reveals behind a gold-colored panel that wipes away on scroll,
  * rather than a plain fade — a small, one-time moment of drama. Sits on the
  * stone surface (not plain ivory) so it reads as its own beat rather than
  * blending into AboutPhilosophy right above it.
@@ -25,7 +26,10 @@ export function FounderStory() {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <section className="border-t border-[var(--charcoal-10)] bg-[var(--stone-warm)] px-6 py-24 sm:px-10 sm:py-32 lg:py-40">
+    <section
+      id="our-story"
+      className="scroll-mt-24 border-t border-[var(--charcoal-10)] bg-[var(--stone-warm)] px-6 py-24 sm:px-10 sm:py-32 lg:py-40"
+    >
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-16 lg:grid-cols-12 lg:gap-20">
         <div className="lg:col-span-5">
           <div className="relative aspect-[3/4] w-full overflow-hidden bg-[var(--charcoal)]">
@@ -64,7 +68,7 @@ export function FounderStory() {
                 delay: prefersReducedMotion ? 0 : 0.15,
               }}
               style={{ transformOrigin: "right" }}
-              className="absolute inset-0 bg-[var(--bronze)]"
+              className="absolute inset-0 bg-[var(--gold)]"
             />
           </div>
           <motion.div
@@ -91,7 +95,9 @@ export function FounderStory() {
             <span className="block text-[11px] uppercase tracking-[0.3em] text-[var(--taupe)]">
               Our Story
             </span>
-            <h2 className="mt-6 max-w-xl font-serif text-3xl font-light leading-[1.2] text-[var(--charcoal)] sm:text-4xl">
+            <h2
+              className={`${fraunces.className} mt-6 max-w-xl text-3xl font-light leading-[1.2] tracking-tight text-[var(--charcoal)] sm:text-4xl`}
+            >
               It began with a different way of seeing space.
             </h2>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-[var(--taupe)]">
@@ -113,14 +119,14 @@ export function FounderStory() {
             whileInView="show"
             viewport={{ once: true, margin: "-10% 0px" }}
             variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1, delayChildren: 0.1 } } }}
-            className="mt-10 flex flex-col gap-3 border-l-2 border-[var(--bronze)] pl-6"
+            className="mt-10 flex flex-col gap-3 border-l-2 border-[var(--gold)] pl-6"
           >
             {FRAGMENTS.map((fragment) => (
               <motion.li
                 key={fragment}
                 variants={{ hidden: { opacity: 0, x: -12 }, show: { opacity: 1, x: 0 } }}
                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="font-serif text-lg italic font-light text-[var(--charcoal)] sm:text-xl"
+                className={`${fraunces.className} text-lg italic font-light text-[var(--charcoal)] sm:text-xl`}
               >
                 {fragment}
               </motion.li>
@@ -139,7 +145,7 @@ export function FounderStory() {
           <div className="mt-14 border-t border-[var(--charcoal-10)] pt-10">
             <AnimatedQuote
               lines={["We are not here to follow a language.", "We are here to create one."]}
-              className="font-serif text-2xl font-light leading-snug text-[var(--charcoal)] sm:text-3xl"
+              className={`${fraunces.className} text-2xl font-light leading-snug tracking-tight text-[var(--charcoal)] sm:text-3xl`}
             />
           </div>
         </div>

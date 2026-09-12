@@ -10,7 +10,7 @@ export interface ArchitecturalSceneProps {
 /**
  * A slow-drifting cluster of abstract massing blocks — not a model of any
  * real building, just clean rectangular volumes in the studio's own
- * charcoal/graphite/bronze/ivory palette, evoking "shaping space" for the
+ * charcoal/graphite/gold/ivory palette, evoking "shaping space" for the
  * About hero's backdrop. Vanilla three.js (no @react-three/fiber): this project
  * already carries GSAP + Motion + Lenis, and a raw WebGL canvas mounted
  * once in a ref is fewer moving parts than a second React renderer.
@@ -54,7 +54,7 @@ export function ArchitecturalScene({ className = "" }: ArchitecturalSceneProps) 
     const group = new THREE.Group();
     scene.add(group);
 
-    const palette = [0xa87955, 0x25211d, 0xf3eee7];
+    const palette = [0xe6c580, 0x25211d, 0xf3eee7];
     const blockCount = 7;
     for (let i = 0; i < blockCount; i++) {
       const geometry = new THREE.BoxGeometry(
@@ -84,7 +84,7 @@ export function ArchitecturalScene({ className = "" }: ArchitecturalSceneProps) 
     const key = new THREE.DirectionalLight(0xf3eee7, 1.5);
     key.position.set(4, 5, 6);
     scene.add(key);
-    const fill = new THREE.DirectionalLight(0xa87955, 0.5);
+    const fill = new THREE.DirectionalLight(0xe6c580, 0.5);
     fill.position.set(-5, -2, -3);
     scene.add(fill);
     scene.add(new THREE.AmbientLight(0x25211d, 1));

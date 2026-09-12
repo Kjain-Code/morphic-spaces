@@ -140,7 +140,7 @@ export function VideoScrubber({ wrapperRef, progress }: VideoScrubberProps) {
         poster={MASTER_VIDEO_POSTER}
         muted
         playsInline
-        preload="auto"
+        preload="metadata"
         className="absolute inset-0 h-full w-full object-cover"
         aria-hidden="true"
         tabIndex={-1}

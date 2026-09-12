@@ -7,13 +7,14 @@ import { LogoMark } from "@/components/ui/logo-mark";
 import { LOADING_IMAGES } from "@/lib/loading-images";
 
 /** Deterministic target duration — the sequence completes on this timer, not on pointer activity. */
-const TARGET_DURATION_MS = 5000;
+const TARGET_DURATION_MS = 2600;
 /** Hard ceiling in case images are unusually slow to settle — never wait indefinitely. */
-const SAFETY_TIMEOUT_MS = 8000;
+const SAFETY_TIMEOUT_MS = 5000;
 /** Logo/overlay reveal transition — kept inside the requested 800-1200ms window. */
 const EXIT_TRANSITION = { duration: 0.95, ease: [0.76, 0, 0.24, 1] as const };
 
 const TRAIL_IMAGES = [...LOADING_IMAGES];
+const CRITICAL_TRAIL_IMAGES = TRAIL_IMAGES.slice(0, 3);
 
 export interface LoadingScreenProps {
   /** Called once the exit reveal has fully played out. */
@@ -37,7 +38,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
   const [percent, setPercent] = useState(0);
   const prefersReducedMotion = useReducedMotion();
   const hasCompletedRef = useRef(false);
-  const total = LOADING_IMAGES.length as number;
+  const total = CRITICAL_TRAIL_IMAGES.length;
 
   // Derived, not synced: reveal once the clock has run and assets are ready,
   // or unconditionally once the safety timeout fires. Monotonic in both
@@ -50,7 +51,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
     const onSettled = () => {
       if (!cancelled) setLoadedCount((count) => count + 1);
     };
-    TRAIL_IMAGES.forEach((src) => {
+    CRITICAL_TRAIL_IMAGES.forEach((src) => {
       const img = new window.Image();
       img.onload = onSettled;
       img.onerror = onSettled;

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { PROJECTS } from "@/components/projects/project-data";
+import { SERVICES } from "@/lib/services-data";
 
 // Kept in sync with app/layout.tsx's SITE_URL — update both together once a
 // custom domain is connected.
@@ -7,10 +8,8 @@ const SITE_URL = "https://morphic-spaces.vercel.app";
 
 /**
  * Auto-served at /sitemap.xml by Next's App Router sitemap convention.
- * Lists every real route (home, the five section pages) plus every
- * individual project detail page, generated from the same PROJECTS data the
- * site itself renders from — a new project added there is picked up here
- * automatically, nothing to keep in sync by hand.
+ * Lists every real route plus every individual project and service detail
+ * page, generated from the same data the site itself renders from.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -31,5 +30,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticRoutes, ...projectRoutes];
+  const serviceRoutes: MetadataRoute.Sitemap = SERVICES.map((service) => ({
+    url: `${SITE_URL}/services/${service.slug}`,
+    lastModified: now,
+    changeFrequency: "yearly",
+    priority: 0.65,
+  }));
+
+  return [...staticRoutes, ...projectRoutes, ...serviceRoutes];
 }

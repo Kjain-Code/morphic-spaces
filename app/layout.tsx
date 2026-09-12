@@ -100,14 +100,21 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             the pinned cinematic hero (GSAP ScrollTrigger + Lenis) in an
             arbitrary, uninitialized mid-journey state. Runs before
             hydration so there's no visible jump back to the top. */}
-        <Script id="disable-scroll-restoration" strategy="beforeInteractive">
-          {`try {
+        <Script
+          id="disable-scroll-restoration"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `try {
             if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
             window.scrollTo(0, 0);
-          } catch (e) {}`}
-        </Script>
-        {/* Server-rendered so crawlers see it in the initial HTML — not next/script, which defers execution past hydration. */}
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+          } catch (e) {}`,
+          }}
+        />
+        <Script
+          id="structured-data"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <Navbar />
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>

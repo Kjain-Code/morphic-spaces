@@ -97,6 +97,17 @@
 
   --bronze-30: rgba(168, 121, 85, 0.3);
   --bronze-15: rgba(168, 121, 85, 0.15);
+
+  /*
+   * Vivid gold accent — client-requested, more visible than --bronze above.
+   * Introduced on /contact first; roll out to other pages the same way
+   * (swap --bronze usages for --gold) as they get redesigned, one at a time.
+   */
+  --gold: #e6c580;
+  --gold-dark: #c9a666; /* hover/pressed state, and for text-on-light use */
+  --gold-40: rgba(230, 197, 128, 0.4);
+  --gold-30: rgba(230, 197, 128, 0.3);
+  --gold-15: rgba(230, 197, 128, 0.15);
 }
 
 @theme inline {

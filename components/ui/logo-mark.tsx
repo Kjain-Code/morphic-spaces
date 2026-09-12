@@ -34,6 +34,7 @@ export function LogoMark({ className, priority = false }: LogoMarkProps) {
       width={696}
       height={399}
       priority={priority}
+      sizes="200px"
       className={className}
     />
   );

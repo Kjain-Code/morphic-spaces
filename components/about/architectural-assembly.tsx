@@ -4,6 +4,7 @@ import { useRef } from "react";
 import type { MotionValue } from "motion/react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useIsReducedMotion } from "@/lib/use-reduced-motion";
+import { fraunces } from "@/lib/fonts";
 
 interface Mass {
   /** Final resting position/size, as a percentage box within the stage. */
@@ -111,8 +112,8 @@ export function ArchitecturalAssembly() {
 function Caption() {
   return (
     <>
-      <span className="block text-[11px] uppercase tracking-[0.3em] text-[var(--bronze)]">Process</span>
-      <p className="mt-4 max-w-md font-serif text-2xl font-light leading-snug text-[var(--ivory-90)] sm:text-3xl">
+      <span className="block text-[11px] uppercase tracking-[0.3em] text-[var(--gold)]">Process</span>
+      <p className={`${fraunces.className} mt-4 max-w-md text-2xl font-light leading-snug text-[var(--ivory-90)] sm:text-3xl`}>
         Every composition begins as mass, before it becomes a room.
       </p>
     </>
@@ -171,7 +172,7 @@ function MassFace({ fill }: { fill: Mass["fill"] }) {
 
   return (
     <div className="relative h-full w-full" style={fillStyle}>
-      <CornerMarks color={fill === "outline" ? "var(--ivory-45)" : "var(--bronze)"} />
+      <CornerMarks color={fill === "outline" ? "var(--ivory-45)" : "var(--gold)"} />
     </div>
   );
 }

@@ -2,92 +2,121 @@
 
 import { useEffect, useRef, useState } from "react";
 import { animate, motion, useInView, useReducedMotion } from "motion/react";
-import { GrainOverlay } from "@/components/about/grain-overlay";
+import { fraunces } from "@/lib/fonts";
 
 const LOCATIONS = ["Chandigarh", "Panchkula", "Mohali", "Gurugram"];
-const ESTABLISHED_YEAR = 2022;
 
-/** Counts up from 0 to `year` once it scrolls into view; jumps straight to the final value under reduced motion. */
-function EstablishedYear({ year }: { year: number }) {
+interface Stat {
+  value: number;
+  suffix: string;
+  label: string;
+  decimals?: number;
+}
+
+const STATS: Stat[] = [
+  { value: 2022, suffix: "", label: "Established" },
+  { value: 50, suffix: "+", label: "Projects Completed" },
+  { value: 100, suffix: "%", label: "Client Satisfaction" },
+];
+
+/** Counts up from 0 to `value` once it scrolls into view; jumps straight to the final value under reduced motion. */
+function CountUp({ value, suffix }: { value: number; suffix: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-10% 0px" });
   const prefersReducedMotion = useReducedMotion();
-  // Always starts at 0, matching what the server renders — prefersReducedMotion
-  // is unknown at SSR time and already resolved on the client's first render,
-  // so seeding this from it (rather than from a constant) mismatches the two
-  // and fails hydration. The jump to the real value happens after mount instead.
+  // Always starts at 0, matching what the server renders — see the identical
+  // comment in the previous version of this file for why this can't seed
+  // from prefersReducedMotion directly.
   const [display, setDisplay] = useState(0);
 
   useEffect(() => {
     if (!isInView) return;
-    // Same animate() call either way, just a zero duration under reduced
-    // motion (jumps straight to `year` via the same onUpdate callback)
-    // rather than a direct setState — keeps every render's state update
-    // flowing through the one external-system callback.
-    const controls = animate(0, year, {
+    const controls = animate(0, value, {
       duration: prefersReducedMotion ? 0 : 1.8,
       ease: [0.22, 1, 0.36, 1],
-      onUpdate: (value) => setDisplay(Math.round(value)),
+      onUpdate: (v) => setDisplay(Math.round(v)),
     });
     return () => controls.stop();
-  }, [isInView, prefersReducedMotion, year]);
+  }, [isInView, prefersReducedMotion, value]);
 
   return (
     <span ref={ref} className="tabular-nums">
       {display}
+      {suffix}
     </span>
   );
 }
 
 /**
- * Dark info strip between the founder story and the closing CTA — the two
- * facts the studio actually has to state (when it was founded, where it
- * works), given equal weight side by side rather than buried in prose.
+ * "Our Journey" — the studio's headline numbers as one evenly-divided row
+ * (a fourth, non-numeric "Ideas Still Growing" mark closes it out) rather
+ * than the previous two-column established-year/where-we-work split. Sits
+ * on the warm ivory surface, between AboutPhilosophy's dark band and
+ * OurApproach's — a light beat to breathe between two dark ones. "Where We
+ * Work" is kept, just demoted to a small strip beneath the stats instead of
+ * sharing equal billing with them.
  */
 export function StudioInfo() {
   return (
-    <section className="relative overflow-hidden border-t border-[var(--ivory-10)] bg-[var(--graphite)] px-6 sm:px-10">
-      <GrainOverlay />
-      <div className="relative mx-auto grid max-w-7xl grid-cols-1 sm:grid-cols-2">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
+    <section className="border-t border-[var(--charcoal-10)] bg-[var(--ivory)] px-6 py-20 sm:px-10 sm:py-24">
+      <div className="mx-auto max-w-7xl">
+        <motion.span
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-10% 0px" }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="border-b border-[var(--ivory-10)] py-16 sm:border-b-0 sm:border-r sm:border-[var(--ivory-10)] sm:py-24 sm:pr-14"
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="block text-[11px] uppercase tracking-[0.3em] text-[var(--taupe)]"
         >
-          <span className="text-[11px] uppercase tracking-[0.3em] text-[var(--ivory-45)]">Established</span>
-          <p className="mt-5 font-serif text-6xl font-light text-[var(--bronze)] sm:text-7xl">
-            <EstablishedYear year={ESTABLISHED_YEAR} />
-          </p>
-          <p className="mt-6 max-w-sm text-sm leading-relaxed text-[var(--ivory-55)]">
-            Morphic Spaces was founded in {ESTABLISHED_YEAR} with a vision to create thoughtful, distinctive and
-            enduring spaces.
-          </p>
-        </motion.div>
+          Our Journey
+        </motion.span>
+
+        <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4 sm:gap-x-10">
+          {STATS.map((stat, index) => (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-10% 0px" }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: index * 0.08 }}
+              className="border-l border-[var(--charcoal-10)] pl-5 first:border-l-0 first:pl-0 sm:pl-8"
+            >
+              <p className={`${fraunces.className} text-4xl font-light text-[var(--charcoal)] sm:text-5xl`}>
+                <CountUp value={stat.value} suffix={stat.suffix} />
+              </p>
+              <p className="mt-2 text-xs uppercase tracking-[0.15em] text-[var(--taupe)] sm:text-sm">{stat.label}</p>
+            </motion.div>
+          ))}
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-10% 0px" }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 3 * 0.08 }}
+            className="border-l border-[var(--charcoal-10)] pl-5 sm:pl-8"
+          >
+            <p className={`${fraunces.className} text-4xl font-light text-[var(--gold-dark)] sm:text-5xl`}>&infin;</p>
+            <p className="mt-2 text-xs uppercase tracking-[0.15em] text-[var(--taupe)] sm:text-sm">
+              Ideas Still Growing
+            </p>
+          </motion.div>
+        </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10% 0px" }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-          className="py-16 sm:py-24 sm:pl-14"
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-14 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-[var(--charcoal-10)] pt-8 sm:mt-16"
         >
-          <span className="text-[11px] uppercase tracking-[0.3em] text-[var(--ivory-45)]">Where We Work</span>
-          <ul className="mt-5 flex flex-wrap gap-x-3 gap-y-2">
-            {LOCATIONS.map((city, index) => (
-              <li key={city} className="flex items-center gap-3">
-                <span className="font-serif text-2xl font-light text-[var(--ivory-90)] sm:text-3xl">{city}</span>
-                {index < LOCATIONS.length - 1 && (
-                  <span aria-hidden="true" className="h-1 w-1 rounded-full bg-[var(--bronze)]" />
-                )}
-              </li>
-            ))}
-          </ul>
-          <p className="mt-6 max-w-sm text-sm leading-relaxed text-[var(--ivory-55)]">
-            Rooted in the Chandigarh Tricity — Chandigarh, Panchkula and Mohali — Morphic Spaces extends its work to
-            Gurugram, bringing a consistent yet context-driven design approach across each location.
-          </p>
+          <span className="mr-2 text-[11px] uppercase tracking-[0.25em] text-[var(--taupe)]">Where We Work</span>
+          {LOCATIONS.map((city, index) => (
+            <span key={city} className="flex items-center gap-3 text-sm text-[var(--charcoal-70)]">
+              {city}
+              {index < LOCATIONS.length - 1 && (
+                <span aria-hidden="true" className="h-1 w-1 rounded-full bg-[var(--gold)]" />
+              )}
+            </span>
+          ))}
         </motion.div>
       </div>
     </section>

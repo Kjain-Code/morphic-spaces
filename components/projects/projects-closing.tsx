@@ -1,42 +1,94 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
+import { fraunces } from "@/lib/fonts";
 
-/** The Projects page's closing statement — dark, quiet, one CTA pointing to /services (no duplicated Services content here). */
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+/**
+ * The Projects page's closing statement — reworked into a two-column layout
+ * (a real project photo with a vertical label on the left, the studio's
+ * closing line with a gold italic emphasis and the Services CTA on the
+ * right) matching the client's reference, in place of the previous
+ * centered, imageless slab. Still one CTA, pointing to /services — no
+ * duplicated Services content here.
+ */
 export function ProjectsClosing() {
-  return (
-    <section className="flex min-h-[70vh] w-full flex-col items-center justify-center bg-[var(--charcoal)] px-6 py-32 text-center sm:min-h-[80vh] sm:px-10">
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="mx-auto max-w-3xl"
-      >
-        <p className="text-[11px] uppercase tracking-[0.3em] text-[var(--ivory-45)]">The work continues</p>
-        <h2 className="mt-6 font-serif text-4xl font-light uppercase leading-[1.1] text-[var(--ivory-90)] sm:text-6xl">
-          Spaces are not
-          <br />
-          just designed.
-          <br />
-          They are experienced.
-        </h2>
-        <p className="mx-auto mt-8 max-w-md text-sm leading-relaxed text-[var(--ivory-55)] sm:text-base">
-          At Morphic Spaces, we approach every project as an opportunity to create environments that feel
-          purposeful, distinctive and enduring.
-        </p>
+  const prefersReducedMotion = useReducedMotion();
 
-        <Link
-          href="/services"
-          className="group mt-10 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.25em] text-[var(--ivory-70)] transition-colors hover:text-[var(--ivory-90)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--bronze)]"
+  return (
+    <section className="relative w-full overflow-hidden border-t border-[var(--ivory-10)] bg-[var(--charcoal)]">
+      <div className="grid grid-cols-1 lg:grid-cols-12">
+        <div className="relative min-h-[45vh] overflow-hidden lg:col-span-6 lg:min-h-[34rem]">
+          <motion.div
+            initial={{ scale: 1.15 }}
+            whileInView={{ scale: 1 }}
+            viewport={{ once: true, margin: "-10% 0px" }}
+            transition={{ duration: prefersReducedMotion ? 0 : 1.4, ease: EASE }}
+            className="absolute inset-0"
+          >
+            <Image
+              src="/images/loading/5th.png"
+              alt="A Morphic Spaces residence, architectural detail"
+              fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover"
+              style={{ objectPosition: "60% 25%" }}
+            />
+          </motion.div>
+          <div
+            aria-hidden="true"
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(255deg, var(--charcoal) 0%, transparent 18%), linear-gradient(0deg, rgba(23,22,20,0.35) 0%, transparent 40%)",
+            }}
+          />
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute left-6 top-1/2 hidden -translate-y-1/2 text-[10px] uppercase leading-[1.9] tracking-[0.3em] text-[var(--ivory-55)] sm:block"
+          >
+            Spaces
+            <br />
+            Materials
+            <br />
+            People
+            <br />
+            Possibilities
+          </span>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10% 0px" }}
+          transition={{ duration: prefersReducedMotion ? 0 : 0.8, ease: EASE }}
+          className="flex flex-col justify-center px-6 py-20 sm:px-10 sm:py-28 lg:col-span-6 lg:py-32"
         >
-          Explore Services
-          <motion.span aria-hidden="true" className="inline-block" whileHover={{ x: 5 }} transition={{ duration: 0.25 }}>
-            →
-          </motion.span>
-        </Link>
-      </motion.div>
+          <p className="text-[11px] uppercase tracking-[0.3em] text-[var(--ivory-45)]">The Work Continues</p>
+          <h2
+            className={`${fraunces.className} mt-6 max-w-lg text-3xl font-light leading-[1.2] tracking-tight text-[var(--ivory-90)] sm:text-4xl lg:text-5xl`}
+          >
+            Spaces are not just designed. They are <em className="italic text-[var(--gold)]">experienced.</em>
+          </h2>
+          <p className="mt-6 max-w-md text-sm leading-relaxed text-[var(--ivory-55)] sm:text-base">
+            At Morphic Spaces, we approach every project as an opportunity to create environments that feel
+            purposeful, distinctive and enduring.
+          </p>
+
+          <Link
+            href="/services"
+            className="group mt-10 inline-flex w-fit items-center gap-4 text-[11px] uppercase tracking-[0.25em] text-[var(--ivory-70)] transition-colors hover:text-[var(--ivory-90)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--gold)]"
+          >
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[var(--gold-40)] text-[var(--gold)] transition-transform duration-300 group-hover:translate-x-0.5">
+              →
+            </span>
+            Explore Services
+          </Link>
+        </motion.div>
+      </div>
     </section>
   );
 }

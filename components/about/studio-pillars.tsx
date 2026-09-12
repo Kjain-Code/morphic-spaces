@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import type { ReactElement, SVGProps } from "react";
+import { fraunces } from "@/lib/fonts";
 
 interface Pillar {
   number: string;
@@ -85,7 +86,11 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 const cardVariants = {
   hidden: { opacity: 0, y: 28 },
   visible: (delay: number) => ({ opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE, delay } }),
-  hover: { y: -6, transition: { duration: 0.4, ease: EASE } },
+  hover: {
+    y: -8,
+    boxShadow: "0 28px 56px -30px rgba(23, 22, 20, 0.28)",
+    transition: { duration: 0.4, ease: EASE },
+  },
 };
 
 const iconVariants = {
@@ -137,21 +142,23 @@ export function StudioPillars() {
               whileHover="hover"
               viewport={{ once: true, margin: "-10% 0px" }}
               variants={cardVariants}
-              className="relative overflow-hidden border-t border-[var(--charcoal-10)] pt-8"
+              className="relative overflow-hidden rounded-xl border-t border-[var(--charcoal-10)] px-6 pb-2 pt-8"
             >
               <motion.span
                 aria-hidden="true"
                 variants={underlineVariants}
                 style={{ transformOrigin: "left" }}
-                className="absolute left-0 top-0 h-[2px] w-full bg-[var(--bronze)]"
+                className="absolute left-0 top-0 h-[2px] w-full bg-[var(--gold)]"
               />
               <div className="flex items-start justify-between">
                 <motion.div variants={iconVariants}>
-                  <pillar.Icon className="h-8 w-8 text-[var(--bronze)]" />
+                  <pillar.Icon className="h-8 w-8 text-[var(--gold-dark)]" />
                 </motion.div>
-                <span className="font-serif text-2xl font-light text-[var(--charcoal-20)]">{pillar.number}</span>
+                <span className={`${fraunces.className} text-2xl font-light text-[var(--charcoal-20)]`}>
+                  {pillar.number}
+                </span>
               </div>
-              <h3 className="mt-6 font-serif text-2xl font-light text-[var(--charcoal)] sm:text-[1.7rem]">
+              <h3 className={`${fraunces.className} mt-6 text-2xl font-light text-[var(--charcoal)] sm:text-[1.7rem]`}>
                 {pillar.title}
               </h3>
               <p className="mt-3 max-w-sm text-sm leading-relaxed text-[var(--taupe)]">{pillar.caption}</p>
