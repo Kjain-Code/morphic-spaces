@@ -44,7 +44,7 @@ export function ProjectsHero() {
   const countLabel = String(PROJECT_COUNT).padStart(2, "0");
 
   return (
-    <section className="relative min-h-[min(900px,100svh)] w-full overflow-hidden bg-[var(--charcoal)]">
+    <section className="relative min-h-[min(780px,100svh)] w-full overflow-hidden bg-[var(--charcoal)]">
       <motion.div
         initial={{ scale: 1.12, opacity: 0.5 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -78,7 +78,7 @@ export function ProjectsHero() {
         className="pointer-events-none absolute right-[10%] top-[38%] hidden h-52 w-52 rounded-full border border-[var(--gold-30)] lg:block"
       />
 
-      <div className="relative z-10 mx-auto flex min-h-[min(900px,100svh)] max-w-7xl flex-col px-6 pb-8 pt-28 sm:px-10 sm:pb-10 lg:px-16 lg:pt-36">
+      <div className="relative z-10 mx-auto flex min-h-[min(780px,100svh)] max-w-7xl flex-col px-6 pb-8 pt-24 sm:px-10 sm:pb-10 sm:pt-28 lg:px-16 lg:pt-32">
         <div className="flex items-start justify-between">
           <motion.p
             initial={{ opacity: 0, x: -16 }}
@@ -91,8 +91,8 @@ export function ProjectsHero() {
           <span className="hidden text-right text-[10px] uppercase leading-[1.8] tracking-[0.3em] text-[var(--ivory-55)] sm:block">Architecture<br />Interiors<br />Commercial</span>
         </div>
 
-        <div className="relative mt-auto max-w-4xl pb-16 pt-20 sm:pb-20 sm:pt-24 lg:pb-24 lg:pt-28">
-          <h1 className={`${fraunces.className} text-[clamp(3.2rem,7vw,7rem)] font-light uppercase leading-[0.88] tracking-[-0.035em] text-[var(--ivory-90)]`}>
+        <div className="relative mt-10 max-w-4xl pb-12 pt-8 sm:mt-14 sm:pb-16 sm:pt-10 lg:mt-16 lg:pb-20 lg:pt-12">
+          <h1 className={`${fraunces.className} text-[clamp(2.6rem,6.2vw,6.2rem)] font-light uppercase leading-[0.9] tracking-[-0.035em] text-[var(--ivory-90)]`}>
             <HeadlineLine delay={0.1}>Spaces</HeadlineLine>
             <HeadlineLine delay={0.2}>With</HeadlineLine>
             <HeadlineLine delay={0.3}><span className="ml-[7%] text-[var(--gold)]">Character.</span></HeadlineLine>
