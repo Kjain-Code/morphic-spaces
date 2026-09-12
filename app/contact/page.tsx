@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import { ContactDetails } from "@/components/contact/contact-details";
 import { ContactForm } from "@/components/contact/contact-form";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Contact — Morphic Spaces",
+export const metadata: Metadata = createPageMetadata({
+  title: "Contact Morphic Spaces",
   description:
     "Get in touch with Morphic Spaces to talk about your architecture or interior design project — message us on WhatsApp or send an enquiry directly.",
-};
+  path: "/contact",
+  imageAlt: "Morphic Spaces studio contact page architectural detail",
+});
 
 // No Footer here by design — the page ends right after the enquiry form,
 // keeping it short instead of stretching the viewport further.

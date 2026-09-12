@@ -7,11 +7,14 @@ import { OurPerspective } from "@/components/projects/our-perspective";
 import { ProjectsClosing } from "@/components/projects/projects-closing";
 import { Footer } from "@/components/layout/footer";
 import { PROJECTS } from "@/components/projects/project-data";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Projects — Morphic Spaces",
-  description: "A curated selection of spaces shaped through architecture, interior design, materiality and detail.",
-};
+export const metadata: Metadata = createPageMetadata({
+  title: "Architecture & Interior Design Projects",
+  description: "Explore Morphic Spaces residential, commercial and interior projects shaped through architecture, materiality and detail.",
+  path: "/projects",
+  imageAlt: "Selected Morphic Spaces residential architecture project",
+});
 
 // Matches the client's reference structure (hero, drag-to-explore film
 // strip, filterable grid, closing CTA), extended with the Featured Project

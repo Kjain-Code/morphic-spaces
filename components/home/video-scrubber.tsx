@@ -22,6 +22,8 @@ export interface VideoScrubberProps {
 const DAMPING = 0.12;
 /** Avoid issuing a new network/decode seek immediately after every completed seek. */
 const MIN_SEEK_INTERVAL_MS = 50;
+/** Replace a stale long-running seek when the scroll target has moved materially. */
+const STALE_SEEK_INTERVAL_MS = 180;
 /** How many viewport-heights of extra scroll the sticky section holds for. CinematicHero's wrapper height (700dvh = (1 + this) × 100dvh) must be kept in sync with this if it ever changes. */
 const PIN_DISTANCE_VH = 6;
 
@@ -125,11 +127,10 @@ export function VideoScrubber({ wrapperRef, progress }: VideoScrubberProps) {
         // net::ERR_ABORTED on the video request while scrolling). Skipping
         // writes while a seek is in flight lets each one actually complete.
         const now = performance.now();
-        if (
-          !video.seeking &&
-          now - lastSeekAtRef.current >= MIN_SEEK_INTERVAL_MS &&
-          Math.abs(video.currentTime - currentTimeRef.current) > 0.01
-        ) {
+        const targetDelta = Math.abs(video.currentTime - currentTimeRef.current);
+        const canSeek = now - lastSeekAtRef.current >= MIN_SEEK_INTERVAL_MS;
+        const staleSeek = video.seeking && now - lastSeekAtRef.current >= STALE_SEEK_INTERVAL_MS && targetDelta > 1;
+        if ((!video.seeking || staleSeek) && canSeek && targetDelta > 0.01) {
           video.currentTime = currentTimeRef.current;
           lastSeekAtRef.current = now;
         }

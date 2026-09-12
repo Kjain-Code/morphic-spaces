@@ -13,4 +13,7 @@ export const LOADING_IMAGES = [
   "/images/loading/8th.png",
   "/images/loading/9th.png",
   "/images/loading/10th.png",
+  "/images/loading/11th.jpeg",
+  "/images/loading/12th.jpeg",
+  "/images/loading/13th.png",
 ] as const;

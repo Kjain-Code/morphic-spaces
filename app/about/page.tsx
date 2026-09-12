@@ -8,12 +8,15 @@ import { ArchitecturalAssembly } from "@/components/about/architectural-assembly
 import { FounderStory } from "@/components/about/founder-story";
 import { AboutClosing } from "@/components/about/about-closing";
 import { Footer } from "@/components/layout/footer";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "About — Morphic Spaces",
+export const metadata: Metadata = createPageMetadata({
+  title: "About Morphic Spaces Studio",
   description:
     "Morphic Spaces is an architecture and interior design studio founded by Kunal, creating distinctive, thoughtful and enduring spaces across residential, commercial and bespoke environments.",
-};
+  path: "/about",
+  imageAlt: "Morphic Spaces interior architecture detail",
+});
 
 // Section order follows the client's reference layout: hero, philosophy (with
 // its four pillars merged in), journey stats, the new Our Approach and Why

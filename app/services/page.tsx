@@ -7,12 +7,15 @@ import { TailoredForYou } from "@/components/services/tailored-for-you";
 import { MorphicApproach } from "@/components/services/morphic-approach";
 import { ServiceProjectConnection } from "@/components/services/service-project-connection";
 import { ServicesClosing } from "@/components/services/services-closing";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Services — Morphic Spaces",
+export const metadata: Metadata = createPageMetadata({
+  title: "Architecture, Interiors & Spatial Design Services",
   description:
-    "Architecture, interior design, landscape and furniture & decor services from Morphic Spaces — residential and bespoke projects across Chandigarh, Panchkula, Mohali and Gurugram.",
-};
+    "Discover Morphic Spaces services in architecture, interior design, landscape and furniture & decor for residential and bespoke spaces across Chandigarh, Panchkula, Mohali and Gurugram.",
+  path: "/services",
+  imageAlt: "Morphic Spaces architectural facade and service studio imagery",
+});
 
 export default function ServicesPage() {
   return (

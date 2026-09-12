@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Manrope } from "next/font/google";
 import Script from "next/script";
 import { Navbar } from "@/components/layout/navbar";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
+import { absoluteUrl, SITE_DESCRIPTION, SITE_NAME, SITE_URL, SHARE_IMAGE } from "@/lib/seo";
 import "./globals.css";
 
 // Editorial display serif for large headings; body/UI sans below. Loaded as
@@ -23,16 +24,9 @@ const manrope = Manrope({
   display: "swap",
 });
 
-// Update this once a custom domain is connected — every absolute URL below
-// (canonical, Open Graph, Twitter card, JSON-LD) is derived from it.
-const SITE_URL = "https://morphic-spaces.vercel.app";
-const SITE_DESCRIPTION =
-  "Morphic Spaces is an architecture and interior design studio founded by Kunal, working across Chandigarh, Panchkula, Mohali and Gurugram — residential, commercial and bespoke interiors shaped by light, material and detail.";
-const SHARE_IMAGE = "/images/hero/journey-poster.jpg";
-
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Morphic Spaces — Architecture & Interior Design Studio",
+  title: { default: SITE_NAME, template: "%s | Morphic Spaces" },
   description: SITE_DESCRIPTION,
   keywords: [
     "architecture studio Chandigarh",
@@ -43,20 +37,21 @@ export const metadata: Metadata = {
     "Morphic Spaces",
   ],
   authors: [{ name: "Morphic Spaces" }],
-  alternates: { canonical: "/" },
+  alternates: { canonical: absoluteUrl("/") },
   robots: { index: true, follow: true },
+  icons: { icon: "/icon.png", apple: "/apple-icon.png" },
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: SITE_URL,
+    url: absoluteUrl("/"),
     siteName: "Morphic Spaces",
-    title: "Morphic Spaces — Architecture & Interior Design Studio",
+    title: SITE_NAME,
     description: SITE_DESCRIPTION,
     images: [{ url: SHARE_IMAGE, width: 1280, height: 720, alt: "A Morphic Spaces residence at dusk" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Morphic Spaces — Architecture & Interior Design Studio",
+    title: SITE_NAME,
     description: SITE_DESCRIPTION,
     images: [SHARE_IMAGE],
   },
@@ -69,10 +64,11 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
+  "@id": `${SITE_URL}/#organization`,
   name: "Morphic Spaces",
   description: SITE_DESCRIPTION,
   url: SITE_URL,
-  image: `${SITE_URL}${SHARE_IMAGE}`,
+  image: absoluteUrl(SHARE_IMAGE),
   founder: { "@type": "Person", name: "Kunal" },
   telephone: "+91 90535 11417",
   email: "morphicspaces@gmail.com",

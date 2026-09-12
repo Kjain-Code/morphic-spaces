@@ -1,10 +1,7 @@
 import type { MetadataRoute } from "next";
 import { PROJECTS } from "@/components/projects/project-data";
 import { SERVICES } from "@/lib/services-data";
-
-// Kept in sync with app/layout.tsx's SITE_URL — update both together once a
-// custom domain is connected.
-const SITE_URL = "https://morphic-spaces.vercel.app";
+import { SITE_URL } from "@/lib/seo";
 
 /**
  * Auto-served at /sitemap.xml by Next's App Router sitemap convention.

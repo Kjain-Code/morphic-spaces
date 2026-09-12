@@ -162,7 +162,7 @@ export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
             style={{ touchAction: "pan-y" }}
             aria-label="Selected projects. Drag horizontally to explore."
           >
-            <div className="flex min-w-[calc(100%+6rem)] snap-x snap-mandatory gap-1.5 sm:gap-2">
+            <div className="flex min-w-[calc(100%+6rem)] snap-x snap-mandatory justify-start gap-1.5 sm:gap-2 md:justify-center">
               {projects.map((project, index) => {
               const isActive = activeId === project.id;
 
@@ -186,7 +186,9 @@ export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
                   onFocus={() => setActiveId(project.id)}
                   onClick={(event) => handleTileClick(event, project)}
                   aria-label={`${project.title} — ${project.category}, ${project.location}, ${project.year}`}
-                  className="relative h-[21rem] shrink-0 snap-center overflow-hidden rounded-xl bg-[var(--charcoal)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--gold)] sm:h-[25rem]"
+                  className={`relative h-[21rem] shrink-0 snap-center overflow-hidden rounded-xl bg-[var(--charcoal)] transition-[box-shadow] duration-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--gold)] sm:h-[25rem] ${
+                    isActive ? "ring-1 ring-[var(--gold-40)] ring-offset-2 ring-offset-[var(--ivory)]" : ""
+                  }`}
                 >
                   <Image
                     src={project.image}

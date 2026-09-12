@@ -198,7 +198,7 @@ function ArchitecturePage({ service }: { service: Service }) {
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const imageY = useTransform(scrollYProgress, [0, 1], [0, 60]);
-  const projects = PROJECTS.filter((project) => project.category === "Residential").slice(0, 3);
+  const projects = PROJECTS.filter((project) => project.category === "Residential" || project.category === "Commercial").slice(0, 3);
 
   return (
     <>

@@ -8,14 +8,14 @@
  * in components/about/studio-info.tsx; years fall within the studio's own
  * stated founding year (2022) through the present.
  *
- * `2nd.png` and `4th.png` are deliberately excluded from this set — see
- * lib/loading-images.ts — they carry a real third-party name baked into the
- * render and shouldn't be reassigned to an invented project here.
+ * The image set now includes residential, interiors and commercial work so
+ * the Projects filters and service references can use the real visual
+ * category rather than treating every image as residential.
  */
 export interface Project {
   id: string;
   number: string;
-  category: "Residential" | "Interiors";
+  category: "Residential" | "Interiors" | "Commercial";
   title: string;
   location: string;
   year: string;
@@ -111,6 +111,61 @@ export const PROJECTS: Project[] = [
     description:
       "A rounded threshold traced in warm light, the facade softening at its one curved corner where the house turns to meet the street.",
     image: "/images/loading/5th.png",
+  },
+  {
+    id: "indus-school",
+    number: "09",
+    category: "Commercial",
+    title: "Indus School",
+    location: "Panipat",
+    year: "2025",
+    description:
+      "A civic learning environment shaped around clear circulation, daylight and a durable institutional presence.",
+    image: "/images/loading/2nd.png",
+  },
+  {
+    id: "bajaj-hospital",
+    number: "10",
+    category: "Commercial",
+    title: "Bajaj Hospital",
+    location: "Panchkula",
+    year: "2025",
+    description:
+      "A healthcare facade composed for clarity, calm arrival and a welcoming presence at dusk.",
+    image: "/images/loading/4th.png",
+  },
+  {
+    id: "the-wonder-room",
+    number: "11",
+    category: "Interiors",
+    title: "The Wonder Room",
+    location: "Panchkula",
+    year: "2025",
+    description:
+      "A child’s room imagined as a small universe, balancing play, storage and a sense of discovery.",
+    image: "/images/loading/11th.jpeg",
+  },
+  {
+    id: "the-stairwell-house",
+    number: "12",
+    category: "Interiors",
+    title: "The Stairwell House",
+    location: "Panchkula",
+    year: "2025",
+    description:
+      "A layered interior where stair, screen, timber and stone turn circulation into the central experience.",
+    image: "/images/loading/12th.jpeg",
+  },
+  {
+    id: "the-panchkula-residence",
+    number: "13",
+    category: "Residential",
+    title: "The Panchkula Residence",
+    location: "Panchkula",
+    year: "2025",
+    description:
+      "A compact residence shaped by warm timber, planted edges and a strong relationship with the street.",
+    image: "/images/loading/13th.png",
   },
 ];
 
