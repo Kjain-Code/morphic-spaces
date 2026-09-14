@@ -16,13 +16,31 @@
  *      mid-clip forced the browser to decode up to ~190 frames forward from
  *      the last keyframe on every scrub. A keyframe every 0.5s (12 frames
  *      at 24fps) fixes that at the source:
- *        ffmpeg -i morphic-spaces-hero.mp4 -an -c:v libx264 -preset medium \
- *          -crf 18 -pix_fmt yuv420p -g 12 -keyint_min 12 -sc_threshold 0 \
- *          -movflags +faststart morphic-spaces-master.mp4
+ *        ffmpeg -i morphic-spaces-hero.mp4 -an -c:v libx264 -preset slow \
+ *          -crf 27 -maxrate 2500k -bufsize 5000k -pix_fmt yuv420p -g 12 \
+ *          -keyint_min 12 -sc_threshold 0 -movflags +faststart \
+ *          morphic-spaces-master.mp4
+ *
+ *      `-crf 18` originally shipped here produced an 84MB/56s file (~12
+ *      Mbps at 1280x720) that reliably stalled scroll-scrubbing on real
+ *      connections — confirmed on the deployed site: the video never got
+ *      past HAVE_NOTHING/duration=NaN because the browser couldn't keep
+ *      up buffering it, leaving the poster frame frozen for the entire
+ *      scroll journey no matter how far the user scrolled. `-crf 27
+ *      -maxrate 2500k` brings that to ~14MB (~2 Mbps) at visually
+ *      identical quality once the text/gradient overlays sit on top —
+ *      verified by extracting matching frames from both encodes.
+ *      Server-side range support and the faststart moov placement were
+ *      already correct; file size was the actual bottleneck. Re-verify
+ *      with the same frame-comparison + live-scroll test (see PR/commit
+ *      history) before shipping any future re-encode with a lower CRF.
  *
  * One video element, one `currentTime`, no clip-switching logic. If the
  * source footage is ever regenerated, redo both passes and swap the file at
- * MASTER_VIDEO_SRC — nothing else needs to change.
+ * MASTER_VIDEO_SRC — nothing else needs to change. See next.config.ts for
+ * the long-lived Cache-Control header applied to /videos/*; bump the
+ * filename (not just the bytes) if you ever swap this file, so caches
+ * already holding the old one don't keep serving it.
  */
 
 export const MASTER_VIDEO_SRC = "/videos/morphic-spaces-master.mp4";
