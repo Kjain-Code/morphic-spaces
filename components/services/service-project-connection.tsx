@@ -11,13 +11,13 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 /**
  * "Design Becomes Real Through Space" — bridges the services page back to
  * real, built work. Pulls three actual projects by id from the studio's own
- * project-data.ts (never invented): The Courtyard House, A Study in Green
- * and An Open Horizon, one representing each of the studio's core
+ * project-data.ts (never invented): 147-P Sector 26 Panchkula, A Panchkula
+ * Interior and 96/20 Gurugram, one representing each of the studio's core
  * disciplines. Same hover-expand-title language as ProjectsGallery's cards,
  * kept intentionally simpler (no filter state) since this is a bridge, not
  * the full gallery.
  */
-const FEATURED_IDS = ["the-courtyard-house", "a-study-in-green", "an-open-horizon"] as const;
+const FEATURED_IDS = ["147p-panchkula", "interior-at-panchkula", "96-20-gurugram"] as const;
 
 export function ServiceProjectConnection() {
   const featured = FEATURED_IDS.map((id) => PROJECTS.find((project) => project.id === id)).filter(

@@ -23,13 +23,22 @@ export const metadata: Metadata = createPageMetadata({
 // previous auto-drifting marquee (components/projects/project-orbit.tsx) is
 // retired from this page in favor of the film strip + grid; the file is
 // left in place, just unused, in case it's wanted elsewhere later.
+//
+// FeaturedProject renders its title as three stacked words/phrases
+// (project.title.split(" ")), built for a short, clean name like "The
+// Courtyard House". PROJECTS[0]'s title ("147-P, Sector 26 — Panchkula")
+// splits awkwardly across that layout ("147-P," / "Sector" / "26 —
+// Panchkula"), so this picks a project whose title actually reads cleanly
+// in that three-line treatment instead of using the first one by default.
+const featuredProject = PROJECTS.find((project) => project.id === "residence-at-mohali") ?? PROJECTS[0];
+
 export default function ProjectsPage() {
   return (
     <main className="bg-[var(--charcoal)]">
       <ProjectsHero />
       <ProjectFilmstrip projects={PROJECTS} />
       <ProjectsGallery projects={PROJECTS} />
-      <FeaturedProject project={PROJECTS[0]} />
+      <FeaturedProject project={featuredProject} />
       <OurPerspective />
       <ProjectsClosing />
       <Footer />

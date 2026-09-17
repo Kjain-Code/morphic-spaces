@@ -262,7 +262,7 @@ function InteriorPage({ service }: { service: Service }) {
               <Image src={service.heroImage} alt="Layered interior material and light" fill priority sizes="(min-width: 1024px) 42vw, 85vw" className="object-cover" />
             </motion.div>
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : 1, delay: reduced ? 0 : 0.7, ease: EASE }} className="absolute bottom-0 left-0 h-[42%] w-[48%] overflow-hidden border-8 border-[var(--graphite)] sm:w-[40%]">
-              <Image src="/images/loading/10th.png" alt="Interior detail and material composition" fill sizes="20rem" className="object-cover" />
+              <Image src="/images/projects/147p-panchkula-interior.jpg" alt="Interior detail and material composition" fill sizes="20rem" className="object-cover" />
             </motion.div>
             <div className="absolute right-0 top-1/2 hidden -translate-y-1/2 text-right text-[10px] uppercase leading-[2] tracking-[0.28em] text-[var(--taupe)] sm:block">Material<br />Light<br />Furniture<br />Detail</div>
           </div>
@@ -299,7 +299,7 @@ function LandscapePage({ service }: { service: Service }) {
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const imageY = useTransform(scrollYProgress, [0, 1], [0, 36]);
-  const projects = PROJECTS.filter((project) => ["an-open-horizon", "the-courtyard-house"].includes(project.id));
+  const projects = PROJECTS.filter((project) => ["residence-at-mohali", "residence-at-kaithal"].includes(project.id));
 
   return (
     <>
@@ -360,7 +360,7 @@ function FurniturePage({ service }: { service: Service }) {
               <Image src={service.heroImage} alt="Furniture and interior details" fill priority sizes="(min-width: 1024px) 42vw, 90vw" className="object-cover" />
             </motion.div>
             <motion.div initial={{ clipPath: "inset(0 100% 0 0)" }} animate={{ clipPath: "inset(0 0 0 0)" }} transition={{ duration: reduced ? 0 : 1.2, delay: reduced ? 0 : 0.5, ease: EASE }} className="absolute bottom-0 left-0 h-[48%] w-[52%] overflow-hidden border-8 border-[var(--graphite)]">
-              <Image src="/images/loading/7th.png" alt="Interior detail with crafted material" fill sizes="22rem" className="object-cover" />
+              <Image src="/images/projects/interior-panchkula.jpg" alt="Interior detail with crafted material" fill sizes="22rem" className="object-cover" />
             </motion.div>
             <div className="absolute bottom-8 right-0 text-right text-[10px] uppercase leading-[2] tracking-[0.28em] text-[var(--taupe)]">Object<br />Form<br />Material<br />Craft</div>
           </div>
@@ -374,7 +374,7 @@ function FurniturePage({ service }: { service: Service }) {
       </section>
 
       <section className="bg-[var(--stone-warm)] px-6 py-20 sm:px-10 sm:py-28">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-12"><Reveal className="relative order-2 aspect-[4/5] lg:order-1 lg:col-span-5"><Image src="/images/loading/10th.png" alt="Material, furniture and light in an interior" fill sizes="(min-width: 1024px) 42vw, 100vw" className="object-cover" /></Reveal><Reveal delay={0.14} className="order-1 lg:order-2 lg:col-span-5 lg:col-start-8"><Eyebrow>Craft in context</Eyebrow><h2 className={`${fraunces.className} mt-6 text-4xl font-light leading-[1.05] text-[var(--charcoal)] sm:text-6xl`}>The object completes the room.</h2><p className="mt-6 max-w-sm text-sm leading-relaxed text-[var(--charcoal-muted)]">A considered object does not compete with architecture. It gives the space somewhere to gather.</p></Reveal></div>
+        <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-12"><Reveal className="relative order-2 aspect-[4/5] lg:order-1 lg:col-span-5"><Image src="/images/projects/147p-panchkula-interior.jpg" alt="Material, furniture and light in an interior" fill sizes="(min-width: 1024px) 42vw, 100vw" className="object-cover" /></Reveal><Reveal delay={0.14} className="order-1 lg:order-2 lg:col-span-5 lg:col-start-8"><Eyebrow>Craft in context</Eyebrow><h2 className={`${fraunces.className} mt-6 text-4xl font-light leading-[1.05] text-[var(--charcoal)] sm:text-6xl`}>The object completes the room.</h2><p className="mt-6 max-w-sm text-sm leading-relaxed text-[var(--charcoal-muted)]">A considered object does not compete with architecture. It gives the space somewhere to gather.</p></Reveal></div>
       </section>
 
       <ProjectReferences projects={projects} label="Selected interiors" />

@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { LogoMark } from "@/components/ui/logo-mark";
 
+// "Recognition" is deliberately left out here: the page behind it
+// (app/recognition/page.tsx) is still an empty placeholder, so linking it
+// from the footer would send a visitor to a blank page. Add it back once
+// there's real recognition/press content to show.
 const FOOTER_LINKS = [
   { label: "Home", href: "/" },
   { label: "Projects", href: "/projects" },
   { label: "Services", href: "/services" },
-  { label: "Recognition", href: "/recognition" },
   { label: "About Us", href: "/about" },
   { label: "Contact Us", href: "/contact" },
 ];

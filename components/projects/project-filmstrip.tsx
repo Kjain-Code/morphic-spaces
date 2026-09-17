@@ -25,7 +25,9 @@ function ExploreIcon(props: { className?: string }) {
  * but rebuilt on next/image, this codebase's own EASE/color tokens, and a
  * slower power-out-style transition so it reads as considered rather than
  * snappy. The track is independently draggable; the page itself never takes
- * on the horizontal overflow.
+ * on the horizontal overflow. It also drifts on its own — a slow, reversing
+ * auto-scroll that pauses the moment a visitor hovers or drags — so the
+ * collection reveals itself without requiring a first interaction.
  */
 export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
   const [activeId, setActiveId] = useState<string | null>(projects[0]?.id ?? null);
@@ -33,6 +35,7 @@ export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
   const galleryRef = useRef<HTMLDivElement>(null);
   const dragState = useRef({ active: false, moved: false, startX: 0, startScrollLeft: 0 });
   const suppressClick = useRef(false);
+  const autoScrollState = useRef({ direction: 1 as 1 | -1, paused: false });
   const prefersReducedMotion = useIsReducedMotion();
   const activeIndex = Math.max(
     0,
@@ -65,6 +68,38 @@ export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
     gallery.addEventListener("scroll", updateActiveProject, { passive: true });
     return () => gallery.removeEventListener("scroll", updateActiveProject);
   }, [activeProject, projects]);
+
+  // A very slow, continuous drift across the strip — so the collection
+  // "shows itself" even before anyone touches it — pausing the instant a
+  // visitor hovers or drags, and reversing direction at either end rather
+  // than snapping back to the start. Skipped entirely for reduced motion.
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+    const gallery = galleryRef.current;
+    if (!gallery) return;
+
+    const SPEED = 0.35; // px per frame — gentle, not a marquee
+    let rafId = 0;
+
+    function step() {
+      const maxScroll = gallery!.scrollWidth - gallery!.clientWidth;
+      if (!autoScrollState.current.paused && !dragState.current.active && maxScroll > 0) {
+        let next = gallery!.scrollLeft + SPEED * autoScrollState.current.direction;
+        if (next >= maxScroll) {
+          next = maxScroll;
+          autoScrollState.current.direction = -1;
+        } else if (next <= 0) {
+          next = 0;
+          autoScrollState.current.direction = 1;
+        }
+        gallery!.scrollLeft = next;
+      }
+      rafId = requestAnimationFrame(step);
+    }
+
+    rafId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(rafId);
+  }, [prefersReducedMotion]);
 
   function handlePointerDown(event: ReactPointerEvent<HTMLDivElement>) {
     const gallery = galleryRef.current;
@@ -158,6 +193,8 @@ export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
             onPointerCancel={handlePointerUp}
+            onMouseEnter={() => { autoScrollState.current.paused = true; }}
+            onMouseLeave={() => { autoScrollState.current.paused = false; }}
             className={`flex snap-x snap-mandatory gap-1.5 overflow-x-auto px-6 pb-3 scrollbar-none sm:gap-2 sm:px-10 ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
             style={{ touchAction: "pan-y" }}
             aria-label="Selected projects. Drag horizontally to explore."

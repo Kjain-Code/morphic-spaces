@@ -1,16 +1,13 @@
 /**
- * Centralized project data for /projects. Every image below is a local
- * temporary visual (public/images/loading/*) standing in for real client
- * photography — swap the `image` paths (and copy) here once that arrives;
- * nothing in the components needs to change. Copy is deliberately generic
- * editorial placeholder, not factual claims (no invented clients, awards or
- * square footage). Locations are drawn from the same tricity footprint named
- * in components/about/studio-info.tsx; years fall within the studio's own
- * stated founding year (2022) through the present.
- *
- * The image set now includes residential, interiors and commercial work so
- * the Projects filters and service references can use the real visual
- * category rather than treating every image as residential.
+ * Centralized project data for /projects. Every entry below is one of the
+ * studio's own real, client-supplied projects (public/images/projects/*),
+ * replacing the earlier placeholder set that stood in for real photography
+ * (fictional titles like "Bajaj Hospital" or "Indus School", local loading
+ * images as stand-ins). Locations, categories and descriptions are drawn
+ * only from what the supplied photography and renders actually show — no
+ * invented clients, awards or square footage. A few projects are still
+ * under construction; those are presented through their design/visualization
+ * imagery rather than site-progress photos, without claiming completion.
  */
 export interface Project {
   id: string;
@@ -25,147 +22,158 @@ export interface Project {
 
 export const PROJECTS: Project[] = [
   {
-    id: "the-courtyard-house",
+    id: "147p-panchkula",
     number: "01",
     category: "Residential",
-    title: "The Courtyard House",
-    location: "Mohali",
+    title: "147-P, Sector 26 — Panchkula",
+    location: "Panchkula",
     year: "2024",
     description:
-      "A residence organized around a sequence of thresholds — gate, garden, veranda — each calibrated to slow the approach and frame the arrival.",
-    image: "/images/loading/1st.png",
+      "A three-storey Panchkula residence composed in charcoal stone and warm timber, its balconies stepping back in a quiet rhythm to soften the street-facing elevation.",
+    image: "/images/projects/147p-panchkula.jpg",
   },
   {
-    id: "a-study-in-green",
+    id: "147p-panchkula-interior",
     number: "02",
     category: "Interiors",
-    title: "A Study in Green",
-    location: "Chandigarh",
-    year: "2023",
+    title: "147-P Residence, Interior",
+    location: "Panchkula",
+    year: "2024",
     description:
-      "An interior built on restraint — one deep, considered green anchoring the room, warm textiles and low light doing the rest of the work.",
-    image: "/images/loading/10th.png",
+      "A double-height living room finished in walnut panelling and marble, its faceted timber ceiling drawing the eye up and toward the stair beyond.",
+    image: "/images/projects/147p-panchkula-interior.jpg",
   },
   {
-    id: "the-vertical-plot",
+    id: "interior-at-panchkula",
     number: "03",
-    category: "Residential",
-    title: "The Vertical Plot",
+    category: "Interiors",
+    title: "A Panchkula Interior",
     location: "Panchkula",
+    year: "2024",
+    description:
+      "A contemporary living space built around a sculpted staircase and dark timber panelling, its patterned rug and stone floor holding the room together.",
+    image: "/images/projects/interior-panchkula.jpg",
+  },
+  {
+    id: "residence-at-karnal",
+    number: "04",
+    category: "Residential",
+    title: "Residence at Karnal",
+    location: "Karnal",
     year: "2025",
     description:
-      "On a narrow urban plot the house turns upward — three floors stacked behind a perforated screen that filters light without giving up privacy.",
-    image: "/images/loading/3rd.png",
+      "A classical residence taking shape on a Karnal plot, its cream stone facade and arched loggias designed for a family home of quiet formality.",
+    image: "/images/projects/residence-karnal.jpg",
   },
   {
-    id: "the-reading-mezzanine",
-    number: "04",
-    category: "Interiors",
-    title: "The Reading Mezzanine",
-    location: "Chandigarh",
-    year: "2023",
-    description:
-      "A library landing suspended over the stair, timber joinery and layered light making a small footprint feel considered rather than compressed.",
-    image: "/images/loading/7th.png",
-  },
-  {
-    id: "an-open-horizon",
+    id: "residence-at-yamuna-nagar",
     number: "05",
     category: "Residential",
-    title: "An Open Horizon",
-    location: "Gurugram",
+    title: "Residence at Yamuna Nagar",
+    location: "Yamuna Nagar",
     year: "2024",
     description:
-      "Architecture conceived as a continuous relationship between enclosed space, landscape and sky — each terrace a further release toward the horizon.",
-    image: "/images/loading/9th.png",
+      "A compact three-storey home in Yamuna Nagar, its textured stone base and timber-clad upper volume built for a family that wanted warmth without excess.",
+    image: "/images/projects/residence-yamuna-nagar.jpg",
   },
   {
-    id: "a-quiet-expression",
+    id: "residence-at-kaithal",
     number: "06",
     category: "Residential",
-    title: "A Quiet Expression",
-    location: "Mohali",
-    year: "2022",
-    description:
-      "A restrained residential language built through proportion, texture, light and material continuity across three floors.",
-    image: "/images/loading/6th.png",
-  },
-  {
-    id: "material-in-balance",
-    number: "07",
-    category: "Interiors",
-    title: "Material in Balance",
-    location: "Panchkula",
-    year: "2024",
-    description:
-      "A dining space where timber, stone and soft textile hold equal weight — proportion and texture doing more than ornament ever could.",
-    image: "/images/loading/8th.png",
-  },
-  {
-    id: "the-radiant-edge",
-    number: "08",
-    category: "Residential",
-    title: "The Radiant Edge",
-    location: "Chandigarh",
+    title: "Residence at Kaithal",
+    location: "Kaithal",
     year: "2025",
     description:
-      "A rounded threshold traced in warm light, the facade softening at its one curved corner where the house turns to meet the street.",
-    image: "/images/loading/5th.png",
+      "A modern villa taking shape in Kaithal, organized around clean stone-and-timber volumes, deep overhangs and a planted forecourt.",
+    image: "/images/projects/residence-kaithal.jpg",
   },
   {
-    id: "indus-school",
+    id: "residence-at-mohali",
+    number: "07",
+    category: "Residential",
+    title: "Residence at Mohali",
+    location: "Mohali",
+    year: "2025",
+    description:
+      "A Mohali residence composed of stacked glass balconies and warm stone cladding, its planted forecourt framing a sculptural entrance.",
+    image: "/images/projects/residence-mohali.jpg",
+  },
+  {
+    id: "96-20-gurugram",
+    number: "08",
+    category: "Commercial",
+    title: "96/20, Gurugram",
+    location: "Gurugram",
+    year: "2025",
+    description:
+      "A commercial residential building in Gurugram, its brick and stone facade organized in a formal, symmetrical rhythm around a central entrance.",
+    image: "/images/projects/gurugram-commercial.jpg",
+  },
+  {
+    id: "kaushik-clinic-kaithal",
     number: "09",
     category: "Commercial",
-    title: "Indus School",
-    location: "Panipat",
+    title: "Kaushik Homeo Clinic, Kaithal",
+    location: "Kaithal",
     year: "2025",
     description:
-      "A civic learning environment shaped around clear circulation, daylight and a durable institutional presence.",
-    image: "/images/loading/2nd.png",
+      "A small healthcare and retail complex in Kaithal, bringing a clinic, pharmacy and café together around a shared courtyard and fountain.",
+    image: "/images/projects/kaushik-clinic-kaithal.jpg",
   },
   {
-    id: "bajaj-hospital",
+    id: "karnal-classical-concept",
     number: "10",
-    category: "Commercial",
-    title: "Bajaj Hospital",
-    location: "Panchkula",
+    category: "Residential",
+    title: "Classical Residence Concept, Karnal",
+    location: "Karnal",
     year: "2025",
     description:
-      "A healthcare facade composed for clarity, calm arrival and a welcoming presence at dusk.",
-    image: "/images/loading/4th.png",
+      "A design study for a Karnal client, composed around arched colonnades, wrought-iron balconies and a restrained cream stone palette.",
+    image: "/images/projects/karnal-classical-concept.jpg",
   },
   {
-    id: "the-wonder-room",
+    id: "karnal-modern-concept",
     number: "11",
-    category: "Interiors",
-    title: "The Wonder Room",
-    location: "Panchkula",
+    category: "Residential",
+    title: "Modern Residence Concept, Karnal",
+    location: "Karnal",
     year: "2025",
     description:
-      "A child’s room imagined as a small universe, balancing play, storage and a sense of discovery.",
-    image: "/images/loading/11th.jpeg",
+      "A contemporary Karnal residence concept balancing a textured stone volume against a warm timber lattice and a fully glazed entrance bay.",
+    image: "/images/projects/karnal-modern-concept.jpg",
   },
   {
-    id: "the-stairwell-house",
+    id: "karnal-contemporary-concept",
     number: "12",
-    category: "Interiors",
-    title: "The Stairwell House",
-    location: "Panchkula",
+    category: "Residential",
+    title: "Contemporary Residence Concept, Karnal",
+    location: "Karnal",
     year: "2025",
     description:
-      "A layered interior where stair, screen, timber and stone turn circulation into the central experience.",
-    image: "/images/loading/12th.jpeg",
+      "A design study for a Karnal client, its charcoal stone and warm timber volume framed by a full-height glowing light strip at dusk.",
+    image: "/images/projects/karnal-contemporary-concept.jpg",
   },
   {
-    id: "the-panchkula-residence",
+    id: "karnal-stone-concept",
     number: "13",
     category: "Residential",
-    title: "The Panchkula Residence",
-    location: "Panchkula",
+    title: "Stone Residence Concept, Karnal",
+    location: "Karnal",
     year: "2025",
     description:
-      "A compact residence shaped by warm timber, planted edges and a strong relationship with the street.",
-    image: "/images/loading/13th.png",
+      "A design study for a larger Karnal residence, its stone facade rising three storeys to a rooftop terrace screened in timber lattice.",
+    image: "/images/projects/karnal-stone-concept.jpg",
+  },
+  {
+    id: "karnal-commercial-concept",
+    number: "14",
+    category: "Commercial",
+    title: "Commercial Complex Concept, Karnal",
+    location: "Karnal",
+    year: "2025",
+    description:
+      "A design study for a mixed-use Karnal building, ground-floor retail shutters set beneath two storeys of residential balconies above.",
+    image: "/images/projects/karnal-commercial-concept.jpg",
   },
 ];
 

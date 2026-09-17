@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
+import { fraunces } from "@/lib/fonts";
 import { SERVICES } from "@/lib/services-data";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -69,7 +70,7 @@ export function ServicesOverview() {
           className="max-w-2xl"
         >
           <span className="block text-[11px] uppercase tracking-[0.3em] text-[var(--gold)]">What We Offer</span>
-          <h2 className="mt-6 font-serif text-3xl font-light uppercase leading-[1.1] text-[var(--ivory-90)] sm:text-5xl">
+          <h2 className={`${fraunces.className} mt-6 text-3xl font-light uppercase leading-[1.1] text-[var(--ivory-90)] sm:text-5xl`}>
             Four ways we shape space.
           </h2>
           <p className="mt-6 max-w-xl text-sm leading-relaxed text-[var(--ivory-55)] sm:text-base">

@@ -44,7 +44,7 @@ export const SERVICES: Service[] = [
     philosophyHeading: "Architecture as response.",
     philosophyBody:
       "We believe architecture begins with listening — to the site, the climate, the context and the people who will inhabit it. Every decision follows from that understanding, not from a fixed style imposed on it.",
-    heroImage: "/images/loading/3rd.png",
+    heroImage: "/images/projects/residence-mohali.jpg",
     overviewImage: "/images/services/service-render-2.png",
   },
   {
@@ -67,8 +67,8 @@ export const SERVICES: Service[] = [
     philosophyHeading: "Interiors as experience.",
     philosophyBody:
       "A room is more than its furniture. We shape interiors through proportion, material, light and texture, so a space feels considered the moment you enter it and only reveals more the longer you stay.",
-    heroImage: "/images/loading/8th.png",
-    overviewImage: "/images/loading/8th.png",
+    heroImage: "/images/projects/147p-panchkula-interior.jpg",
+    overviewImage: "/images/projects/interior-panchkula.jpg",
   },
   {
     slug: "landscape",
@@ -89,8 +89,8 @@ export const SERVICES: Service[] = [
     philosophyHeading: "Landscape as continuation.",
     philosophyBody:
       "A building doesn't end at its walls. We treat the ground around it — courtyards, planting, hardscape — as part of the same design conversation, so architecture and landscape read as one composition.",
-    heroImage: "/images/services/service-render-3.png",
-    overviewImage: "/images/services/service-render-3.png",
+    heroImage: "/images/services/landscaping.jpg",
+    overviewImage: "/images/services/landscaping-2.jpg",
   },
   {
     slug: "furniture-decor",
@@ -103,8 +103,8 @@ export const SERVICES: Service[] = [
     philosophyHeading: "Objects with intention.",
     philosophyBody:
       "Furniture and decor are the layer people touch every day. We choose and design pieces the same way we design a room — for proportion, material honesty and how they age, not for trend.",
-    heroImage: "/images/loading/10th.png",
-    overviewImage: "/images/loading/10th.png",
+    heroImage: "/images/projects/interior-panchkula.jpg",
+    overviewImage: "/images/projects/147p-panchkula-interior.jpg",
   },
 ];
 

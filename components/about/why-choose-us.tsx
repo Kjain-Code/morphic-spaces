@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
+import { fraunces } from "@/lib/fonts";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -74,7 +75,7 @@ export function WhyChooseUs() {
         >
           <span className="block text-[11px] uppercase tracking-[0.3em] text-[var(--taupe)]">Why Choose Us</span>
           <h2
-            className={`mt-6 max-w-sm text-3xl font-light leading-[1.2] tracking-tight text-[var(--charcoal)] sm:text-4xl`}
+            className={`${fraunces.className} mt-6 max-w-sm text-3xl font-light leading-[1.2] tracking-tight text-[var(--charcoal)] sm:text-4xl`}
           >
             More than just design.
             <br />

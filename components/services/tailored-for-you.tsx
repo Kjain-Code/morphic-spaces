@@ -28,8 +28,8 @@ export function TailoredForYou() {
           className="relative aspect-[4/5] w-full overflow-hidden rounded-xl lg:col-span-5"
         >
           <Image
-            src="/images/loading/7th.png"
-            alt="A Morphic Spaces interior, considered down to the last detail"
+            src="/images/projects/karnal-stone-concept.jpg"
+            alt="A Morphic Spaces residence concept in Karnal, considered down to the last detail"
             fill
             sizes="(min-width: 1024px) 40vw, 100vw"
             className="object-cover"

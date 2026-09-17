@@ -69,8 +69,8 @@ export function AboutClosing() {
             className="absolute inset-0"
           >
             <Image
-              src="/images/loading/6th.png"
-              alt="A Morphic Spaces residence"
+              src="/images/projects/residence-mohali.jpg"
+              alt="A Morphic Spaces residence in Mohali with glass balconies and stone cladding"
               fill
               sizes="(min-width: 1024px) 58vw, 100vw"
               className="object-cover"

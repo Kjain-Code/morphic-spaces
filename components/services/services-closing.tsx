@@ -28,8 +28,8 @@ export function ServicesClosing() {
           className="absolute inset-0"
         >
           <Image
-            src="/images/loading/6th.png"
-            alt="A Morphic Spaces residence at dusk"
+            src="/images/projects/residence-kaithal.jpg"
+            alt="A Morphic Spaces residence at Kaithal"
             fill
             sizes="100vw"
             className="object-cover"

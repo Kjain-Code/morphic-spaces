@@ -62,7 +62,7 @@ export function AboutHero() {
         className="absolute inset-x-0 bottom-0 top-[9%] w-full lg:left-[25%] lg:right-[4%] lg:top-[13%] lg:w-auto"
       >
         <Image
-          src="/images/loading/8th.png"
+          src="/images/projects/147p-panchkula-interior.jpg"
           alt="A Morphic Spaces interior with warm timber ceiling and staircase detail"
           fill
           sizes="(min-width: 1024px) 80vw, 100vw"

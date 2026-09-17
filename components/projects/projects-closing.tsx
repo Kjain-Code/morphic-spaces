@@ -30,8 +30,8 @@ export function ProjectsClosing() {
             className="absolute inset-0"
           >
             <Image
-              src="/images/loading/5th.png"
-              alt="A Morphic Spaces residence, architectural detail"
+              src="/images/projects/karnal-modern-concept.jpg"
+              alt="A modern residence concept in Karnal, architectural detail"
               fill
               sizes="(min-width: 1024px) 50vw, 100vw"
               className="object-cover"

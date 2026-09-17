@@ -29,9 +29,9 @@ export function ServicesApproach() {
           <h2
             className={`${fraunces.className} mt-6 max-w-md text-3xl font-light leading-[1.2] tracking-tight text-[var(--ivory-90)] sm:text-4xl`}
           >
-            More than just design.
+            One process,
             <br />
-            <em className="italic text-[var(--gold)]">It&rsquo;s a partnership.</em>
+            start to <em className="italic text-[var(--gold)]">finish.</em>
           </h2>
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-[var(--ivory-55)] sm:text-base">
             We listen, understand and collaborate at every stage to create spaces that feel authentic and

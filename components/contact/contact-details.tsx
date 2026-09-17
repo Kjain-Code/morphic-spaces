@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import type { SVGProps } from "react";
 import { GrainOverlay } from "@/components/about/grain-overlay";
+import { fraunces } from "@/lib/fonts";
 
 /** The contact form's WhatsApp submit link is built from this same constant. */
 export const WHATSAPP_NUMBER = "919053511417";
@@ -82,7 +83,7 @@ export function ContactDetails() {
           low-opacity and heavily washed so it reads as texture/mood, never
           competing with the text on top of it. */}
       <Image
-        src="/images/loading/7th.png"
+        src="/images/projects/residence-karnal.jpg"
         alt=""
         fill
         priority
@@ -117,7 +118,7 @@ export function ContactDetails() {
           Contact Us
           <span aria-hidden="true" className="h-px w-8 bg-[var(--gold-40)]" />
         </span>
-        <h1 className="mt-6 max-w-sm font-serif text-4xl font-light leading-[1.15] text-[var(--ivory-90)] sm:text-5xl">
+        <h1 className={`${fraunces.className} mt-6 max-w-sm text-4xl font-light leading-[1.15] text-[var(--ivory-90)] sm:text-5xl`}>
           Let&rsquo;s start a <em className="italic text-[var(--gold)]">conversation.</em>
         </h1>
         <p className="mt-6 max-w-sm text-sm leading-relaxed text-[var(--ivory-55)]">

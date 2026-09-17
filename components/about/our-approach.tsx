@@ -42,8 +42,8 @@ export function OurApproach() {
         <div className="relative min-h-[45vh] overflow-hidden lg:col-span-6 lg:min-h-[32rem]">
           <motion.div style={{ scale: imageScale }} className="absolute inset-0">
             <Image
-              src="/images/loading/7th.png"
-              alt="A Morphic Spaces interior, softly lit"
+              src="/images/projects/interior-panchkula.jpg"
+              alt="A Panchkula interior with sculpted staircase and dark timber panelling"
               fill
               sizes="(min-width: 1024px) 50vw, 100vw"
               className="object-cover"
