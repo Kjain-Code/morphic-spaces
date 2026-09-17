@@ -88,6 +88,37 @@ export function ProjectDetail({ project, previous, next }: ProjectDetailProps) {
         </motion.div>
       </section>
 
+      {project.gallery && project.gallery.length > 0 && (
+        <section className="border-t border-[var(--ivory-10)] bg-[var(--ivory)] px-6 pb-24 sm:px-10 sm:pb-32">
+          <div className="mx-auto max-w-6xl">
+            <div
+              className={`grid grid-cols-1 gap-4 sm:gap-6 ${
+                project.gallery.length >= 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"
+              }`}
+            >
+              {project.gallery.map((src, index) => (
+                <motion.div
+                  key={src}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-10% 0px" }}
+                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: index * 0.08 }}
+                  className="relative aspect-[4/3] overflow-hidden bg-[var(--charcoal)]"
+                >
+                  <Image
+                    src={src}
+                    alt={`${project.title} — additional view ${index + 1}`}
+                    fill
+                    sizes="(min-width: 640px) 33vw, 100vw"
+                    className="object-cover"
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       <section className="border-t border-[var(--ivory-10)] bg-[var(--charcoal)] px-6 sm:px-10">
         <div className="mx-auto grid max-w-7xl grid-cols-1 sm:grid-cols-2">
           <ProjectNavLink label="Previous" project={previous} className="sm:border-r sm:border-[var(--ivory-10)]" />
