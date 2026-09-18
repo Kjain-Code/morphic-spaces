@@ -253,6 +253,22 @@ export const PROJECTS: Project[] = [
     image: "/images/projects/residence-arora-panchkula.jpg",
     gallery: ["/images/projects/residence-arora-panchkula-gallery-1.jpg"],
   },
+  {
+    id: "panchkula-duplex-interior",
+    number: "19",
+    category: "Interiors",
+    title: "A Panchkula Duplex, Interior",
+    location: "Panchkula",
+    year: "2025",
+    description:
+      "A double-height Panchkula living space finished in walnut panelling and warm marble, its floating TV console and sculpted pendant lighting anchoring an open living and dining layout. A private lift and a marble-clad staircase rise together beside the seating area, with a skylight above the stairwell keeping the upper landing lit through the day. Framed artwork and a patterned area rug round out a layout built for daily living as much as entertaining.",
+    image: "/images/projects/panchkula-duplex-interior.jpg",
+    gallery: [
+      "/images/projects/panchkula-duplex-interior-gallery-1.jpg",
+      "/images/projects/panchkula-duplex-interior-gallery-2.jpg",
+      "/images/projects/panchkula-duplex-interior-gallery-3.jpg",
+    ],
+  },
 ];
 
 export const PROJECT_COUNT = PROJECTS.length;
