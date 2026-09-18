@@ -84,7 +84,7 @@ export function ProjectsHero() {
             initial={{ opacity: 0, x: -16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: prefersReducedMotion ? 0 : 0.7, ease: EASE }}
-            className="flex items-center gap-3 text-[10px] uppercase tracking-[0.35em] text-[var(--gold)]"
+            className="flex items-center gap-3 text-[13px] font-semibold uppercase tracking-[0.35em] text-[var(--gold)]"
           >
             <span>Selected Work</span><span className="h-px w-10 bg-[var(--gold-40)]" />
           </motion.p>

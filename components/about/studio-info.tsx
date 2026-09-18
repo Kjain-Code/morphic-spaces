@@ -65,7 +65,7 @@ export function StudioInfo() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="block text-[11px] uppercase tracking-[0.3em] text-[var(--taupe)]"
+          className="block text-[13px] font-semibold uppercase tracking-[0.3em] text-[var(--taupe)]"
         >
           Our Journey
         </motion.span>

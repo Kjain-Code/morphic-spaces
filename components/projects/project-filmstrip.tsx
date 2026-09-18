@@ -174,7 +174,7 @@ export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
       <div className="mx-auto max-w-7xl px-6 sm:px-10">
         <div className="flex flex-col gap-4 border-b border-[var(--charcoal-15)] pb-8 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
-            <p className="text-[10px] uppercase tracking-[0.3em] text-[var(--gold-dark)]">Selected Work</p>
+            <p className="text-[13px] font-semibold uppercase tracking-[0.3em] text-[var(--gold-dark)]">Selected Work</p>
             <p className="mt-3 max-w-md text-sm font-light leading-relaxed text-[var(--charcoal-70)] sm:text-base">
               Eighteen completed projects across architecture, interiors and commercial work — drag to move
               through the collection.

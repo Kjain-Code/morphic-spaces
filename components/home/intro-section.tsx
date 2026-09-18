@@ -16,7 +16,7 @@ export function IntroSection() {
         </p>
 
         <div className="sm:col-span-10 sm:col-start-1 lg:col-span-8">
-          <span className="block text-[11px] uppercase tracking-[0.3em] text-[var(--ink-muted)]">
+          <span className="block text-[13px] font-semibold uppercase tracking-[0.3em] text-[var(--ink-muted)]">
             Design Philosophy
           </span>
           <p className="mt-6 font-serif text-xl font-light leading-relaxed text-[var(--ink)] sm:text-2xl">

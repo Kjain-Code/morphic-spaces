@@ -67,7 +67,7 @@ export function ProjectsClosing() {
           transition={{ duration: prefersReducedMotion ? 0 : 0.8, ease: EASE }}
           className="flex flex-col justify-center px-6 py-20 sm:px-10 sm:py-28 lg:col-span-6 lg:py-32"
         >
-          <p className="text-[11px] uppercase tracking-[0.3em] text-[var(--ivory-45)]">The Work Continues</p>
+          <p className="text-[13px] font-semibold uppercase tracking-[0.3em] text-[var(--ivory-45)]">The Work Continues</p>
           <h2
             className={`${fraunces.className} mt-6 max-w-lg text-3xl font-light leading-[1.2] tracking-tight text-[var(--ivory-90)] sm:text-4xl lg:text-5xl`}
           >

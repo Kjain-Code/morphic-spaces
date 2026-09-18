@@ -49,7 +49,7 @@ export function ServicesHero() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: prefersReducedMotion ? 0 : 0.7, ease: EASE }}
-            className="flex items-center gap-3 text-[11px] uppercase tracking-[0.3em] text-[var(--gold)]"
+            className="flex items-center gap-3 text-[13px] font-semibold uppercase tracking-[0.3em] text-[var(--gold)]"
           >
             Our Services
             <span aria-hidden="true" className="h-px w-10 bg-[var(--gold-40)]" />

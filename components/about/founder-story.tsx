@@ -92,7 +92,7 @@ export function FounderStory() {
             viewport={{ once: true, margin: "-10% 0px" }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span className="block text-[11px] uppercase tracking-[0.3em] text-[var(--taupe)]">
+            <span className="block text-[13px] font-semibold uppercase tracking-[0.3em] text-[var(--taupe)]">
               Our Story
             </span>
             <h2

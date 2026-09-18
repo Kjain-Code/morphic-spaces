@@ -44,10 +44,10 @@ function ServiceTile({ service, index }: { service: (typeof SERVICES)[number]; i
             →
           </span>
         </div>
-        <h3 className="mt-3 text-lg font-light text-[var(--ivory-90)] transition-transform duration-300 group-hover:translate-x-1">
+        <h3 className="mt-3 text-xl font-semibold text-[var(--ivory-90)] transition-transform duration-300 group-hover:translate-x-1">
           {service.title}
         </h3>
-        <p className="mt-2 max-w-xs text-sm leading-relaxed text-[var(--ivory-45)]">{service.description}</p>
+        <p className="mt-3 max-w-xs text-sm leading-relaxed tracking-wide text-[var(--ivory-55)]">{service.description}</p>
         <span className="mt-4 inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-[var(--ivory-55)] transition-colors group-hover:text-[var(--gold)]">
           Explore
           <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
@@ -69,7 +69,7 @@ export function ServicesOverview() {
           transition={{ duration: 0.8, ease: EASE }}
           className="max-w-2xl"
         >
-          <span className="block text-[11px] uppercase tracking-[0.3em] text-[var(--gold)]">What We Offer</span>
+          <span className="block text-[13px] font-semibold uppercase tracking-[0.3em] text-[var(--gold)]">What We Offer</span>
           <h2 className={`${fraunces.className} mt-6 text-3xl font-light uppercase leading-[1.1] text-[var(--ivory-90)] sm:text-5xl`}>
             Every Idea, Given Form.
           </h2>

@@ -25,7 +25,7 @@ export function MorphicApproach() {
           transition={{ duration: 0.8, ease: EASE }}
           className="max-w-2xl"
         >
-          <span className="block text-[11px] uppercase tracking-[0.3em] text-[var(--gold-dark)]">
+          <span className="block text-[13px] font-semibold uppercase tracking-[0.3em] text-[var(--gold-dark)]">
             The Morphic Approach
           </span>
           <h2

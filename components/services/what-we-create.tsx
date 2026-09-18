@@ -25,7 +25,7 @@ export function WhatWeCreate() {
           transition={{ duration: 0.8, ease: EASE }}
           className="max-w-2xl"
         >
-          <span className="block text-[11px] uppercase tracking-[0.3em] text-[var(--gold)]">What We Create</span>
+          <span className="block text-[13px] font-semibold uppercase tracking-[0.3em] text-[var(--gold)]">What We Create</span>
           <h2 className={`${fraunces.className} mt-6 text-3xl font-light leading-[1.15] tracking-tight text-[var(--ivory-90)] sm:text-4xl lg:text-5xl`}>
             From An Idea To A Complete
             <br />

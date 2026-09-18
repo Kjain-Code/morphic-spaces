@@ -127,7 +127,7 @@ export function StudioPillars() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10% 0px" }}
           transition={{ duration: 0.7, ease: EASE }}
-          className="block text-[11px] uppercase tracking-[0.3em] text-[var(--taupe)]"
+          className="block text-[13px] font-semibold uppercase tracking-[0.3em] text-[var(--taupe)]"
         >
           What We Believe
         </motion.span>

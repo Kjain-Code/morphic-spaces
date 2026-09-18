@@ -49,7 +49,7 @@ export function AboutClosing() {
           transition={{ duration: prefersReducedMotion ? 0 : 0.8, ease: EASE }}
           className="flex flex-col justify-center px-6 py-20 sm:px-10 sm:py-28 lg:col-span-5 lg:py-32"
         >
-          <p className="text-[11px] uppercase tracking-[0.3em] text-[var(--gold)]">Let&rsquo;s begin</p>
+          <p className="text-[13px] font-semibold uppercase tracking-[0.3em] text-[var(--gold)]">Let&rsquo;s begin</p>
           <h2
             className={`${fraunces.className} mt-6 max-w-sm text-3xl font-light leading-[1.35] tracking-tight text-[var(--ivory-90)] sm:text-4xl`}
           >

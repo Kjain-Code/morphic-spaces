@@ -58,7 +58,7 @@ export function ServicesClosing() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-10% 0px" }}
             transition={{ duration: prefersReducedMotion ? 0 : 0.7, ease: EASE }}
-            className="text-[11px] uppercase tracking-[0.3em] text-[var(--gold)]"
+            className="text-[13px] font-semibold uppercase tracking-[0.3em] text-[var(--gold)]"
           >
             Beyond Function
           </motion.span>

@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, type ReactNode } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import type { ReactNode } from "react";
+import { motion } from "motion/react";
 import { fraunces } from "@/lib/fonts";
 import { useIsReducedMotion } from "@/lib/use-reduced-motion";
 import { PROJECTS, type Project } from "@/components/projects/project-data";
@@ -35,7 +35,7 @@ function Headline({ lines, className = "" }: { lines: ReactNode[]; className?: s
 function Eyebrow({ children, tone = "dark" }: { children: ReactNode; tone?: "dark" | "light" }) {
   return (
     <span
-      className={`flex items-center gap-3 text-[10px] uppercase tracking-[0.3em] ${
+      className={`flex items-center gap-3 text-[13px] font-semibold uppercase tracking-[0.3em] ${
         tone === "light" ? "text-[var(--charcoal)]" : "text-[var(--gold)]"
       }`}
     >
@@ -88,7 +88,7 @@ function HeroCopy({ service, statement, lines }: { service: Service; statement: 
       >
         <Eyebrow>{service.number} / 06 &nbsp; {service.title}</Eyebrow>
       </motion.div>
-      <Headline lines={lines} className="mt-8 max-w-3xl text-5xl text-[var(--ivory-90)] sm:text-7xl lg:text-8xl" />
+      <Headline lines={lines} className="mt-8 max-w-2xl text-4xl text-[var(--ivory-90)] sm:text-6xl lg:text-7xl" />
       <motion.p
         initial={{ opacity: 0, y: reduced ? 0 : 14 }}
         animate={{ opacity: 1, y: 0 }}
@@ -238,28 +238,23 @@ function SubServicesList({ service }: { service: Service }) {
 
 function ArchitecturePage({ service }: { service: Service }) {
   const reduced = useIsReducedMotion();
-  const heroRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const imageY = useTransform(scrollYProgress, [0, 1], [0, 60]);
   const projects = PROJECTS.filter((project) => project.category === "Residential" || project.category === "Commercial").filter(
     (project) => project.image !== service.heroImage && project.image !== service.overviewImage
   );
 
   return (
     <>
-      <section ref={heroRef} className="relative min-h-[92svh] overflow-hidden bg-[var(--charcoal)] px-6 pb-16 pt-32 sm:px-10 sm:pt-40 lg:px-0">
+      <section className="relative min-h-[92svh] overflow-hidden bg-[var(--charcoal)] px-6 pb-16 pt-32 sm:px-10 sm:pt-40">
         <div className="mx-auto grid min-h-[76svh] max-w-7xl items-center gap-12 lg:grid-cols-12 lg:gap-0">
-          <div className="relative z-10 lg:col-span-6 lg:pr-10"><HeroCopy service={service} statement="Architecture begins before a line is drawn. We study the site, the climate, the people and the way a space will be lived before defining its form." lines={[<span key="design">We Design The</span>, <span key="framework">Framework For</span>, <em key="living" className="text-[var(--gold)]">Living.</em>]} /></div>
-          <div className="relative min-h-[26rem] lg:col-span-6 lg:min-h-[70vh]">
-            <motion.div style={{ y: reduced ? 0 : imageY }} className="absolute inset-y-0 right-0 w-[88%] overflow-hidden sm:w-[80%]">
-              <motion.div initial={{ clipPath: "inset(0 100% 0 0)" }} animate={{ clipPath: "inset(0 0 0 0)" }} transition={{ duration: reduced ? 0 : 1.5, ease: EASE }} className="absolute inset-0">
-                <Image src={service.heroImage} alt="Architecture shaped around a residential facade" fill priority sizes="(min-width: 1024px) 44vw, 90vw" className="object-cover" />
-              </motion.div>
+          <div className="relative z-10 lg:col-span-5"><HeroCopy service={service} statement="Architecture begins before a line is drawn. We study the site, the climate, the people and the way a space will be lived before defining its form." lines={[<span key="design">We Design The</span>, <span key="framework">Framework For</span>, <em key="living" className="text-[var(--gold)]">Living.</em>]} /></div>
+          <div className="relative min-h-[28rem] lg:col-span-7 lg:min-h-[70vh]">
+            <motion.div initial={{ clipPath: "inset(0 0 100% 0)" }} animate={{ clipPath: "inset(0 0 0 0)" }} transition={{ duration: reduced ? 0 : 1.5, ease: EASE }} className="absolute right-0 top-0 h-[85%] w-[78%] overflow-hidden sm:w-[68%]">
+              <Image src={service.heroImage} alt="Architecture shaped around a residential facade" fill priority sizes="(min-width: 1024px) 42vw, 85vw" className="object-cover" />
             </motion.div>
-            <div className="absolute bottom-0 left-0 hidden w-48 border-l border-t border-[var(--gold-30)] pt-4 pl-4 text-[10px] uppercase leading-loose tracking-[0.22em] text-[var(--taupe)] sm:block">Site<br />Proportion<br />Light<br />Movement</div>
-            <motion.svg viewBox="0 0 500 650" aria-hidden="true" className="pointer-events-none absolute -right-12 -top-10 h-[110%] w-[110%] text-[var(--gold-30)]" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <motion.path d="M70 70h110M70 70v110M430 580H320M430 580V470M100 350h300" fill="none" stroke="currentColor" strokeWidth="0.7" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: reduced ? 0 : 1.8, delay: reduced ? 0 : 0.45, ease: EASE }} />
-            </motion.svg>
+            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : 1, delay: reduced ? 0 : 0.7, ease: EASE }} className="absolute bottom-0 left-0 h-[42%] w-[48%] overflow-hidden border-8 border-[var(--charcoal)] sm:w-[40%]">
+              <Image src={service.overviewImage} alt="Architectural material and site detail" fill sizes="20rem" className="object-cover" />
+            </motion.div>
+            <div className="absolute right-0 top-1/2 hidden -translate-y-1/2 text-right text-[10px] uppercase leading-[2] tracking-[0.28em] text-[var(--taupe)] sm:block">Site<br />Proportion<br />Light<br />Movement</div>
           </div>
         </div>
       </section>
@@ -359,27 +354,25 @@ function InteriorPage({ service }: { service: Service }) {
 
 function LandscapePage({ service }: { service: Service }) {
   const reduced = useIsReducedMotion();
-  const heroRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const imageY = useTransform(scrollYProgress, [0, 1], [0, 36]);
   const projects = PROJECTS.filter((project) => ["residence-at-mohali", "residence-at-kaithal"].includes(project.id)).filter(
     (project) => project.image !== service.heroImage && project.image !== service.overviewImage
   );
 
   return (
     <>
-      <section ref={heroRef} className="relative min-h-[92svh] overflow-hidden bg-[var(--charcoal)] px-6 pb-16 pt-32 sm:px-10 sm:pt-40 lg:px-0">
+      <section className="relative min-h-[92svh] overflow-hidden bg-[var(--charcoal)] px-6 pb-16 pt-32 sm:px-10 sm:pt-40">
         <div className="mx-auto grid min-h-[76svh] max-w-7xl items-center gap-12 lg:grid-cols-12 lg:gap-0">
-          <div className="relative z-10 lg:col-span-6 lg:pr-10">
+          <div className="relative z-10 lg:col-span-5">
             <HeroCopy service={service} statement="The garden is not an edge to the architecture. It is the slower room beyond it — shaped by planting, shade, weather and the way people move outside." lines={[<span key="where">Where</span>, <span key="architecture">Architecture</span>, <em key="land" className="text-[var(--gold)]">Meets The Land.</em>]} />
           </div>
-          <div className="relative min-h-[26rem] lg:col-span-6 lg:min-h-[70vh]">
-            <motion.div style={{ y: reduced ? 0 : imageY }} className="absolute inset-y-0 right-0 w-[88%] overflow-hidden sm:w-[80%]">
-              <motion.div initial={{ clipPath: "inset(0 100% 0 0)" }} animate={{ clipPath: "inset(0 0 0 0)" }} transition={{ duration: reduced ? 0 : 1.5, ease: EASE }} className="absolute inset-0">
-                <Image src={service.heroImage} alt="A landscaped garden extending around a Morphic Spaces residence" fill priority sizes="(min-width: 1024px) 44vw, 90vw" className="object-cover" />
-              </motion.div>
+          <div className="relative min-h-[28rem] lg:col-span-7 lg:min-h-[70vh]">
+            <motion.div initial={{ clipPath: "inset(0 0 100% 0)" }} animate={{ clipPath: "inset(0 0 0 0)" }} transition={{ duration: reduced ? 0 : 1.5, ease: EASE }} className="absolute right-0 top-0 h-[85%] w-[78%] overflow-hidden sm:w-[68%]">
+              <Image src={service.heroImage} alt="A landscaped garden extending around a Morphic Spaces residence" fill priority sizes="(min-width: 1024px) 42vw, 85vw" className="object-cover" />
             </motion.div>
-            <div className="absolute bottom-0 left-0 hidden w-48 border-l border-t border-[var(--gold-30)] pt-4 pl-4 text-[10px] uppercase leading-loose tracking-[0.22em] text-[var(--taupe)] sm:block">Built<br />Threshold<br />Garden<br />Landscape</div>
+            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : 1, delay: reduced ? 0 : 0.7, ease: EASE }} className="absolute bottom-0 left-0 h-[42%] w-[48%] overflow-hidden border-8 border-[var(--charcoal)] sm:w-[40%]">
+              <Image src={service.overviewImage} alt="A landscaped courtyard and planting detail" fill sizes="20rem" className="object-cover" />
+            </motion.div>
+            <div className="absolute right-0 top-1/2 hidden -translate-y-1/2 text-right text-[10px] uppercase leading-[2] tracking-[0.28em] text-[var(--taupe)] sm:block">Built<br />Threshold<br />Garden<br />Landscape</div>
           </div>
         </div>
       </section>
@@ -427,18 +420,21 @@ function VisualizationPage({ service }: { service: Service }) {
     <>
       <section className="relative min-h-[92svh] overflow-hidden bg-[var(--charcoal)] px-6 pb-16 pt-32 sm:px-10 sm:pt-40">
         <div className="mx-auto grid min-h-[76svh] max-w-7xl items-center gap-12 lg:grid-cols-12 lg:gap-0">
-          <div className="relative z-10 lg:col-span-6">
+          <div className="relative z-10 lg:col-span-5">
             <HeroCopy
               service={service}
               statement="A rendering is a conversation piece. It lets a client, a contractor and the studio agree on scale, material and light long before the first brick is laid."
               lines={[<span key="see">See It</span>, <span key="before">Before It&rsquo;s</span>, <em key="built" className="text-[var(--gold)]">Built.</em>]}
             />
           </div>
-          <div className="relative min-h-[26rem] lg:col-span-6 lg:min-h-[70vh]">
-            <motion.div initial={{ opacity: 0, scale: 1.06 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: reduced ? 0 : 1.5, ease: EASE }} className="absolute inset-y-0 right-0 w-[88%] overflow-hidden sm:w-[80%]">
-              <Image src={service.heroImage} alt="A photorealistic architectural visualization" fill priority sizes="(min-width: 1024px) 44vw, 90vw" className="object-cover" />
+          <div className="relative min-h-[28rem] lg:col-span-7 lg:min-h-[70vh]">
+            <motion.div initial={{ clipPath: "inset(0 0 100% 0)" }} animate={{ clipPath: "inset(0 0 0 0)" }} transition={{ duration: reduced ? 0 : 1.5, ease: EASE }} className="absolute right-0 top-0 h-[85%] w-[78%] overflow-hidden sm:w-[68%]">
+              <Image src={service.heroImage} alt="A photorealistic architectural visualization" fill priority sizes="(min-width: 1024px) 42vw, 85vw" className="object-cover" />
             </motion.div>
-            <div className="absolute bottom-0 left-0 hidden w-48 border-l border-t border-[var(--gold-30)] pt-4 pl-4 text-[10px] uppercase leading-loose tracking-[0.22em] text-[var(--taupe)] sm:block">Scale<br />Material<br />Light<br />Atmosphere</div>
+            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : 1, delay: reduced ? 0 : 0.7, ease: EASE }} className="absolute bottom-0 left-0 h-[42%] w-[48%] overflow-hidden border-8 border-[var(--charcoal)] sm:w-[40%]">
+              <Image src={service.overviewImage} alt="A photorealistic material and lighting study" fill sizes="20rem" className="object-cover" />
+            </motion.div>
+            <div className="absolute right-0 top-1/2 hidden -translate-y-1/2 text-right text-[10px] uppercase leading-[2] tracking-[0.28em] text-[var(--taupe)] sm:block">Scale<br />Material<br />Light<br />Atmosphere</div>
           </div>
         </div>
       </section>
@@ -515,16 +511,19 @@ function ConsultancyPage({ service }: { service: Service }) {
     <>
       <section className="relative min-h-[92svh] overflow-hidden bg-[var(--graphite)] px-6 pb-16 pt-32 sm:px-10 sm:pt-40">
         <div className="mx-auto grid min-h-[76svh] max-w-7xl items-center gap-12 lg:grid-cols-12 lg:gap-0">
-          <div className="relative z-10 lg:col-span-6">
+          <div className="relative z-10 lg:col-span-5">
             <HeroCopy
               service={service}
               statement="Not every project needs a studio full-time. Sometimes what a design needs most is a second, experienced opinion at exactly the right moment."
               lines={[<span key="expertise">Expertise,</span>, <span key="when">When</span>, <em key="need" className="text-[var(--gold)]">You Need It.</em>]}
             />
           </div>
-          <div className="relative min-h-[28rem] lg:col-span-6 lg:min-h-[70vh]">
+          <div className="relative min-h-[28rem] lg:col-span-7 lg:min-h-[70vh]">
             <motion.div initial={{ clipPath: "inset(0 0 100% 0)" }} animate={{ clipPath: "inset(0 0 0 0)" }} transition={{ duration: reduced ? 0 : 1.5, ease: EASE }} className="absolute right-0 top-0 h-[85%] w-[78%] overflow-hidden sm:w-[68%]">
               <Image src={service.heroImage} alt="A design concept under review" fill priority sizes="(min-width: 1024px) 42vw, 85vw" className="object-cover" />
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : 1, delay: reduced ? 0 : 0.7, ease: EASE }} className="absolute bottom-0 left-0 h-[42%] w-[48%] overflow-hidden border-8 border-[var(--graphite)] sm:w-[40%]">
+              <Image src={service.overviewImage} alt="A design concept ready for review" fill sizes="20rem" className="object-cover" />
             </motion.div>
             <div className="absolute right-0 top-1/2 hidden -translate-y-1/2 text-right text-[10px] uppercase leading-[2] tracking-[0.28em] text-[var(--taupe)] sm:block">Review<br />Direction<br />Detail<br />Decision</div>
           </div>
@@ -579,35 +578,30 @@ function ConsultancyPage({ service }: { service: Service }) {
 
 function RenovationPage({ service }: { service: Service }) {
   const reduced = useIsReducedMotion();
-  const heroRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const imageY = useTransform(scrollYProgress, [0, 1], [0, 40]);
   const projects = PROJECTS.filter((project) => ["147p-panchkula", "147p-panchkula-interior", "residence-at-karnal"].includes(project.id)).filter(
     (project) => project.image !== service.heroImage && project.image !== service.overviewImage
   );
 
   return (
     <>
-      <section ref={heroRef} className="relative min-h-[92svh] overflow-hidden bg-[var(--charcoal)] px-6 pb-16 pt-32 sm:px-10 sm:pt-40 lg:px-0">
+      <section className="relative min-h-[92svh] overflow-hidden bg-[var(--charcoal)] px-6 pb-16 pt-32 sm:px-10 sm:pt-40">
         <div className="mx-auto grid min-h-[76svh] max-w-7xl items-center gap-12 lg:grid-cols-12 lg:gap-0">
-          <div className="relative z-10 lg:col-span-6 lg:pr-10">
+          <div className="relative z-10 lg:col-span-5">
             <HeroCopy
               service={service}
               statement="An existing structure carries its own logic — its bones, its constraints, its history. We work with that logic to unlock what a space could become."
               lines={[<span key="reimagining">Reimagining</span>, <span key="what">What</span>, <em key="already" className="text-[var(--gold)]">Already Exists.</em>]}
             />
           </div>
-          <div className="relative min-h-[26rem] lg:col-span-6 lg:min-h-[70vh]">
-            <motion.div style={{ y: reduced ? 0 : imageY }} className="absolute inset-y-0 right-0 w-[88%] overflow-hidden sm:w-[80%]">
-              <motion.div initial={{ clipPath: "inset(0 100% 0 0)" }} animate={{ clipPath: "inset(0 0 0 0)" }} transition={{ duration: reduced ? 0 : 1.5, ease: EASE }} className="absolute inset-0">
-                <Image src={service.heroImage} alt="A residence mid-construction, before its transformation" fill priority sizes="(min-width: 1024px) 44vw, 90vw" className="object-cover grayscale-[0.2]" />
-              </motion.div>
+          <div className="relative min-h-[28rem] lg:col-span-7 lg:min-h-[70vh]">
+            <motion.div initial={{ clipPath: "inset(0 0 100% 0)" }} animate={{ clipPath: "inset(0 0 0 0)" }} transition={{ duration: reduced ? 0 : 1.5, ease: EASE }} className="absolute right-0 top-0 h-[85%] w-[78%] overflow-hidden sm:w-[68%]">
+              <Image src={service.heroImage} alt="A residence mid-construction, before its transformation" fill priority sizes="(min-width: 1024px) 42vw, 85vw" className="object-cover grayscale-[0.2]" />
             </motion.div>
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : 1, delay: reduced ? 0 : 0.7, ease: EASE }} className="absolute bottom-0 left-0 h-[42%] w-[48%] overflow-hidden border-8 border-[var(--charcoal)] sm:w-[40%]">
               <Image src={service.overviewImage} alt="The same residence, completed" fill sizes="20rem" className="object-cover" />
             </motion.div>
             <span className="absolute bottom-2 left-0 text-[9px] uppercase tracking-[0.2em] text-[var(--ivory-45)] sm:hidden">Before → After</span>
-            <div className="absolute top-0 left-0 hidden w-40 border-l border-t border-[var(--gold-30)] pt-4 pl-4 text-[10px] uppercase leading-loose tracking-[0.22em] text-[var(--taupe)] sm:block">Before<br />↓<br />After</div>
+            <div className="absolute right-0 top-1/2 hidden -translate-y-1/2 text-right text-[10px] uppercase leading-[2] tracking-[0.28em] text-[var(--taupe)] sm:block">Before<br />↓<br />After</div>
           </div>
         </div>
       </section>

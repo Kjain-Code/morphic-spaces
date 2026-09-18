@@ -28,7 +28,7 @@ export function Section({ id, eyebrow, children, className = "" }: SectionProps)
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         className="mx-auto max-w-6xl"
       >
-        <span className="block text-[11px] uppercase tracking-[0.3em] text-[var(--ink-muted)]">{eyebrow}</span>
+        <span className="block text-[13px] font-semibold uppercase tracking-[0.3em] text-[var(--ink-muted)]">{eyebrow}</span>
         <div className="mt-10">{children}</div>
       </motion.div>
     </section>

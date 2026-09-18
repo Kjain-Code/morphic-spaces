@@ -217,7 +217,7 @@ export function ContactForm() {
           >
             <motion.span
               variants={fieldItem}
-              className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.3em] text-[var(--gold-dark)]"
+              className="inline-flex items-center gap-3 text-[13px] font-semibold uppercase tracking-[0.3em] text-[var(--gold-dark)]"
             >
               Enquiry Form
               <span aria-hidden="true" className="h-px w-8 bg-[var(--gold-30)]" />

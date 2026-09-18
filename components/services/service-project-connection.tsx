@@ -35,7 +35,7 @@ export function ServiceProjectConnection() {
             transition={{ duration: 0.8, ease: EASE }}
             className="max-w-xl"
           >
-            <span className="block text-[11px] uppercase tracking-[0.3em] text-[var(--gold)]">
+            <span className="block text-[13px] font-semibold uppercase tracking-[0.3em] text-[var(--gold)]">
               From Idea To Reality
             </span>
             <h2

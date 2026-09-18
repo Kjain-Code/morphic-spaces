@@ -27,7 +27,7 @@ export function ServicesApproach() {
           transition={{ duration: 0.8, ease: EASE }}
           className="lg:col-span-5 lg:sticky lg:top-28 lg:self-start"
         >
-          <span className="block text-[11px] uppercase tracking-[0.3em] text-[var(--gold)]">Our Approach</span>
+          <span className="block text-[13px] font-semibold uppercase tracking-[0.3em] text-[var(--gold)]">Our Approach</span>
           <h2
             className={`${fraunces.className} mt-6 max-w-md text-3xl font-light leading-[1.2] tracking-tight text-[var(--ivory-90)] sm:text-4xl`}
           >

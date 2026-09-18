@@ -73,7 +73,7 @@ export function WhyChooseUs() {
           transition={{ duration: prefersReducedMotion ? 0 : 0.8, ease: EASE }}
           className="lg:col-span-5"
         >
-          <span className="block text-[11px] uppercase tracking-[0.3em] text-[var(--taupe)]">Why Choose Us</span>
+          <span className="block text-[13px] font-semibold uppercase tracking-[0.3em] text-[var(--taupe)]">Why Choose Us</span>
           <h2
             className={`${fraunces.className} mt-6 max-w-sm text-3xl font-light leading-[1.2] tracking-tight text-[var(--charcoal)] sm:text-4xl`}
           >

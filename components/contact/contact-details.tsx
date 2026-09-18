@@ -114,7 +114,7 @@ export function ContactDetails() {
         transition={{ duration: 0.8, ease: EASE }}
         className="relative"
       >
-        <span className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.3em] text-[var(--gold)]">
+        <span className="inline-flex items-center gap-3 text-[13px] font-semibold uppercase tracking-[0.3em] text-[var(--gold)]">
           Contact Us
           <span aria-hidden="true" className="h-px w-8 bg-[var(--gold-40)]" />
         </span>
