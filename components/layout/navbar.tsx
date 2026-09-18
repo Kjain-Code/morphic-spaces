@@ -18,7 +18,8 @@ const NAV_LINKS = [
 
 /**
  * Desktop-only mega-dropdown for "Services" — opens on hover/focus, lists
- * the four real services from lib/services-data.ts (never duplicated here)
+ * all real services from lib/services-data.ts (never duplicated here, so it
+ * always stays in sync with however many services SERVICES currently has)
  * with a small preview image that swaps to match whichever service is
  * hovered, plus a short "What We Do" blurb and a link to the full page.
  * Motion-only (opacity + height/clip + y), matching the brief's split of
@@ -49,7 +50,12 @@ function ServicesMegaMenu() {
   }, [isOpen]);
 
   return (
-    <div ref={menuRef} className="relative">
+    <div
+      ref={menuRef}
+      className="relative"
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+    >
       <motion.div initial="rest" animate={isOpen ? "hover" : "rest"} className="relative flex items-center gap-1.5">
         {/*
           The label itself is a real link to /services — clicking "Services"

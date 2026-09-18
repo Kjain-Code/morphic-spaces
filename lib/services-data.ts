@@ -203,26 +203,36 @@ export const PROCESS_STEPS = [
     number: "01",
     title: "Understand",
     description: "We begin by understanding the site, requirements, lifestyle, aspirations and opportunities associated with the project.",
+    image: "/images/services/approach/01-understand.jpg",
+    tag: "Site Study",
   },
   {
     number: "02",
-    title: "Explore",
+    title: "Conceptualize",
     description: "Ideas are developed through concepts, spatial studies, material palettes and visual references.",
+    image: "/images/services/approach/02-conceptualize.jpg",
+    tag: "Concept Ideas",
   },
   {
     number: "03",
     title: "Develop",
     description: "The selected direction is refined through detailed design, drawings, material specifications, lighting and technical coordination.",
+    image: "/images/services/approach/03-develop.jpg",
+    tag: "Planning & Details",
   },
   {
     number: "04",
     title: "Visualize",
     description: "3D visualizations communicate the design clearly and enable informed review before execution.",
+    image: "/images/services/approach/04-visualize.jpg",
+    tag: "3D Visualization",
   },
   {
     number: "05",
     title: "Deliver",
     description: "The design is translated into comprehensive documentation and coordinated information for execution.",
+    image: "/images/services/approach/05-deliver.jpg",
+    tag: "Under Construction → Final Result",
   },
 ] as const;
 
