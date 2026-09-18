@@ -41,9 +41,9 @@ export function ServiceProjectConnection() {
             <h2
               className={`${fraunces.className} mt-6 text-3xl font-light leading-[1.15] tracking-tight text-[var(--ivory-90)] sm:text-4xl lg:text-5xl`}
             >
-              Design becomes real
+              Design Becomes Real
               <br />
-              through <em className="italic text-[var(--gold)]">craft.</em>
+              Through <em className="italic text-[var(--gold)]">Craft.</em>
             </h2>
           </motion.div>
 

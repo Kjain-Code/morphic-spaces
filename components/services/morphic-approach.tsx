@@ -31,9 +31,9 @@ export function MorphicApproach() {
           <h2
             className={`${fraunces.className} mt-6 max-w-xl text-3xl font-light leading-[1.15] tracking-tight text-[var(--charcoal)] sm:text-4xl lg:text-5xl`}
           >
-            Four principles behind
+            Four Principles Behind
             <br />
-            everything we <em className="italic text-[var(--gold-dark)]">shape.</em>
+            Everything We <em className="italic text-[var(--gold-dark)]">Shape.</em>
           </h2>
         </motion.div>
 

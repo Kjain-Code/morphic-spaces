@@ -7,7 +7,7 @@ import { fraunces } from "@/lib/fonts";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const HEADLINE_LINES = ["We are not here to", "follow a language.", "We are here to create one."];
+const HEADLINE_LINES = ["We Are Not Here To", "Follow A Language.", "We Are Here To Create One."];
 
 /**
  * Masks and slides one headline line up into view. Animates on mount

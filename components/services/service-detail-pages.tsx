@@ -141,7 +141,7 @@ function FinalCTA() {
         <Reveal>
           <Eyebrow>Begin a conversation</Eyebrow>
           <h2 className={`${fraunces.className} mx-auto mt-7 max-w-3xl text-4xl font-light leading-[1.05] text-[var(--ivory-90)] sm:text-6xl`}>
-            Let&rsquo;s create something with intention.
+            Let&rsquo;s Create Something With Intention.
           </h2>
           <Link
             href="/contact"
@@ -368,14 +368,19 @@ function LandscapePage({ service }: { service: Service }) {
 
   return (
     <>
-      <section ref={heroRef} className="relative min-h-[94svh] overflow-hidden bg-[var(--charcoal)] px-6 pt-32 sm:px-10 sm:pt-40">
-        <motion.div style={{ y: reduced ? 0 : imageY }} className="absolute inset-x-0 bottom-0 h-[66%] overflow-hidden opacity-70 sm:h-[72%]">
-          <Image src={service.heroImage} alt="Landscape extending around a Morphic Spaces residence" fill priority sizes="100vw" className="object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--charcoal)] via-[var(--charcoal)]/25 to-transparent" />
-        </motion.div>
-        <div className="relative z-10 mx-auto flex min-h-[78svh] max-w-7xl flex-col justify-between pb-12">
-          <HeroCopy service={service} statement="The garden is not an edge to the architecture. It is the slower room beyond it — shaped by planting, shade, weather and the way people move outside." lines={[<span key="where">Where</span>, <span key="architecture">Architecture</span>, <em key="land" className="text-[var(--gold)]">Meets The Land.</em>]} />
-          <div className="grid grid-cols-2 gap-6 border-t border-[var(--gold-30)] pt-4 text-[10px] uppercase tracking-[0.22em] text-[var(--ivory-55)] sm:grid-cols-4"><span>Built</span><span>Threshold</span><span>Garden</span><span>Landscape</span></div>
+      <section ref={heroRef} className="relative min-h-[92svh] overflow-hidden bg-[var(--charcoal)] px-6 pb-16 pt-32 sm:px-10 sm:pt-40 lg:px-0">
+        <div className="mx-auto grid min-h-[76svh] max-w-7xl items-center gap-12 lg:grid-cols-12 lg:gap-0">
+          <div className="relative z-10 lg:col-span-6 lg:pr-10">
+            <HeroCopy service={service} statement="The garden is not an edge to the architecture. It is the slower room beyond it — shaped by planting, shade, weather and the way people move outside." lines={[<span key="where">Where</span>, <span key="architecture">Architecture</span>, <em key="land" className="text-[var(--gold)]">Meets The Land.</em>]} />
+          </div>
+          <div className="relative min-h-[26rem] lg:col-span-6 lg:min-h-[70vh]">
+            <motion.div style={{ y: reduced ? 0 : imageY }} className="absolute inset-y-0 right-0 w-[88%] overflow-hidden sm:w-[80%]">
+              <motion.div initial={{ clipPath: "inset(0 100% 0 0)" }} animate={{ clipPath: "inset(0 0 0 0)" }} transition={{ duration: reduced ? 0 : 1.5, ease: EASE }} className="absolute inset-0">
+                <Image src={service.heroImage} alt="A landscaped garden extending around a Morphic Spaces residence" fill priority sizes="(min-width: 1024px) 44vw, 90vw" className="object-cover" />
+              </motion.div>
+            </motion.div>
+            <div className="absolute bottom-0 left-0 hidden w-48 border-l border-t border-[var(--gold-30)] pt-4 pl-4 text-[10px] uppercase leading-loose tracking-[0.22em] text-[var(--taupe)] sm:block">Built<br />Threshold<br />Garden<br />Landscape</div>
+          </div>
         </div>
       </section>
 

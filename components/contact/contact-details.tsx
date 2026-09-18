@@ -119,7 +119,7 @@ export function ContactDetails() {
           <span aria-hidden="true" className="h-px w-8 bg-[var(--gold-40)]" />
         </span>
         <h1 className={`${fraunces.className} mt-6 max-w-sm text-4xl font-light leading-[1.15] text-[var(--ivory-90)] sm:text-5xl`}>
-          Let&rsquo;s start a <em className="italic text-[var(--gold)]">conversation.</em>
+          Let&rsquo;s Start A <em className="italic text-[var(--gold)]">Conversation.</em>
         </h1>
         <p className="mt-6 max-w-sm text-sm leading-relaxed text-[var(--ivory-55)]">
           Tell us about your space, your site and what you have in mind — we read every enquiry ourselves.

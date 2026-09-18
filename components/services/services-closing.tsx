@@ -69,7 +69,7 @@ export function ServicesClosing() {
             transition={{ duration: prefersReducedMotion ? 0 : 0.8, ease: EASE, delay: 0.1 }}
             className={`${fraunces.className} mt-6 max-w-2xl text-3xl font-light leading-[1.2] tracking-tight text-[var(--ivory-90)] sm:text-4xl lg:text-5xl`}
           >
-            Design that goes beyond <em className="italic text-[var(--gold)]">function.</em>
+            Design That Goes Beyond <em className="italic text-[var(--gold)]">Function.</em>
           </motion.h2>
 
           <motion.p

@@ -71,7 +71,7 @@ export function ProjectsClosing() {
           <h2
             className={`${fraunces.className} mt-6 max-w-lg text-3xl font-light leading-[1.2] tracking-tight text-[var(--ivory-90)] sm:text-4xl lg:text-5xl`}
           >
-            Design is not just built. It is <em className="italic text-[var(--gold)]">experienced.</em>
+            Design Is Not Just Built. It Is <em className="italic text-[var(--gold)]">Experienced.</em>
           </h2>
           <p className="mt-6 max-w-md text-sm leading-relaxed text-[var(--ivory-55)] sm:text-base">
             At Morphic Spaces, we approach every project as an opportunity to create environments that feel

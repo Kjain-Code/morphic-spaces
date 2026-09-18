@@ -98,7 +98,7 @@ export function FounderStory() {
             <h2
               className={`${fraunces.className} mt-6 max-w-xl text-3xl font-light leading-[1.2] tracking-tight text-[var(--charcoal)] sm:text-4xl`}
             >
-              It began with a different way of seeing things.
+              It Began With A Different Way Of Seeing Things.
             </h2>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-[var(--taupe)]">
               Founded by Kunal, the studio began with a simple question: what if design started with how people

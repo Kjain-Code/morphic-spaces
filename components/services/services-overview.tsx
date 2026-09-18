@@ -71,7 +71,7 @@ export function ServicesOverview() {
         >
           <span className="block text-[11px] uppercase tracking-[0.3em] text-[var(--gold)]">What We Offer</span>
           <h2 className={`${fraunces.className} mt-6 text-3xl font-light uppercase leading-[1.1] text-[var(--ivory-90)] sm:text-5xl`}>
-            Every idea, given form.
+            Every Idea, Given Form.
           </h2>
           <p className="mt-6 max-w-xl text-sm leading-relaxed text-[var(--ivory-55)] sm:text-base">
             Every project begins differently. Our role is to understand what the space needs — and bring

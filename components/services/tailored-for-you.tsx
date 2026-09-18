@@ -48,9 +48,9 @@ export function TailoredForYou() {
             <h2
               className={`${fraunces.className} mt-6 max-w-lg text-3xl font-light leading-[1.15] tracking-tight text-[var(--ivory-90)] sm:text-4xl lg:text-5xl`}
             >
-              Designed for every
+              Designed For Every
               <br />
-              way of <em className="italic text-[var(--gold)]">living.</em>
+              Way Of <em className="italic text-[var(--gold)]">Living.</em>
             </h2>
             <p className="mt-6 max-w-md text-sm leading-relaxed text-[var(--ivory-55)] sm:text-base">
               No two clients live the same way, so no two homes should look the same either. Whichever service

@@ -56,9 +56,9 @@ export function ServicesHero() {
           </motion.p>
 
           <h1 className={`${fraunces.className} mt-7 max-w-xl text-3xl font-light uppercase leading-[0.98] tracking-tight sm:text-6xl lg:text-7xl`}>
-            <HeadlineLine delay={0.12} prefersReducedMotion={prefersReducedMotion}>Designing with intent.</HeadlineLine>
+            <HeadlineLine delay={0.12} prefersReducedMotion={prefersReducedMotion}>Designing With Intent.</HeadlineLine>
             <HeadlineLine delay={0.26} prefersReducedMotion={prefersReducedMotion}>
-              <span className="text-[var(--gold)]">Shaping experiences.</span>
+              <span className="text-[var(--gold)]">Shaping Experiences.</span>
             </HeadlineLine>
           </h1>
 

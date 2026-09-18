@@ -27,9 +27,9 @@ export function WhatWeCreate() {
         >
           <span className="block text-[11px] uppercase tracking-[0.3em] text-[var(--gold)]">What We Create</span>
           <h2 className={`${fraunces.className} mt-6 text-3xl font-light leading-[1.15] tracking-tight text-[var(--ivory-90)] sm:text-4xl lg:text-5xl`}>
-            From an idea to a complete
+            From An Idea To A Complete
             <br />
-            spatial <em className="italic text-[var(--gold)]">experience.</em>
+            Spatial <em className="italic text-[var(--gold)]">Experience.</em>
           </h2>
         </motion.div>
 

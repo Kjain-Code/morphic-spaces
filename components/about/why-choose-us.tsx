@@ -77,9 +77,9 @@ export function WhyChooseUs() {
           <h2
             className={`${fraunces.className} mt-6 max-w-sm text-3xl font-light leading-[1.2] tracking-tight text-[var(--charcoal)] sm:text-4xl`}
           >
-            More than just design.
+            More Than Just Design.
             <br />
-            <em className="italic text-[var(--gold-dark)]">It&rsquo;s a partnership.</em>
+            <em className="italic text-[var(--gold-dark)]">It&rsquo;s A Partnership.</em>
           </h2>
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-[var(--taupe)] sm:text-base">
             We bring together creative vision, technical expertise and a deep understanding of human needs to
