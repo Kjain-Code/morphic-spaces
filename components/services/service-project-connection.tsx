@@ -9,7 +9,7 @@ import { PROJECTS } from "@/components/projects/project-data";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
- * "Design Becomes Real Through Space" — bridges the services page back to
+ * "Design Becomes Real Through Craft" — bridges the services page back to
  * real, built work. Pulls three actual projects by id from the studio's own
  * project-data.ts (never invented): 147-P Sector 26 Panchkula, A Panchkula
  * Interior and 96/20 Gurugram, one representing each of the studio's core
@@ -36,14 +36,14 @@ export function ServiceProjectConnection() {
             className="max-w-xl"
           >
             <span className="block text-[11px] uppercase tracking-[0.3em] text-[var(--gold)]">
-              From Idea To Space
+              From Idea To Reality
             </span>
             <h2
               className={`${fraunces.className} mt-6 text-3xl font-light leading-[1.15] tracking-tight text-[var(--ivory-90)] sm:text-4xl lg:text-5xl`}
             >
               Design becomes real
               <br />
-              through <em className="italic text-[var(--gold)]">space.</em>
+              through <em className="italic text-[var(--gold)]">craft.</em>
             </h2>
           </motion.div>
 

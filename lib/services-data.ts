@@ -1,11 +1,11 @@
 /**
- * Centralized data for /services and its four individual service pages
+ * Centralized data for /services and its six individual service pages
  * (/services/[slug]). Copy is generic-editorial, matching the register
  * already used in components/projects/project-data.ts — no invented
  * clients, awards or numbers. Featured work links back to the studio's
  * real projects (components/projects/project-data.ts) by category; a
- * service with no matching real projects yet (Landscape, Furniture &
- * Decor) simply shows fewer or none — never invented ones.
+ * service with no matching real projects yet simply shows fewer or none —
+ * never invented ones.
  */
 export interface Service {
   slug: string;
@@ -16,7 +16,7 @@ export interface Service {
   description: string;
   subServices: string[];
   /** Maps to Project["category"] in project-data.ts, for the Featured Work section. Undefined = no matching real projects yet. */
-  projectCategory?: "Residential" | "Interiors";
+  projectCategory?: "Residential" | "Interiors" | "Commercial";
   philosophyHeading: string;
   philosophyBody: string;
   heroImage: string;
@@ -27,64 +27,112 @@ export const SERVICES: Service[] = [
   {
     slug: "architecture",
     number: "01",
-    title: "Architecture",
+    title: "Architecture & Planning",
     shortTitle: "Architecture",
-    tagline: "We shape spaces with purpose.",
+    tagline: "Thoughtful architecture, shaped around people and place.",
     description:
-      "We design buildings that respond to their site, climate, context and the people who inhabit them.",
+      "We create architectural environments that balance functionality, context and visual identity. Every project begins with a thorough understanding of the site, brief and intended user experience.",
     subServices: [
-      "Concept & Planning",
       "Residential Architecture",
+      "Villas & Luxury Residences",
+      "Farmhouses",
+      "Commercial Architecture",
+      "Institutional Spaces",
       "Site Planning",
-      "Facade & Material Development",
+      "Master Planning",
+      "Concept Development",
+      "Building Planning",
+      "Municipal & Approval Drawings",
       "Working Drawings",
-      "Execution Coordination",
+      "Construction Documentation",
+      "Consultant Coordination",
     ],
     projectCategory: "Residential",
     philosophyHeading: "Architecture as response.",
     philosophyBody:
       "We believe architecture begins with listening — to the site, the climate, the context and the people who will inhabit it. Every decision follows from that understanding, not from a fixed style imposed on it.",
     heroImage: "/images/projects/residence-mohali.jpg",
-    overviewImage: "/images/services/service-render-2.png",
+    overviewImage: "/images/services/service-render-3.png",
   },
   {
     slug: "interior-design",
     number: "02",
-    title: "Interior Design",
+    title: "Interior Architecture & Design",
     shortTitle: "Interior Design",
-    tagline: "Spaces shaped by how you live.",
+    tagline: "Interiors that are considered down to the smallest detail.",
     description:
-      "Interiors built around material, light and the rhythm of everyday life — proportion and texture doing more than ornament ever could.",
+      "We design interiors as an extension of architecture, integrating spatial planning, proportions, materials, lighting and detailing to create cohesive and refined environments.",
     subServices: [
-      "Space Planning",
       "Residential Interiors",
-      "Material Selection",
+      "Luxury Homes & Villas",
+      "Farmhouse Interiors",
+      "Office & Workplace Interiors",
+      "Retail & Commercial Interiors",
+      "Hospitality Interiors",
+      "Space Planning",
+      "Furniture Layout & Design",
+      "Material & Finish Selection",
       "Lighting Design",
-      "Custom Detailing",
-      "Styling & Art Direction",
+      "False Ceiling & Flooring Design",
+      "Custom Furniture & Joinery",
+      "Detailed Interior Drawings",
+      "Styling & Design Development",
     ],
     projectCategory: "Interiors",
     philosophyHeading: "Interiors as experience.",
     philosophyBody:
       "A room is more than its furniture. We shape interiors through proportion, material, light and texture, so a space feels considered the moment you enter it and only reveals more the longer you stay.",
-    heroImage: "/images/projects/147p-panchkula-interior.jpg",
+    heroImage: "/images/projects/residence-banur-interior.jpg",
     overviewImage: "/images/projects/interior-panchkula.jpg",
   },
   {
-    slug: "landscape",
+    slug: "visualization",
     number: "03",
-    title: "Landscape",
-    shortTitle: "Landscape",
-    tagline: "Architecture, extended outward.",
+    title: "3D Visualization",
+    shortTitle: "Visualization",
+    tagline: "See the space before it exists.",
     description:
-      "Outdoor environments designed to extend the architecture and create a stronger relationship with nature.",
+      "We transform architectural and interior concepts into immersive visual experiences. Our visualizations communicate scale, materials, lighting, atmosphere and overall design intent with clarity before construction begins.",
     subServices: [
-      "Landscape Planning",
-      "Planting Strategy",
+      "Architectural 3D Visualization",
+      "Interior 3D Visualization",
+      "Exterior Renderings",
+      "Photorealistic 3D Renders",
+      "Product & Furniture Visualization",
+      "Material & Finish Visualization",
+      "Lighting Studies",
+      "3D Walkthroughs",
+      "Architectural Animation",
+      "Flythrough Videos",
+      "Virtual Staging",
+      "Concept Visualization",
+      "Design Presentation Renders",
+    ],
+    philosophyHeading: "Visualization as clarity.",
+    philosophyBody:
+      "Long before a wall goes up, a rendering lets everyone in the room see the same idea. We build every visualization on the same material and lighting decisions the finished space will actually carry, so what you approve is what gets built.",
+    heroImage: "/images/projects/karnal-modern-concept.jpg",
+    overviewImage: "/images/projects/karnal-stone-concept.jpg",
+  },
+  {
+    slug: "landscape",
+    number: "04",
+    title: "Landscape & Outdoor Design",
+    shortTitle: "Landscape",
+    tagline: "Extending the design beyond the built form.",
+    description:
+      "We create outdoor environments that complement the architecture and enhance the way people experience the site. From intimate courtyards to expansive landscapes, every element is considered as part of the overall spatial composition.",
+    subServices: [
+      "Landscape Design",
+      "Garden Design",
+      "Courtyard Design",
+      "Terrace & Rooftop Spaces",
+      "Outdoor Living Areas",
       "Hardscape Design",
-      "Courtyards & Gardens",
-      "Outdoor Living",
-      "Lighting",
+      "Softscape Planning",
+      "Plantation & Greenery Planning",
+      "Pathways & Outdoor Elements",
+      "Landscape Lighting Concepts",
     ],
     philosophyHeading: "Landscape as continuation.",
     philosophyBody:
@@ -93,18 +141,56 @@ export const SERVICES: Service[] = [
     overviewImage: "/images/services/landscaping-2.jpg",
   },
   {
-    slug: "furniture-decor",
-    number: "04",
-    title: "Furniture & Decor",
-    shortTitle: "Furniture & Decor",
-    tagline: "The final layer of a space.",
-    description: "Objects and details chosen to complete the character of a space, not simply fill it.",
-    subServices: ["Custom Furniture", "Loose Furniture", "Decor Curation", "Art & Objects", "Material Details", "Styling"],
-    philosophyHeading: "Objects with intention.",
+    slug: "design-consultancy",
+    number: "05",
+    title: "Design Consultancy",
+    shortTitle: "Consultancy",
+    tagline: "Focused design expertise when you need it.",
+    description:
+      "For clients with an ongoing project or a specific design requirement, our consultancy services provide focused expertise, informed recommendations and practical guidance at key stages of the process.",
+    subServices: [
+      "Design Consultation",
+      "Concept Review",
+      "Design Development",
+      "Space Planning Consultation",
+      "Material & Finish Consultation",
+      "Interior Design Consultation",
+      "Renovation & Transformation Consultation",
+      "Design Audits & Reviews",
+      "Design Direction",
+      "Project Design Advisory",
+    ],
+    philosophyHeading: "Guidance without taking over.",
     philosophyBody:
-      "Furniture and decor are the layer people touch every day. We choose and design pieces the same way we design a room — for proportion, material honesty and how they age, not for trend.",
-    heroImage: "/images/projects/interior-panchkula.jpg",
-    overviewImage: "/images/projects/147p-panchkula-interior.jpg",
+      "Not every project needs a studio full-time. Sometimes the most useful thing we can offer is a second opinion at the right moment — on a plan, a material choice or a stalled decision — held to the same rigor as our full projects.",
+    heroImage: "/images/projects/karnal-commercial-concept.jpg",
+    overviewImage: "/images/projects/karnal-corner-concept.jpg",
+  },
+  {
+    slug: "renovation",
+    number: "06",
+    title: "Renovation & Transformation",
+    shortTitle: "Renovation",
+    tagline: "Reimagining existing spaces.",
+    description:
+      "We work with existing structures to unlock their potential through thoughtful planning, architectural interventions and interior transformation. Our approach focuses on improving functionality while establishing a renewed and cohesive identity.",
+    subServices: [
+      "Residential Renovation",
+      "Interior Renovation",
+      "Commercial Renovation",
+      "Space Transformation",
+      "Façade Upgradation",
+      "Interior Refurbishment",
+      "Layout Replanning",
+      "Material & Finish Upgradation",
+      "Adaptive Reuse",
+      "Design & Documentation",
+    ],
+    philosophyHeading: "Respecting what's already there.",
+    philosophyBody:
+      "An existing structure carries its own logic — its bones, its constraints, its history. We work with that logic rather than against it, finding where a space can be opened up, reorganized or refreshed without erasing what already works.",
+    heroImage: "/images/services/renovation-before.jpg",
+    overviewImage: "/images/projects/147p-panchkula.jpg",
   },
 ];
 
@@ -113,10 +199,31 @@ export function getService(slug: string): Service | undefined {
 }
 
 export const PROCESS_STEPS = [
-  { number: "01", title: "Discover", description: "Understanding your vision, site and aspirations." },
-  { number: "02", title: "Design", description: "Creating thoughtful spatial and material solutions." },
-  { number: "03", title: "Develop", description: "Refining every decision with clarity and detail." },
-  { number: "04", title: "Deliver", description: "Bringing the vision into the real world." },
+  {
+    number: "01",
+    title: "Understand",
+    description: "We begin by understanding the site, requirements, lifestyle, aspirations and opportunities associated with the project.",
+  },
+  {
+    number: "02",
+    title: "Explore",
+    description: "Ideas are developed through concepts, spatial studies, material palettes and visual references.",
+  },
+  {
+    number: "03",
+    title: "Develop",
+    description: "The selected direction is refined through detailed design, drawings, material specifications, lighting and technical coordination.",
+  },
+  {
+    number: "04",
+    title: "Visualize",
+    description: "3D visualizations communicate the design clearly and enable informed review before execution.",
+  },
+  {
+    number: "05",
+    title: "Deliver",
+    description: "The design is translated into comprehensive documentation and coordinated information for execution.",
+  },
 ] as const;
 
 export const MORPHIC_APPROACH_POINTS = [
@@ -139,5 +246,40 @@ export const MORPHIC_APPROACH_POINTS = [
     number: "04",
     title: "Designing For Life",
     description: "A beautiful space must also work beautifully.",
+  },
+] as const;
+
+/** "What We Create" — the building types the studio designs across, shown on /services between the process and the studio's four principles. */
+export const WHAT_WE_CREATE = [
+  {
+    number: "01",
+    title: "Residential",
+    description: "Homes, villas, farmhouses and private residences designed around the people who inhabit them.",
+  },
+  {
+    number: "02",
+    title: "Commercial",
+    description:
+      "Workspaces, retail environments and commercial spaces designed to establish a strong identity and meaningful user experience.",
+  },
+  {
+    number: "03",
+    title: "Hospitality",
+    description: "Spaces that integrate atmosphere, functionality and a considered guest experience.",
+  },
+  {
+    number: "04",
+    title: "Institutional",
+    description: "Purpose-driven environments designed around usability, efficiency and human interaction.",
+  },
+  {
+    number: "05",
+    title: "Landscape",
+    description: "Outdoor environments that connect architecture with nature and extend the experience of the built space.",
+  },
+  {
+    number: "06",
+    title: "Visualization",
+    description: "High-quality architectural and interior visualizations that communicate design with clarity and impact.",
   },
 ] as const;

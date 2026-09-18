@@ -35,7 +35,7 @@ function HeadlineLine({ children, delay }: { children: ReactNode; delay: number 
  * imageless statement into a two-column split matching the client's
  * reference: the headline as a line-by-line reveal on the left, a real
  * project photograph on the right with the page's own editorial labels
- * ("Spaces / People / Stories", a "01/08" counter matching the studio's
+ * ("Built / People / Stories", a "01/08" counter matching the studio's
  * project count). Everything animates on mount, not on scroll — see
  * HeadlineLine's comment.
  */
@@ -93,7 +93,7 @@ export function ProjectsHero() {
 
         <div className="relative mt-10 max-w-4xl pb-12 pt-8 sm:mt-14 sm:pb-16 sm:pt-10 lg:mt-16 lg:pb-20 lg:pt-12">
           <h1 className={`${fraunces.className} text-[clamp(2.6rem,6.2vw,6.2rem)] font-light uppercase leading-[0.9] tracking-[-0.035em] text-[var(--ivory-90)]`}>
-            <HeadlineLine delay={0.1}>Spaces</HeadlineLine>
+            <HeadlineLine delay={0.1}>Built</HeadlineLine>
             <HeadlineLine delay={0.2}>With</HeadlineLine>
             <HeadlineLine delay={0.3}><span className="ml-[7%] text-[var(--gold)]">Character.</span></HeadlineLine>
           </h1>
@@ -103,7 +103,7 @@ export function ProjectsHero() {
             transition={{ duration: prefersReducedMotion ? 0 : 0.7, ease: EASE, delay: prefersReducedMotion ? 0 : 0.5 }}
             className="mt-8 max-w-sm text-sm leading-relaxed text-[var(--ivory-70)] sm:ml-[15%] sm:text-base"
           >
-            A curated selection of spaces shaped through architecture, interior design, materiality and detail.
+            A curated selection of work shaped through architecture, interior design, materiality and detail.
           </motion.p>
         </div>
 
@@ -120,7 +120,7 @@ export function ProjectsHero() {
           </motion.a>
           <div className="flex items-center gap-5 text-[10px] uppercase tracking-[0.28em] text-[var(--ivory-55)]">
             <span className="h-10 w-px bg-[var(--gold)]" />
-            <span>Spaces shaped<br />with intention.</span>
+            <span>Shaped<br />with intention.</span>
             <span className={`${fraunces.className} text-sm text-[var(--ivory-70)]`}>01<span className="text-[var(--ivory-45)]">/{countLabel}</span></span>
           </div>
         </div>

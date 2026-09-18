@@ -65,8 +65,26 @@ export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
       setActiveId((currentId) => (currentId === closestProject.id ? currentId : closestProject.id));
     };
 
-    gallery.addEventListener("scroll", updateActiveProject, { passive: true });
-    return () => gallery.removeEventListener("scroll", updateActiveProject);
+    // The strip fires 'scroll' continuously — every drag pointermove and
+    // every auto-drift animation frame both set scrollLeft directly, which
+    // can raise far more than one 'scroll' event per frame. Recomputing the
+    // closest tile (an 18-element querySelectorAll + getBoundingClientRect,
+    // which forces layout) on every single one of those was the source of
+    // the reported scroll/drag lag. Gate it behind requestAnimationFrame so
+    // it runs at most once per rendered frame no matter how many 'scroll'
+    // events land in between.
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        updateActiveProject();
+        ticking = false;
+      });
+    };
+
+    gallery.addEventListener("scroll", onScroll, { passive: true });
+    return () => gallery.removeEventListener("scroll", onScroll);
   }, [activeProject, projects]);
 
   // A very slow, continuous drift across the strip — so the collection
@@ -142,20 +160,24 @@ export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
       suppressClick.current = false;
       return;
     }
-    setActiveId(project.id);
+    // Tap-to-expand, not hover-to-expand: the first tap on a tile just
+    // widens it into preview (never navigates); tapping the tile again,
+    // now that it's already the active/expanded one, follows the link.
+    if (activeId !== project.id) {
+      event.preventDefault();
+      setActiveId(project.id);
+    }
   }
 
   return (
-    <section className="border-t border-[var(--charcoal-10)] bg-[var(--ivory)] py-16 sm:py-20" aria-labelledby="selected-work-heading">
+    <section className="border-t border-[var(--charcoal-10)] bg-[var(--ivory)] py-16 sm:py-20" aria-label="Selected work">
       <div className="mx-auto max-w-7xl px-6 sm:px-10">
         <div className="flex flex-col gap-4 border-b border-[var(--charcoal-15)] pb-8 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
             <p className="text-[10px] uppercase tracking-[0.3em] text-[var(--gold-dark)]">Selected Work</p>
-            <h2 id="selected-work-heading" className="mt-3 font-serif text-4xl font-light leading-[0.95] text-[var(--charcoal)] sm:text-6xl">
-              Spaces with character.
-            </h2>
-            <p className="mt-5 max-w-lg text-sm font-light leading-relaxed text-[var(--charcoal-70)] sm:text-base">
-              A selection of residences and interiors shaped through architecture, materiality and detail.
+            <p className="mt-3 max-w-md text-sm font-light leading-relaxed text-[var(--charcoal-70)] sm:text-base">
+              Eighteen completed projects across architecture, interiors and commercial work — drag to move
+              through the collection.
             </p>
           </div>
           <div className="flex items-center gap-4 self-start text-[10px] uppercase tracking-[0.2em] text-[var(--charcoal-70)] sm:self-end">
@@ -219,7 +241,6 @@ export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
                     y: { duration: prefersReducedMotion ? 0 : 0.5, delay: prefersReducedMotion ? 0 : index * 0.04, ease: EASE },
                     width: { duration: prefersReducedMotion ? 0 : 0.7, ease: EASE },
                   }}
-                  onMouseEnter={() => setActiveId(project.id)}
                   onFocus={() => setActiveId(project.id)}
                   onClick={(event) => handleTileClick(event, project)}
                   aria-label={`${project.title} — ${project.category}, ${project.location}, ${project.year}`}
@@ -248,6 +269,10 @@ export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
                         >
                           <p className="mt-2 font-serif text-xl font-light leading-tight text-[var(--ivory-90)] sm:text-2xl">{project.title}</p>
                           <p className="mt-2 text-[10px] uppercase tracking-[0.18em] text-[var(--ivory-55)]">{project.location} · {project.year}</p>
+                          <span className="mt-2 inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-[var(--gold)]">
+                            View Project
+                            <span aria-hidden="true">→</span>
+                          </span>
                         </motion.div>
                       )}
                     </AnimatePresence>

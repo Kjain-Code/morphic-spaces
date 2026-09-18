@@ -24,12 +24,12 @@ interface Mass {
 // all at once, each mass given its own arrival direction and timing window
 // within the section's total scroll range.
 const MASSES: Mass[] = [
-  { left: 8, top: 58, width: 26, height: 8, from: { x: -60 }, range: [0.32, 0.5], fill: "outline" },
-  { left: 10, top: 40, width: 18, height: 26, from: { y: 50 }, range: [0.38, 0.58], fill: "ivory" },
-  { left: 30, top: 30, width: 12, height: 36, from: { y: 70, rotate: -4 }, range: [0.46, 0.64], fill: "stone" },
-  { left: 44, top: 50, width: 30, height: 6, from: { x: 70 }, range: [0.5, 0.68], fill: "outline" },
-  { left: 46, top: 20, width: 16, height: 34, from: { y: -60, rotate: 3 }, range: [0.56, 0.74], fill: "ivory" },
-  { left: 64, top: 44, width: 20, height: 22, from: { x: 50, rotate: -3 }, range: [0.62, 0.8], fill: "stone" },
+  { left: 8, top: 58, width: 26, height: 8, from: { x: -60 }, range: [0.04, 0.16], fill: "outline" },
+  { left: 10, top: 40, width: 18, height: 26, from: { y: 50 }, range: [0.1, 0.22], fill: "ivory" },
+  { left: 30, top: 30, width: 12, height: 36, from: { y: 70, rotate: -4 }, range: [0.16, 0.28], fill: "stone" },
+  { left: 44, top: 50, width: 30, height: 6, from: { x: 70 }, range: [0.2, 0.32], fill: "outline" },
+  { left: 46, top: 20, width: 16, height: 34, from: { y: -60, rotate: 3 }, range: [0.26, 0.38], fill: "ivory" },
+  { left: 64, top: 44, width: 20, height: 22, from: { x: 50, rotate: -3 }, range: [0.32, 0.44], fill: "stone" },
 ];
 
 /**
@@ -60,9 +60,12 @@ export function ArchitecturalAssembly() {
 
   // Each ends with an explicit keyframe at progress 1 — see the comment in
   // MassBlock below for why a narrower final breakpoint isn't safe here.
-  const lineworkOpacity = useTransform(scrollYProgress, [0.08, 0.28, 1], [0, 1, 1]);
-  const captionOpacity = useTransform(scrollYProgress, [0.78, 0.9, 1], [0, 1, 1]);
-  const captionY = useTransform(scrollYProgress, [0.78, 0.9, 1], [12, 0, 0]);
+  // Ranges start almost immediately (rather than a third of the way into
+  // the pin) so the composition begins assembling as soon as the section
+  // is reached, instead of holding on a blank frame for several scrolls.
+  const lineworkOpacity = useTransform(scrollYProgress, [0, 0.1, 1], [0, 1, 1]);
+  const captionOpacity = useTransform(scrollYProgress, [0.5, 0.62, 1], [0, 1, 1]);
+  const captionY = useTransform(scrollYProgress, [0.5, 0.62, 1], [12, 0, 0]);
 
   if (prefersReducedMotion) {
     return (
@@ -79,7 +82,7 @@ export function ArchitecturalAssembly() {
   }
 
   return (
-    <section ref={wrapperRef} className="relative h-[240vh] w-full sm:h-[280vh]">
+    <section ref={wrapperRef} className="relative h-[150vh] w-full sm:h-[170vh]">
       <div className="sticky top-0 h-dvh w-full overflow-hidden bg-[var(--graphite)]">
         <LineworkGrid opacity={lineworkOpacity} />
 

@@ -8,7 +8,7 @@ import { fraunces } from "@/lib/fonts";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
- * "Spaces for every way of living." — a breathing mid-page moment between
+ * "Designed for every way of living." — a breathing mid-page moment between
  * the service grid and the studio's design principles: a real photograph on
  * the left, a short statement and a circular rotating pull-quote on the
  * right, echoing the same rotating-ring motif used on About/Projects
@@ -48,12 +48,12 @@ export function TailoredForYou() {
             <h2
               className={`${fraunces.className} mt-6 max-w-lg text-3xl font-light leading-[1.15] tracking-tight text-[var(--ivory-90)] sm:text-4xl lg:text-5xl`}
             >
-              Spaces for every
+              Designed for every
               <br />
               way of <em className="italic text-[var(--gold)]">living.</em>
             </h2>
             <p className="mt-6 max-w-md text-sm leading-relaxed text-[var(--ivory-55)] sm:text-base">
-              No two clients live the same way, so no two spaces should look the same either. Whichever service
+              No two clients live the same way, so no two homes should look the same either. Whichever service
               brings you to us, the process is shaped around how you actually live — not a template we repeat.
             </p>
 

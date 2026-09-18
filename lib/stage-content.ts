@@ -30,10 +30,10 @@ export const STAGE_CONTENT: StageContent[] = [
     end: 2 / 8,
     position: "bottom-left",
     label: "Morphic Spaces",
-    headlineLines: ["BEYOND SPACE.", "SHAPING EXPERIENCE."],
+    headlineLines: ["BEYOND FORM.", "SHAPING EXPERIENCE."],
     // Positioning
     supportingText:
-      "A premium spatial design studio focused on contemporary residential, commercial and hospitality spaces.",
+      "A premium spatial design studio focused on contemporary residential, commercial and hospitality projects.",
   },
   {
     // Studio introduction
@@ -41,9 +41,9 @@ export const STAGE_CONTENT: StageContent[] = [
     end: 4 / 8,
     position: "center-right",
     label: "Studio",
-    headlineLines: ["DESIGNING SPACES", "WITH INTENTION."],
+    headlineLines: ["DESIGNING PLACES", "WITH INTENTION."],
     supportingText:
-      "Morphic Spaces is a contemporary spatial design studio creating thoughtful environments for living, working and experiencing. We focus on functional planning, refined materiality and attention to detail to give every space its own character.",
+      "Morphic Spaces is a contemporary spatial design studio creating thoughtful environments for living, working and experiencing. We focus on functional planning, refined materiality and attention to detail to give every project its own character.",
   },
   {
     // Design philosophy / approach
@@ -51,9 +51,9 @@ export const STAGE_CONTENT: StageContent[] = [
     end: 6 / 8,
     position: "top-left",
     label: "Design Philosophy",
-    headlineLines: ["CONSIDERED.", "DISTINCTIVE. TIMELESS."],
+    headlineLines: ["CONSIDERED,", "DISTINCTIVE, TIMELESS."],
     supportingText:
-      "We believe good design begins with understanding the people, purpose and context of a space. Our approach combines functionality, proportion, materiality and detail to create spaces that feel considered, distinctive and timeless.",
+      "We believe good design begins with understanding the people, purpose and context of a place. Our approach combines functionality, proportion, materiality and detail to create work that feels considered, distinctive and timeless.",
   },
   {
     // Closing invitation — the journey's final beat and the homepage's only
@@ -62,8 +62,8 @@ export const STAGE_CONTENT: StageContent[] = [
     end: 1,
     position: "bottom-right",
     label: "Begin",
-    headlineLines: ["EVERY SPACE", "STARTS SOMEWHERE."],
+    headlineLines: ["EVERY VISION", "STARTS SOMEWHERE."],
     supportingText:
-      "Ours begin with a conversation — about your site, your life within it, and the space you want it to become.",
+      "Ours begin with a conversation — about your site, your life within it, and the place you want it to become.",
   },
 ];

@@ -27,7 +27,7 @@ const REASONS: Reason[] = [
   {
     number: "03",
     title: "Timeless Aesthetics",
-    caption: "Spaces that stay relevant, beautiful and meaningful for years to come.",
+    caption: "Design that stays relevant, beautiful and meaningful for years to come.",
   },
   {
     number: "04",
@@ -83,7 +83,7 @@ export function WhyChooseUs() {
           </h2>
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-[var(--taupe)] sm:text-base">
             We bring together creative vision, technical expertise and a deep understanding of human needs to
-            create spaces that are beautiful, functional and enduring.
+            create work that is beautiful, functional and enduring.
           </p>
 
           <div className="mt-8 flex items-center gap-6">

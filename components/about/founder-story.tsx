@@ -8,7 +8,7 @@ import { fraunces } from "@/lib/fonts";
 const FRAGMENTS = [
   "A quiet moment of light.",
   "The texture of a material.",
-  "The transition from one space to another.",
+  "The transition from one room to another.",
   "The relationship between form and function.",
 ];
 
@@ -98,16 +98,15 @@ export function FounderStory() {
             <h2
               className={`${fraunces.className} mt-6 max-w-xl text-3xl font-light leading-[1.2] tracking-tight text-[var(--charcoal)] sm:text-4xl`}
             >
-              It began with a different way of seeing space.
+              It began with a different way of seeing things.
             </h2>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-[var(--taupe)]">
-              Morphic Spaces was born from a simple belief — space is not merely something we occupy; it is
-              something we experience. Founded by Kunal, the studio emerged from a desire to look beyond
-              conventional ideas of design and explore the possibilities that exist between space, material, light
-              and human experience.
+              Founded by Kunal, the studio began with a simple question: what if design started with how people
+              actually live, not with a style imposed on them? That curiosity — about material, light and the
+              everyday choreography of a home — still shapes every project we take on.
             </p>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-[var(--taupe)]">
-              For Kunal, every project begins with curiosity. What gives a space its identity? What makes a place
+              For Kunal, every project begins with curiosity. What gives a home its identity? What makes a place
               feel connected to the people who inhabit it? And how can design create something that remains
               meaningful beyond the moment it is created? These questions continue to shape the foundation of
               Morphic Spaces.
@@ -139,7 +138,7 @@ export function FounderStory() {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
             className="mt-6 max-w-xl text-base leading-relaxed text-[var(--taupe)]"
           >
-            It is often these subtle elements that give a space its lasting character.
+            It is often these subtle elements that give a home its lasting character.
           </motion.p>
 
           <div className="mt-14 border-t border-[var(--charcoal-10)] pt-10">

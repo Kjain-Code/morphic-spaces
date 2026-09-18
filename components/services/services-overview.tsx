@@ -57,7 +57,7 @@ function ServiceTile({ service, index }: { service: (typeof SERVICES)[number]; i
   );
 }
 
-/** "Four Ways We Shape Space" — the studio's four services, one editorial grid. */
+/** "Every Idea, Given Form." — the studio's full range of services, one editorial grid. */
 export function ServicesOverview() {
   return (
     <section className="border-t border-[var(--ivory-10)] bg-[var(--charcoal)] px-6 py-20 sm:px-10 sm:py-28">
@@ -71,11 +71,11 @@ export function ServicesOverview() {
         >
           <span className="block text-[11px] uppercase tracking-[0.3em] text-[var(--gold)]">What We Offer</span>
           <h2 className={`${fraunces.className} mt-6 text-3xl font-light uppercase leading-[1.1] text-[var(--ivory-90)] sm:text-5xl`}>
-            Four ways we shape space.
+            Every idea, given form.
           </h2>
           <p className="mt-6 max-w-xl text-sm leading-relaxed text-[var(--ivory-55)] sm:text-base">
             Every project begins differently. Our role is to understand what the space needs — and bring
-            architecture, interiors, landscape and detail together with intention.
+            architecture, interiors, visualization, landscape and renovation together with intention.
           </p>
         </motion.div>
 

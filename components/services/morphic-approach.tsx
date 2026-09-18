@@ -33,7 +33,7 @@ export function MorphicApproach() {
           >
             Four principles behind
             <br />
-            every space we <em className="italic text-[var(--gold-dark)]">shape.</em>
+            everything we <em className="italic text-[var(--gold-dark)]">shape.</em>
           </h2>
         </motion.div>
 

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "motion/react";
 import { fraunces } from "@/lib/fonts";
 import { PROCESS_STEPS } from "@/lib/services-data";
@@ -34,10 +35,29 @@ export function ServicesApproach() {
             start to <em className="italic text-[var(--gold)]">finish.</em>
           </h2>
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-[var(--ivory-55)] sm:text-base">
-            We listen, understand and collaborate at every stage to create spaces that feel authentic and
+            We listen, understand and collaborate at every stage to create environments that feel authentic and
             enduring. Our process brings together creativity, functionality and precision — ensuring a seamless
             experience from the first conversation to completion.
           </p>
+
+          <div className="mt-10 flex items-center gap-6 border-t border-[var(--ivory-10)] pt-8">
+            <span className={`${fraunces.className} text-4xl font-light leading-none text-[var(--gold)]`}>05</span>
+            <span className="text-[11px] uppercase leading-relaxed tracking-[0.2em] text-[var(--ivory-45)]">
+              Stages,
+              <br />
+              start to finish.
+            </span>
+          </div>
+
+          <Link
+            href="/contact"
+            className="group mt-8 inline-flex w-fit items-center gap-4 text-[11px] uppercase tracking-[0.25em] text-[var(--ivory-70)] transition-colors hover:text-[var(--ivory-90)]"
+          >
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[var(--gold-40)] text-[var(--gold)] transition-transform duration-300 group-hover:translate-x-0.5">
+              →
+            </span>
+            Start A Conversation
+          </Link>
         </motion.div>
 
         <div className="relative flex flex-col lg:col-span-7">
@@ -58,19 +78,23 @@ export function ServicesApproach() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-10% 0px" }}
               transition={{ duration: 0.6, ease: EASE, delay: index * 0.12 }}
-              className="relative border-t border-[var(--ivory-10)] py-7 pl-0 first:border-t-0 sm:pl-8"
+              className="group relative border-t border-[var(--ivory-10)] py-8 pl-0 transition-colors first:border-t-0 sm:py-10 sm:pl-8"
             >
               <span
                 aria-hidden="true"
-                className="absolute left-0 top-9 hidden h-[5px] w-[5px] -translate-x-[calc(50%-0.5px)] rounded-full bg-[var(--gold)] sm:block"
+                className="absolute left-0 top-[2.6rem] hidden h-[5px] w-[5px] -translate-x-[calc(50%-0.5px)] rounded-full bg-[var(--gold)] transition-transform duration-300 group-hover:scale-150 sm:block"
               />
-              <div className="flex items-baseline gap-4">
-                <span className="text-sm text-[var(--gold)]">{step.number}</span>
-                <h3 className="text-lg font-medium uppercase tracking-[0.08em] text-[var(--ivory-90)]">
-                  {step.title}
-                </h3>
+              <div className="flex items-start gap-6 sm:gap-10">
+                <span className={`${fraunces.className} shrink-0 text-3xl font-light leading-none text-[var(--gold)] sm:text-4xl`}>
+                  {step.number}
+                </span>
+                <div className="min-w-0">
+                  <h3 className={`${fraunces.className} text-2xl font-light text-[var(--ivory-90)] sm:text-3xl`}>
+                    {step.title}
+                  </h3>
+                  <p className="mt-3 max-w-lg text-sm leading-relaxed text-[var(--ivory-55)] sm:text-base">{step.description}</p>
+                </div>
               </div>
-              <p className="mt-2 max-w-sm text-sm leading-relaxed text-[var(--ivory-55)]">{step.description}</p>
             </motion.div>
           ))}
         </div>

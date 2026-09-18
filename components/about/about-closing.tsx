@@ -51,9 +51,9 @@ export function AboutClosing() {
         >
           <p className="text-[11px] uppercase tracking-[0.3em] text-[var(--gold)]">Let&rsquo;s begin</p>
           <h2
-            className={`${fraunces.className} mt-6 max-w-sm text-3xl font-light leading-[1.2] tracking-tight text-[var(--ivory-90)] sm:text-4xl`}
+            className={`${fraunces.className} mt-6 max-w-sm text-3xl font-light leading-[1.35] tracking-tight text-[var(--ivory-90)] sm:text-4xl`}
           >
-            We design spaces that shape <em className="italic text-[var(--gold)]">better living.</em>
+            Good design shapes <em className="italic text-[var(--gold)]">better living.</em>
           </h2>
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-[var(--ivory-55)]">
             Every project becomes a new opportunity to experiment, refine and discover something unexpected.

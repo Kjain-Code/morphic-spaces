@@ -28,26 +28,60 @@ function ServicesMegaMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSlug, setActiveSlug] = useState(SERVICES[0].slug);
   const active = SERVICES.find((service) => service.slug === activeSlug) ?? SERVICES[0];
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsOpen(false);
+    };
+    const handlePointerDown = (event: PointerEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) setIsOpen(false);
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("pointerdown", handlePointerDown);
+    };
+  }, [isOpen]);
 
   return (
-    <div
-      className="relative"
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
-      onFocus={() => setIsOpen(true)}
-      onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget)) setIsOpen(false);
-      }}
-    >
-      <motion.div initial="rest" animate={isOpen ? "hover" : "rest"} className="relative">
+    <div ref={menuRef} className="relative">
+      <motion.div initial="rest" animate={isOpen ? "hover" : "rest"} className="relative flex items-center gap-1.5">
+        {/*
+          The label itself is a real link to /services — clicking "Services"
+          navigates like every other nav item. The chevron is a separate hit
+          target that only toggles the preview dropdown, so tapping/clicking
+          to preview the sub-services no longer blocks getting to the
+          Services page itself.
+        */}
         <Link
           href="/services"
-          aria-haspopup="true"
-          aria-expanded={isOpen}
-          className="inline-block text-[11px] uppercase tracking-[0.25em] text-white/70 transition-colors duration-300 hover:text-white"
+          className="inline-block text-[11px] uppercase tracking-[0.25em] text-white/90 transition-colors duration-300 hover:text-white"
         >
           Services
         </Link>
+        <button
+          type="button"
+          aria-haspopup="true"
+          aria-expanded={isOpen}
+          aria-label={isOpen ? "Close services preview" : "Preview services"}
+          onClick={() => setIsOpen((open) => !open)}
+          className="flex h-4 w-4 items-center justify-center text-white/70 transition-colors duration-300 hover:text-white"
+        >
+          <motion.svg
+            viewBox="0 0 12 8"
+            fill="none"
+            className="h-2.5 w-2.5"
+            animate={{ rotate: isOpen ? 180 : 0 }}
+            transition={{ duration: 0.3, ease: EASE }}
+          >
+            <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+          </motion.svg>
+        </button>
         <motion.span
           aria-hidden="true"
           variants={{ rest: { scaleX: 0 }, hover: { scaleX: 1 } }}
@@ -223,18 +257,18 @@ export function Navbar() {
     <header ref={menuRef} className="fixed inset-x-0 top-0 z-50">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-black/45 via-black/10 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-black/60 via-black/25 to-transparent backdrop-blur-[3px] [mask-image:linear-gradient(to_bottom,black_0%,black_55%,transparent_100%)]"
       />
       <div className="relative mx-auto flex h-20 max-w-7xl items-center justify-between px-6 sm:h-22 sm:px-10">
         <Link href="/" aria-label="Morphic Spaces — Home" className="relative z-10">
-          <LogoMark className="h-8 w-auto sm:h-9" />
+          <LogoMark className="h-11 w-auto sm:h-14" />
         </Link>
 
         <nav className="hidden md:flex md:items-center md:gap-10">
           <motion.div key="/" initial="rest" whileHover="hover" animate="rest" className="relative">
             <Link
               href="/"
-              className="inline-block text-[11px] uppercase tracking-[0.25em] text-white/70 transition-colors duration-300 hover:text-white"
+              className="inline-block text-[11px] uppercase tracking-[0.25em] text-white/90 transition-colors duration-300 hover:text-white"
             >
               Home
             </Link>
@@ -252,7 +286,7 @@ export function Navbar() {
           <motion.div key="/projects" initial="rest" whileHover="hover" animate="rest" className="relative">
             <Link
               href="/projects"
-              className="inline-block text-[11px] uppercase tracking-[0.25em] text-white/70 transition-colors duration-300 hover:text-white"
+              className="inline-block text-[11px] uppercase tracking-[0.25em] text-white/90 transition-colors duration-300 hover:text-white"
             >
               Projects
             </Link>
@@ -269,7 +303,7 @@ export function Navbar() {
             <motion.div key={link.href} initial="rest" whileHover="hover" animate="rest" className="relative">
               <Link
                 href={link.href}
-                className="inline-block text-[11px] uppercase tracking-[0.25em] text-white/70 transition-colors duration-300 hover:text-white"
+                className="inline-block text-[11px] uppercase tracking-[0.25em] text-white/90 transition-colors duration-300 hover:text-white"
               >
                 {link.label}
               </Link>

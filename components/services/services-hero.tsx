@@ -17,7 +17,7 @@ function HeadlineLine({ children, delay, prefersReducedMotion }: { children: Rea
         initial={{ y: "110%" }}
         animate={{ y: "0%" }}
         transition={{ duration: prefersReducedMotion ? 0 : 0.9, ease: EASE, delay: prefersReducedMotion ? 0 : delay }}
-        className="block whitespace-nowrap"
+        className="block"
       >
         {children}
       </motion.span>
@@ -51,15 +51,14 @@ export function ServicesHero() {
             transition={{ duration: prefersReducedMotion ? 0 : 0.7, ease: EASE }}
             className="flex items-center gap-3 text-[11px] uppercase tracking-[0.3em] text-[var(--gold)]"
           >
-            What We Do
+            Our Services
             <span aria-hidden="true" className="h-px w-10 bg-[var(--gold-40)]" />
           </motion.p>
 
           <h1 className={`${fraunces.className} mt-7 max-w-xl text-3xl font-light uppercase leading-[0.98] tracking-tight sm:text-6xl lg:text-7xl`}>
-            <HeadlineLine delay={0.12} prefersReducedMotion={prefersReducedMotion}>We shape</HeadlineLine>
-            <HeadlineLine delay={0.22} prefersReducedMotion={prefersReducedMotion}>How spaces</HeadlineLine>
-            <HeadlineLine delay={0.38} prefersReducedMotion={prefersReducedMotion}>
-              <span className="text-[var(--gold)]">Are experienced.</span>
+            <HeadlineLine delay={0.12} prefersReducedMotion={prefersReducedMotion}>Designing with intent.</HeadlineLine>
+            <HeadlineLine delay={0.26} prefersReducedMotion={prefersReducedMotion}>
+              <span className="text-[var(--gold)]">Shaping experiences.</span>
             </HeadlineLine>
           </h1>
 
@@ -69,8 +68,9 @@ export function ServicesHero() {
             transition={{ duration: prefersReducedMotion ? 0 : 0.7, ease: EASE, delay: prefersReducedMotion ? 0 : 0.4 }}
             className="mt-8 max-w-sm text-sm leading-relaxed text-[var(--ivory-55)] sm:text-base"
           >
-            From architecture to interiors, we bring together design, materiality and detail to create spaces that feel
-            considered, personal and enduring.
+            At Morphic Spaces, we approach every project as an opportunity to create something distinctive, purposeful
+            and timeless. From architecture and interiors to visualization and landscape, we integrate design
+            thinking, functionality and material expression to create work that is both refined and enduring.
           </motion.p>
 
           <motion.div
@@ -154,7 +154,7 @@ export function ServicesHero() {
             />
           </motion.svg>
 
-          <span className="absolute bottom-0 right-0 text-[10px] uppercase tracking-[0.3em] text-[var(--ivory-45)]">01 / 04</span>
+          <span className="absolute bottom-0 right-0 text-[10px] uppercase tracking-[0.3em] text-[var(--ivory-45)]">01 / 06</span>
         </div>
       </div>
     </section>

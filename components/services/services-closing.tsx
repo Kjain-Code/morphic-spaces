@@ -60,7 +60,7 @@ export function ServicesClosing() {
             transition={{ duration: prefersReducedMotion ? 0 : 0.7, ease: EASE }}
             className="text-[11px] uppercase tracking-[0.3em] text-[var(--gold)]"
           >
-            Let&rsquo;s Begin
+            Beyond Function
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -69,15 +69,27 @@ export function ServicesClosing() {
             transition={{ duration: prefersReducedMotion ? 0 : 0.8, ease: EASE, delay: 0.1 }}
             className={`${fraunces.className} mt-6 max-w-2xl text-3xl font-light leading-[1.2] tracking-tight text-[var(--ivory-90)] sm:text-4xl lg:text-5xl`}
           >
-            Ready to begin? Let&rsquo;s create a space that feels like{" "}
-            <em className="italic text-[var(--gold)]">you.</em>
+            Design that goes beyond <em className="italic text-[var(--gold)]">function.</em>
           </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-10% 0px" }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.7, ease: EASE, delay: 0.18 }}
+            className="mt-7 max-w-xl text-sm leading-relaxed text-[var(--ivory-70)] sm:text-base"
+          >
+            At Morphic Spaces, we believe great design is not simply about creating beautiful spaces. It is about
+            understanding how a space will be lived, experienced and remembered. We bring architecture, interiors,
+            materials, light and visualization together to create environments that are purposeful, expressive and
+            uniquely yours.
+          </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-10% 0px" }}
-            transition={{ duration: prefersReducedMotion ? 0 : 0.7, ease: EASE, delay: 0.25 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.7, ease: EASE, delay: 0.32 }}
           >
             <Link
               href="/contact"

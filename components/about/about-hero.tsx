@@ -23,7 +23,7 @@ const HEADLINE_LINES = ["We are not here to", "follow a language.", "We are here
 function HeadlineLine({ children, delay }: { children: ReactNode; delay: number }) {
   const prefersReducedMotion = useReducedMotion();
   return (
-    <span className="block overflow-hidden">
+    <span className="block overflow-hidden pb-[0.06em]">
       <motion.span
         initial={{ y: "110%" }}
         animate={{ y: "0%" }}
@@ -84,11 +84,11 @@ export function AboutHero() {
 
       <div className="relative z-10 mx-auto flex min-h-[min(900px,100svh)] max-w-7xl flex-col px-6 pb-8 pt-28 sm:px-10 sm:pb-10 lg:px-16 lg:pt-36">
         <div className="flex items-start justify-end">
-          <span className="hidden text-right text-[10px] uppercase tracking-[0.3em] text-[var(--ivory-55)] sm:block">Spaces<br />People<br />Stories</span>
+          <span className="hidden text-right text-[10px] uppercase tracking-[0.3em] text-[var(--ivory-55)] sm:block">Built<br />People<br />Stories</span>
         </div>
 
         <div className="relative mt-auto max-w-4xl pb-16 pt-20 sm:pb-20 sm:pt-24 lg:pb-24 lg:pt-28">
-          <h1 className={`${fraunces.className} text-[clamp(2.7rem,5.6vw,5.8rem)] font-light leading-[0.94] tracking-[-0.035em] text-[var(--ivory-90)]`}>
+          <h1 className={`${fraunces.className} text-[clamp(2.7rem,5.6vw,5.8rem)] font-light leading-[1.08] tracking-[-0.035em] text-[var(--ivory-90)]`}>
             <HeadlineLine delay={0.1}>{HEADLINE_LINES[0]}</HeadlineLine>
             <HeadlineLine delay={0.2}>{HEADLINE_LINES[1]}</HeadlineLine>
             <HeadlineLine delay={0.3}><span className="ml-[6%] italic text-[var(--gold)]">{HEADLINE_LINES[2]}</span></HeadlineLine>
@@ -116,7 +116,7 @@ export function AboutHero() {
           </motion.a>
           <div className="flex items-center gap-5 text-[10px] uppercase tracking-[0.28em] text-[var(--ivory-55)]">
             <span className="h-10 w-px bg-[var(--gold)]" />
-            <span>Designing<br />spaces that feel human.</span>
+            <span>Designing<br />for how people live.</span>
             <span className={`${fraunces.className} text-sm text-[var(--ivory-70)]`}>01<span className="text-[var(--ivory-45)]">/04</span></span>
           </div>
         </div>

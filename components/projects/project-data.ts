@@ -213,6 +213,46 @@ export const PROJECTS: Project[] = [
     image: "/images/projects/karnal-corner-concept.jpg",
     gallery: ["/images/projects/karnal-corner-gallery-1.jpg"],
   },
+  {
+    id: "residence-at-banur",
+    number: "16",
+    category: "Residential",
+    title: "Residence at Banur",
+    location: "Banur",
+    year: "2025",
+    description:
+      "A three-storey Banur residence in warm stone and timber-slat cladding, its rounded corner volume wrapped in a glowing recessed cornice that carries the roofline around the facade. Layered balconies screened in glass and dense planting soften the street elevation, while a paved forecourt with steps and a covered two-wheeler bay keeps the arrival practical as well as inviting.",
+    image: "/images/projects/residence-banur.jpg",
+    gallery: ["/images/projects/residence-banur-gallery-1.jpg"],
+  },
+  {
+    id: "residence-at-banur-interior",
+    number: "17",
+    category: "Interiors",
+    title: "Residence at Banur, Interior",
+    location: "Banur",
+    year: "2025",
+    description:
+      "A double-height foyer built around a marble-clad staircase, its glass balustrade and warm timber handrail lit by a suspended crystal chandelier above. The mezzanine landing holds a compact library and lounge behind a wood-and-brass bookshelf, while a themed children's room and a ground-floor sitting area round out a home designed for a young, growing family.",
+    image: "/images/projects/residence-banur-interior.jpg",
+    gallery: [
+      "/images/projects/residence-banur-interior-gallery-1.jpg",
+      "/images/projects/residence-banur-interior-gallery-2.jpg",
+      "/images/projects/residence-banur-interior-gallery-3.jpg",
+    ],
+  },
+  {
+    id: "arora-residence-panchkula",
+    number: "18",
+    category: "Residential",
+    title: "Arora Residence, Panchkula",
+    location: "Panchkula",
+    year: "2025",
+    description:
+      "A Panchkula residence composed around a full-height glazed stair bay, its perforated brass jali screen catching light beside a projecting timber-lined canopy. Wrap-around balconies with slatted glass railings step back at each floor, and a paved forecourt with a boundary brick wall keeps the arrival sequence calm and considered.",
+    image: "/images/projects/residence-arora-panchkula.jpg",
+    gallery: ["/images/projects/residence-arora-panchkula-gallery-1.jpg"],
+  },
 ];
 
 export const PROJECT_COUNT = PROJECTS.length;

@@ -55,7 +55,7 @@ const PILLARS: Pillar[] = [
   {
     number: "01",
     title: "Light & Atmosphere",
-    caption: "Spaces that breathe, with light as a medium.",
+    caption: "Rooms that breathe, with light as a medium.",
     Icon: IconLight,
   },
   {
@@ -111,7 +111,7 @@ export function AboutPhilosophy() {
           <h2
             className={`${fraunces.className} mt-6 max-w-md text-3xl font-light leading-[1.2] tracking-tight text-[var(--ivory-90)] sm:text-4xl`}
           >
-            Designing spaces that <em className="italic text-[var(--gold)]">feel like you.</em>
+            Designing environments that <em className="italic text-[var(--gold)]">feel like you.</em>
           </h2>
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-[var(--ivory-55)] sm:text-base">
             At Morphic Spaces, we believe great design is not just about how a space looks — it&rsquo;s about how it
