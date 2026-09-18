@@ -47,7 +47,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
             url: absoluteUrl(`/services/${service.slug}`),
             image: absoluteUrl(service.heroImage),
             provider: { "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
-            areaServed: ["Chandigarh", "Panchkula", "Mohali", "Gurugram"].map((name) => ({
+            areaServed: ["Chandigarh", "Panchkula", "Mohali", "Karnal", "Gurugram"].map((name) => ({
               "@type": "City",
               name,
             })),

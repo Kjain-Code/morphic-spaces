@@ -536,8 +536,8 @@ function ConsultancyPage({ service }: { service: Service }) {
             <Eyebrow>Focused, not full-service</Eyebrow>
             <h2 className={`${fraunces.className} mt-6 text-4xl font-light leading-[1.05] text-[var(--ivory-90)] sm:text-6xl`}>A second opinion, held to the same rigor.</h2>
             <p className="mt-7 max-w-xl text-sm leading-relaxed text-[var(--ivory-55)] sm:text-base">
-              Whether it's reviewing a concept a client already has, unsticking a stalled decision or advising at one
-              key stage, our consultancy work follows the same process as a full project — just scoped to what's
+              Whether it&apos;s reviewing a concept a client already has, unsticking a stalled decision or advising at one
+              key stage, our consultancy work follows the same process as a full project — just scoped to what&apos;s
               actually needed.
             </p>
           </Reveal>
@@ -609,12 +609,12 @@ function RenovationPage({ service }: { service: Service }) {
       <section id="story" className="border-t border-[var(--ivory-10)] bg-[var(--graphite)] px-6 py-24 sm:px-10 sm:py-32">
         <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-12 lg:gap-16">
           <Reveal className="lg:col-span-4">
-            <Eyebrow>Working with what's there</Eyebrow>
+            <Eyebrow>Working with what&apos;s there</Eyebrow>
             <h2 className={`${fraunces.className} mt-6 text-4xl font-light leading-[1.05] text-[var(--ivory-90)] sm:text-5xl`}>Transformation, not demolition.</h2>
           </Reveal>
           <Reveal delay={0.12} className="lg:col-span-6 lg:col-start-7">
             <p className="max-w-xl text-lg font-light leading-relaxed text-[var(--ivory-70)]">
-              We look for what a structure already does well, then focus our intervention on what's holding it back —
+              We look for what a structure already does well, then focus our intervention on what&apos;s holding it back —
               layout, light, material or identity — so the result feels renewed rather than replaced.
             </p>
             <HeroLine className="mt-10 w-full" />

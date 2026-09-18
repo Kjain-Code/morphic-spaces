@@ -33,6 +33,8 @@ export const metadata: Metadata = {
     "interior design Chandigarh",
     "architects Mohali",
     "architects Panchkula",
+    "architects Karnal",
+    "interior designer Karnal",
     "residential architecture India",
     "Morphic Spaces",
   ],
@@ -79,7 +81,7 @@ const jsonLd = {
     addressCountry: "IN",
   },
   sameAs: ["https://www.instagram.com/morphic_spaces"],
-  areaServed: ["Chandigarh", "Panchkula", "Mohali", "Gurugram"].map((name) => ({
+  areaServed: ["Chandigarh", "Panchkula", "Mohali", "Karnal", "Gurugram"].map((name) => ({
     "@type": "City",
     name,
   })),

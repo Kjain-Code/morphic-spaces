@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.morphicspaces.com";
 export const SITE_NAME = "Morphic Spaces";
 export const SITE_DESCRIPTION =
-  "Morphic Spaces is an architecture and interior design studio founded by Kunal, creating thoughtful residential, commercial and bespoke spaces across Chandigarh, Panchkula, Mohali and Gurugram.";
+  "Morphic Spaces is an architecture and interior design studio founded by Kunal, creating thoughtful residential, commercial and bespoke spaces across Chandigarh, Panchkula, Mohali, Karnal and Gurugram.";
 export const SHARE_IMAGE = "/images/hero/journey-poster.jpg";
 
 export function absoluteUrl(path = "/") {

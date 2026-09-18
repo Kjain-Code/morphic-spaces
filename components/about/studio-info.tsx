@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { animate, motion, useInView, useReducedMotion } from "motion/react";
 import { fraunces } from "@/lib/fonts";
 
-const LOCATIONS = ["Chandigarh", "Panchkula", "Mohali", "Gurugram"];
+const LOCATIONS = ["Chandigarh", "Panchkula", "Mohali", "Karnal", "Gurugram"];
 
 interface Stat {
   value: number;

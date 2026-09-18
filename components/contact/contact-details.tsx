@@ -14,7 +14,7 @@ const EMAIL = "morphicspaces@gmail.com";
 const INSTAGRAM_URL = "https://www.instagram.com/morphic_spaces";
 const STUDIO_ADDRESS = "Shop No. 18, Dhakoli, Punjab";
 
-const LOCATIONS = ["Chandigarh", "Panchkula", "Mohali", "Gurugram"];
+const LOCATIONS = ["Chandigarh", "Panchkula", "Mohali", "Karnal", "Gurugram"];
 
 function IconPhone(props: SVGProps<SVGSVGElement>) {
   return (

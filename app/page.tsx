@@ -5,7 +5,7 @@ import { createPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = createPageMetadata({
   title: "Architecture & Interior Design Studio in Chandigarh",
   description:
-    "Morphic Spaces shapes residential, commercial and bespoke spaces through architecture, interior design, materiality and detail across Chandigarh and the Tricity.",
+    "Morphic Spaces shapes residential, commercial and bespoke spaces through architecture, interior design, materiality and detail across Chandigarh, the Tricity and Karnal.",
   path: "/",
   imageAlt: "Morphic Spaces architectural residence at dusk",
 });

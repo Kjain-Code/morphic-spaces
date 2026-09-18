@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 
 // TEMP — visual placeholder only. Swap for final client-provided hero
 // photography once available; nothing else in this file needs to change.
-const PLACEHOLDER_IMAGE_SRC = "/images/loading/1st.png";
+const PLACEHOLDER_IMAGE_SRC = "/images/loading/1st.jpg";
 
 export interface HeroProps {
   imageSrc?: string;

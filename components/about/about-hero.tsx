@@ -87,11 +87,11 @@ export function AboutHero() {
           <span className="hidden text-right text-[10px] uppercase tracking-[0.3em] text-[var(--ivory-55)] sm:block">Built<br />People<br />Stories</span>
         </div>
 
-        <div className="relative mt-auto max-w-4xl pb-16 pt-20 sm:pb-20 sm:pt-24 lg:pb-24 lg:pt-28">
-          <h1 className={`${fraunces.className} text-[clamp(2.7rem,5.6vw,5.8rem)] font-light leading-[1.08] tracking-[-0.035em] text-[var(--ivory-90)]`}>
+        <div className="relative mt-auto max-w-4xl pb-16 pt-20 sm:pb-20 sm:pt-24 lg:max-w-6xl lg:pb-24 lg:pt-28">
+          <h1 className={`${fraunces.className} text-[clamp(2.7rem,5vw,5.4rem)] font-light leading-[1.08] tracking-[-0.035em] text-[var(--ivory-90)]`}>
             <HeadlineLine delay={0.1}>{HEADLINE_LINES[0]}</HeadlineLine>
             <HeadlineLine delay={0.2}>{HEADLINE_LINES[1]}</HeadlineLine>
-            <HeadlineLine delay={0.3}><span className="ml-[6%] italic text-[var(--gold)]">{HEADLINE_LINES[2]}</span></HeadlineLine>
+            <HeadlineLine delay={0.3}><span className="ml-[3%] italic text-[var(--gold)] lg:whitespace-nowrap">{HEADLINE_LINES[2]}</span></HeadlineLine>
           </h1>
           <motion.p
             initial={{ opacity: 0, y: 14 }}
