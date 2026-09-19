@@ -28,7 +28,7 @@ export function ServicesClosing() {
           className="absolute inset-0"
         >
           <Image
-            src="/images/projects/residence-kaithal.jpg"
+            src="/images/projects/architecture/residence-kaithal.jpg"
             alt="A Morphic Spaces residence at Kaithal"
             fill
             sizes="100vw"

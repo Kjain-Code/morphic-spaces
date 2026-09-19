@@ -52,7 +52,7 @@ export function ProjectsHero() {
         className="absolute inset-x-0 bottom-0 top-[9%] lg:left-[22%] lg:right-[4%] lg:top-[13%]"
       >
         <Image
-          src="/images/projects/147p-panchkula.jpg"
+          src="/images/projects/renovation/147p-panchkula.jpg"
           alt="147-P, Sector 26 — a Morphic Spaces residence in Panchkula"
           fill
           sizes="(min-width: 1024px) 74vw, 100vw"

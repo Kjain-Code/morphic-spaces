@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/footer";
 import { ServicePageTemplate } from "@/components/services/service-page-template";
 import { JsonLd } from "@/components/seo/json-ld";
 import { SERVICES, getService } from "@/lib/services-data";
+import { getServiceFolderImages } from "@/lib/service-images";
 import { absoluteUrl, createPageMetadata, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 export function generateStaticParams() {
@@ -32,6 +33,9 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
   const { slug } = await params;
   const service = getService(slug);
   if (!service) notFound();
+
+  // Every image in public/images/projects/<slug>/ belongs to this service.
+  const images = getServiceFolderImages(service.slug);
 
   return (
     <>
@@ -66,7 +70,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
             ],
           }}
         />
-        <ServicePageTemplate service={service} />
+        <ServicePageTemplate service={service} images={images} />
       </main>
       <Footer />
     </>

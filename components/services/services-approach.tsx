@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "motion/react";
 import { fraunces } from "@/lib/fonts";
 import { PROCESS_STEPS } from "@/lib/services-data";
@@ -40,25 +39,6 @@ export function ServicesApproach() {
             enduring. Our process brings together creativity, functionality and precision — ensuring a seamless
             experience from the first conversation to completion.
           </p>
-
-          <div className="mt-10 flex items-center gap-6 border-t border-[var(--ivory-10)] pt-8">
-            <span className={`${fraunces.className} text-4xl font-light leading-none text-[var(--gold)]`}>05</span>
-            <span className="text-[11px] uppercase leading-relaxed tracking-[0.2em] text-[var(--ivory-45)]">
-              Stages,
-              <br />
-              start to finish.
-            </span>
-          </div>
-
-          <Link
-            href="/contact"
-            className="group mt-8 inline-flex w-fit items-center gap-4 text-[11px] uppercase tracking-[0.25em] text-[var(--ivory-70)] transition-colors hover:text-[var(--ivory-90)]"
-          >
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[var(--gold-40)] text-[var(--gold)] transition-transform duration-300 group-hover:translate-x-0.5">
-              →
-            </span>
-            Start A Conversation
-          </Link>
         </motion.div>
 
         <div className="relative flex flex-col lg:col-span-7">

@@ -2,10 +2,11 @@
  * Centralized data for /services and its six individual service pages
  * (/services/[slug]). Copy is generic-editorial, matching the register
  * already used in components/projects/project-data.ts — no invented
- * clients, awards or numbers. Featured work links back to the studio's
- * real projects (components/projects/project-data.ts) by category; a
- * service with no matching real projects yet simply shows fewer or none —
- * never invented ones.
+ * clients, awards or numbers. Each service owns one image folder,
+ * public/images/projects/<slug>/ (see lib/service-images.ts) — its detail page
+ * shows the images from that folder, and heroImage / overviewImage below
+ * must be files inside the same folder. A service whose folder holds few
+ * images simply shows fewer — never invented ones.
  */
 export interface Service {
   slug: string;
@@ -51,7 +52,7 @@ export const SERVICES: Service[] = [
     philosophyHeading: "Architecture as response.",
     philosophyBody:
       "We believe architecture begins with listening — to the site, the climate, the context and the people who will inhabit it. Every decision follows from that understanding, not from a fixed style imposed on it.",
-    heroImage: "/images/projects/residence-mohali.jpg",
+    heroImage: "/images/projects/architecture/residence-mohali.jpg",
     overviewImage: "/images/services/service-render-3.png",
   },
   {
@@ -82,8 +83,8 @@ export const SERVICES: Service[] = [
     philosophyHeading: "Interiors as experience.",
     philosophyBody:
       "A room is more than its furniture. We shape interiors through proportion, material, light and texture, so a space feels considered the moment you enter it and only reveals more the longer you stay.",
-    heroImage: "/images/projects/residence-banur-interior.jpg",
-    overviewImage: "/images/projects/interior-panchkula.jpg",
+    heroImage: "/images/projects/interior-design/residence-banur-interior.jpg",
+    overviewImage: "/images/projects/interior-design/interior-panchkula.jpg",
   },
   {
     slug: "visualization",
@@ -111,8 +112,8 @@ export const SERVICES: Service[] = [
     philosophyHeading: "Visualization as clarity.",
     philosophyBody:
       "Long before a wall goes up, a rendering lets everyone in the room see the same idea. We build every visualization on the same material and lighting decisions the finished space will actually carry, so what you approve is what gets built.",
-    heroImage: "/images/projects/karnal-modern-concept.jpg",
-    overviewImage: "/images/projects/karnal-stone-concept.jpg",
+    heroImage: "/images/projects/visualization/karnal-modern-concept.jpg",
+    overviewImage: "/images/projects/visualization/karnal-stone-concept.jpg",
   },
   {
     slug: "landscape",
@@ -137,8 +138,8 @@ export const SERVICES: Service[] = [
     philosophyHeading: "Landscape as continuation.",
     philosophyBody:
       "A building doesn't end at its walls. We treat the ground around it — courtyards, planting, hardscape — as part of the same design conversation, so architecture and landscape read as one composition.",
-    heroImage: "/images/services/landscaping.jpg",
-    overviewImage: "/images/services/landscaping-2.jpg",
+    heroImage: "/images/projects/landscape/landscaping.jpg",
+    overviewImage: "/images/projects/landscape/landscaping-2.jpg",
   },
   {
     slug: "design-consultancy",
@@ -163,8 +164,8 @@ export const SERVICES: Service[] = [
     philosophyHeading: "Guidance without taking over.",
     philosophyBody:
       "Not every project needs a studio full-time. Sometimes the most useful thing we can offer is a second opinion at the right moment — on a plan, a material choice or a stalled decision — held to the same rigor as our full projects.",
-    heroImage: "/images/projects/karnal-commercial-concept.jpg",
-    overviewImage: "/images/projects/karnal-corner-concept.jpg",
+    heroImage: "/images/projects/design-consultancy/gurugram-commercial.jpg",
+    overviewImage: "/images/projects/design-consultancy/kaushik-clinic-kaithal.jpg",
   },
   {
     slug: "renovation",
@@ -189,8 +190,8 @@ export const SERVICES: Service[] = [
     philosophyHeading: "Respecting what's already there.",
     philosophyBody:
       "An existing structure carries its own logic — its bones, its constraints, its history. We work with that logic rather than against it, finding where a space can be opened up, reorganized or refreshed without erasing what already works.",
-    heroImage: "/images/services/renovation-before.jpg",
-    overviewImage: "/images/projects/147p-panchkula.jpg",
+    heroImage: "/images/projects/renovation/renovation-before.jpg",
+    overviewImage: "/images/projects/renovation/147p-panchkula.jpg",
   },
 ];
 

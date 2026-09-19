@@ -156,15 +156,51 @@ function FinalCTA() {
   );
 }
 
-function ProjectReferences({
-  projects,
+/** One tile in a service page's gallery — an image from that service's own folder, linked to its project when it belongs to one. */
+interface GalleryItem {
+  src: string;
+  project?: Project;
+}
+
+/**
+ * Turns the image files found in a service's folder (public/images/projects/<service-slug>/,
+ * listed by lib/service-images.ts) into gallery tiles. The hero and overview images already
+ * appear at the top of the page, so they are skipped here. Images that belong to a real project
+ * (its main image or one of its gallery photos) link through to that project; the rest are
+ * shown as plain tiles. Ordered like the /projects page: by project, main image first.
+ */
+function buildGalleryItems(service: Service, images: string[]): GalleryItem[] {
+  const rank = (item: GalleryItem, position: number) => {
+    if (!item.project) return 1_000_000 + position;
+    const projectIndex = PROJECTS.findIndex((project) => project.id === item.project?.id);
+    const galleryIndex = item.project.gallery?.indexOf(item.src) ?? -1;
+    return projectIndex * 100 + (galleryIndex + 1);
+  };
+
+  return images
+    .filter((src) => src !== service.heroImage && src !== service.overviewImage)
+    .map((src) => ({
+      src,
+      project: PROJECTS.find((project) => project.image === src) ?? PROJECTS.find((project) => project.gallery?.includes(src)),
+    }))
+    .map((item, position) => ({ item, order: rank(item, position) }))
+    .sort((a, b) => a.order - b.order)
+    .map(({ item }) => item);
+}
+
+function ServiceGallery({
+  items,
+  service,
   label,
   heading = "Built, Lived, Remembered.",
 }: {
-  projects: Project[];
+  items: GalleryItem[];
+  service: Service;
   label: string;
   heading?: string;
 }) {
+  if (items.length === 0) return null;
+
   return (
     <section className="border-t border-[var(--ivory-10)] bg-[var(--charcoal)] px-6 py-20 sm:px-10 sm:py-28">
       <div className="mx-auto max-w-7xl">
@@ -177,13 +213,14 @@ function ProjectReferences({
         </Reveal>
 
         <div className="mt-14 flex flex-wrap justify-center gap-10 sm:gap-6">
-          {projects.map((project, index) => (
-            <Reveal key={project.id} delay={index * 0.1} className="w-full sm:w-[calc(33.333%-1rem)]">
-              <Link href={`/projects/${project.id}`} className="group block">
+          {items.map((item, index) => {
+            const { project } = item;
+            const tile = (
+              <>
                 <div className="relative aspect-[4/5] overflow-hidden bg-[var(--graphite)]">
                   <Image
-                    src={project.image}
-                    alt={`${project.title} — Morphic Spaces`}
+                    src={item.src}
+                    alt={`${project?.title ?? service.title} — Morphic Spaces`}
                     fill
                     sizes="(min-width: 640px) 30vw, 100vw"
                     className="object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.04]"
@@ -191,14 +228,28 @@ function ProjectReferences({
                 </div>
                 <div className="mt-5 flex items-start justify-between border-t border-[var(--ivory-10)] pt-4">
                   <div>
-                    <h3 className="text-base font-light text-[var(--ivory-90)]">{project.title}</h3>
-                    <p className="mt-1 text-[10px] uppercase tracking-[0.18em] text-[var(--taupe)]">{project.location} · {project.year}</p>
+                    <h3 className="text-base font-light text-[var(--ivory-90)]">{project?.title ?? service.title}</h3>
+                    {project && (
+                      <p className="mt-1 text-[10px] uppercase tracking-[0.18em] text-[var(--taupe)]">{project.location} · {project.year}</p>
+                    )}
                   </div>
-                  <span className="text-xs text-[var(--gold)]">{project.number}</span>
+                  <span className="text-xs text-[var(--gold)]">{String(index + 1).padStart(2, "0")}</span>
                 </div>
-              </Link>
-            </Reveal>
-          ))}
+              </>
+            );
+
+            return (
+              <Reveal key={item.src} delay={(index % 3) * 0.1} className="w-full sm:w-[calc(33.333%-1rem)]">
+                {project ? (
+                  <Link href={`/projects/${project.id}`} className="group block">
+                    {tile}
+                  </Link>
+                ) : (
+                  <div className="group block">{tile}</div>
+                )}
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -236,11 +287,9 @@ function SubServicesList({ service }: { service: Service }) {
   );
 }
 
-function ArchitecturePage({ service }: { service: Service }) {
+function ArchitecturePage({ service, images }: { service: Service; images: string[] }) {
   const reduced = useIsReducedMotion();
-  const projects = PROJECTS.filter((project) => project.category === "Residential" || project.category === "Commercial").filter(
-    (project) => project.image !== service.heroImage && project.image !== service.overviewImage
-  );
+  const items = buildGalleryItems(service, images);
 
   return (
     <>
@@ -282,16 +331,16 @@ function ArchitecturePage({ service }: { service: Service }) {
       </section>
 
       <SubServicesList service={service} />
-      <ProjectReferences projects={projects} label="Selected architecture" heading="Built, Lived, Remembered." />
+      <ServiceGallery items={items} service={service} label="Selected architecture" heading="Built, Lived, Remembered." />
       <NextService service={service} />
       <FinalCTA />
     </>
   );
 }
 
-function InteriorPage({ service }: { service: Service }) {
+function InteriorPage({ service, images }: { service: Service; images: string[] }) {
   const reduced = useIsReducedMotion();
-  const projects = PROJECTS.filter((project) => project.category === "Interiors").slice(0, 3);
+  const items = buildGalleryItems(service, images);
 
   return (
     <>
@@ -303,7 +352,7 @@ function InteriorPage({ service }: { service: Service }) {
               <Image src={service.heroImage} alt="Layered interior material and light" fill priority sizes="(min-width: 1024px) 42vw, 85vw" className="object-cover" />
             </motion.div>
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : 1, delay: reduced ? 0 : 0.7, ease: EASE }} className="absolute bottom-0 left-0 h-[42%] w-[48%] overflow-hidden border-8 border-[var(--graphite)] sm:w-[40%]">
-              <Image src="/images/projects/147p-panchkula-interior.jpg" alt="Interior detail and material composition" fill sizes="20rem" className="object-cover" />
+              <Image src="/images/projects/interior-design/147p-panchkula-interior.jpg" alt="Interior detail and material composition" fill sizes="20rem" className="object-cover" />
             </motion.div>
             <div className="absolute right-0 top-1/2 hidden -translate-y-1/2 text-right text-[10px] uppercase leading-[2] tracking-[0.28em] text-[var(--taupe)] sm:block">Material<br />Light<br />Furniture<br />Detail</div>
           </div>
@@ -343,18 +392,16 @@ function InteriorPage({ service }: { service: Service }) {
       </section>
 
       <SubServicesList service={service} />
-      <ProjectReferences projects={projects} label="Selected interiors" heading="Crafted, Lived, Cherished." />
+      <ServiceGallery items={items} service={service} label="Selected interiors" heading="Crafted, Lived, Cherished." />
       <NextService service={service} />
       <FinalCTA />
     </>
   );
 }
 
-function LandscapePage({ service }: { service: Service }) {
+function LandscapePage({ service, images }: { service: Service; images: string[] }) {
   const reduced = useIsReducedMotion();
-  const projects = PROJECTS.filter((project) => ["residence-at-mohali", "residence-at-kaithal"].includes(project.id)).filter(
-    (project) => project.image !== service.heroImage && project.image !== service.overviewImage
-  );
+  const items = buildGalleryItems(service, images);
 
   return (
     <>
@@ -401,18 +448,16 @@ function LandscapePage({ service }: { service: Service }) {
       </section>
 
       <SubServicesList service={service} />
-      <ProjectReferences projects={projects} label="Landscape in context" heading="Planted, Grown, Enjoyed." />
+      <ServiceGallery items={items} service={service} label="Landscape in context" heading="Planted, Grown, Enjoyed." />
       <NextService service={service} />
       <FinalCTA />
     </>
   );
 }
 
-function VisualizationPage({ service }: { service: Service }) {
+function VisualizationPage({ service, images }: { service: Service; images: string[] }) {
   const reduced = useIsReducedMotion();
-  const projects = PROJECTS.filter((project) => project.id.endsWith("-concept")).filter(
-    (project) => project.image !== service.heroImage && project.image !== service.overviewImage
-  );
+  const items = buildGalleryItems(service, images);
 
   return (
     <>
@@ -492,18 +537,16 @@ function VisualizationPage({ service }: { service: Service }) {
       </section>
 
       <SubServicesList service={service} />
-      <ProjectReferences projects={projects} label="Visualized in detail" heading="Rendered, Reviewed, Realized." />
+      <ServiceGallery items={items} service={service} label="Visualized in detail" heading="Rendered, Reviewed, Realized." />
       <NextService service={service} />
       <FinalCTA />
     </>
   );
 }
 
-function ConsultancyPage({ service }: { service: Service }) {
+function ConsultancyPage({ service, images }: { service: Service; images: string[] }) {
   const reduced = useIsReducedMotion();
-  const projects = PROJECTS.filter((project) => project.category === "Commercial").filter(
-    (project) => project.image !== service.heroImage && project.image !== service.overviewImage
-  );
+  const items = buildGalleryItems(service, images);
 
   return (
     <>
@@ -567,18 +610,16 @@ function ConsultancyPage({ service }: { service: Service }) {
       </section>
 
       <SubServicesList service={service} />
-      <ProjectReferences projects={projects} label="Advised in context" heading="Advised, Refined, Delivered." />
+      <ServiceGallery items={items} service={service} label="Advised in context" heading="Advised, Refined, Delivered." />
       <NextService service={service} />
       <FinalCTA />
     </>
   );
 }
 
-function RenovationPage({ service }: { service: Service }) {
+function RenovationPage({ service, images }: { service: Service; images: string[] }) {
   const reduced = useIsReducedMotion();
-  const projects = PROJECTS.filter((project) => ["147p-panchkula", "147p-panchkula-interior", "residence-at-karnal"].includes(project.id)).filter(
-    (project) => project.image !== service.heroImage && project.image !== service.overviewImage
-  );
+  const items = buildGalleryItems(service, images);
 
   return (
     <>
@@ -643,27 +684,27 @@ function RenovationPage({ service }: { service: Service }) {
       </section>
 
       <SubServicesList service={service} />
-      <ProjectReferences projects={projects} label="Selected renovations" heading="Reimagined, Rebuilt, Renewed." />
+      <ServiceGallery items={items} service={service} label="Selected renovations" heading="Reimagined, Rebuilt, Renewed." />
       <NextService service={service} />
       <FinalCTA />
     </>
   );
 }
 
-export function ServiceDetailPages({ service }: { service: Service }) {
+export function ServiceDetailPages({ service, images = [] }: { service: Service; images?: string[] }) {
   switch (service.slug) {
     case "architecture":
-      return <ArchitecturePage service={service} />;
+      return <ArchitecturePage service={service} images={images} />;
     case "interior-design":
-      return <InteriorPage service={service} />;
+      return <InteriorPage service={service} images={images} />;
     case "visualization":
-      return <VisualizationPage service={service} />;
+      return <VisualizationPage service={service} images={images} />;
     case "landscape":
-      return <LandscapePage service={service} />;
+      return <LandscapePage service={service} images={images} />;
     case "design-consultancy":
-      return <ConsultancyPage service={service} />;
+      return <ConsultancyPage service={service} images={images} />;
     case "renovation":
-      return <RenovationPage service={service} />;
+      return <RenovationPage service={service} images={images} />;
     default:
       return null;
   }

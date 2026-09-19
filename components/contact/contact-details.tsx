@@ -83,7 +83,7 @@ export function ContactDetails() {
           low-opacity and heavily washed so it reads as texture/mood, never
           competing with the text on top of it. */}
       <Image
-        src="/images/projects/residence-karnal.jpg"
+        src="/images/projects/architecture/residence-karnal.jpg"
         alt=""
         fill
         priority
