@@ -19,13 +19,13 @@ export interface VideoScrubberProps {
 }
 
 /** currentTime eases toward targetTime by this fraction per 60fps frame — the "scrub feel." Tuned within the requested 0.08–0.18 range. Applied per elapsed time (see tick), so a slower laptop gets the same feel instead of a lagging one. */
-const DAMPING = 0.12;
+const DAMPING = 0.18;
 /** Don't chase differences smaller than one video frame (24fps) — they change nothing on screen but still cost a decode. */
 const MIN_SEEK_DELTA_S = 1 / 24;
 /** Avoid issuing a new network/decode seek immediately after every completed seek. */
-const MIN_SEEK_INTERVAL_MS = 50;
+const MIN_SEEK_INTERVAL_MS = 33;
 /** Replace a stale long-running seek when the scroll target has moved materially. */
-const STALE_SEEK_INTERVAL_MS = 180;
+const STALE_SEEK_INTERVAL_MS = 120;
 /** How many viewport-heights of extra scroll the sticky section holds for. CinematicHero's wrapper height (700dvh = (1 + this) × 100dvh) must be kept in sync with this if it ever changes. */
 const PIN_DISTANCE_VH = 6;
 
