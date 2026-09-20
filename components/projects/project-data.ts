@@ -271,6 +271,60 @@ export const PROJECTS: Project[] = [
       "/images/projects/interior-design/panchkula-duplex-interior-gallery-3.jpg",
     ],
   },
+  {
+    id: "residential-apartments-concept",
+    number: "20",
+    category: "Residential",
+    title: "Residential Apartments Concept",
+    location: "India",
+    year: "2026",
+    description:
+      "A design study for a low-rise apartment block, four floors of glass-railed balconies stacked above a ground level of open parking. Dark vertical stone fins and warm timber-toned frames repeat along the elevation, breaking a long street frontage into a steady, readable rhythm. Planted terraces crown the roofline, so the building keeps a green edge against the sky from the street below.",
+    image: "/images/projects/visualization/residential-apartments-1.jpg",
+    gallery: ["/images/projects/visualization/residential-apartments-2.jpg"],
+  },
+  {
+    id: "commercial-building-concept",
+    number: "21",
+    category: "Commercial",
+    title: "Commercial Building Concept",
+    location: "India",
+    year: "2026",
+    description:
+      "A four-storey commercial building rendered in a clean cream stone facade with tall glazed bays that wrap the upper floors. A double-height entrance under a deep overhang opens onto a paved forecourt with parking, planted beds and room for visitors to arrive on foot. The composition stays deliberately simple, letting the proportions of the glazing and the stone carry the building.",
+    image: "/images/projects/visualization/commercial-building-1.jpg",
+  },
+  {
+    id: "group-housing-concept",
+    number: "22",
+    category: "Residential",
+    title: "Group Housing Concept",
+    location: "India",
+    year: "2026",
+    description:
+      "A group housing design study of tall residential towers in a cream palette, with timber-toned balcony bands giving each block its own rhythm. Landscaped courtyards hold an open gym, a children's play area and green lawns at the heart of the blocks, while retail units line the podium along the main road. Seen by day, at dusk and from above, the same scheme reads as a calm, planted neighbourhood rather than a single wall of buildings.",
+    image: "/images/projects/visualization/group-housing-1.jpg",
+    gallery: [
+      "/images/projects/visualization/group-housing-2.jpg",
+      "/images/projects/visualization/group-housing-3.jpg",
+      "/images/projects/visualization/group-housing-4.jpg",
+      "/images/projects/visualization/group-housing-5.jpg",
+      "/images/projects/visualization/group-housing-6.jpg",
+      "/images/projects/visualization/group-housing-7.jpg",
+    ],
+  },
+  {
+    id: "pg-building-concept",
+    number: "23",
+    category: "Residential",
+    title: "PG Building Concept",
+    location: "India",
+    year: "2026",
+    description:
+      "A design study for a paying-guest residence, four floors of deep balconies raised on stilts above an open parking level. Vertical timber slat panels and white frames give the front elevation a warm, ordered look, and a planted rooftop edge softens the top of the building. The straight front view and the corner view show the same simple scheme from two sides.",
+    image: "/images/projects/visualization/pg-building-1.jpg",
+    gallery: ["/images/projects/visualization/pg-building-2.jpg"],
+  },
 ];
 
 export const PROJECT_COUNT = PROJECTS.length;

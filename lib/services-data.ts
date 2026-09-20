@@ -53,7 +53,7 @@ export const SERVICES: Service[] = [
     philosophyBody:
       "We believe architecture begins with listening — to the site, the climate, the context and the people who will inhabit it. Every decision follows from that understanding, not from a fixed style imposed on it.",
     heroImage: "/images/projects/architecture/residence-mohali.jpg",
-    overviewImage: "/images/services/service-render-3.png",
+    overviewImage: "/images/projects/architecture/residence-arora-panchkula.jpg",
   },
   {
     slug: "interior-design",
@@ -113,7 +113,7 @@ export const SERVICES: Service[] = [
     philosophyBody:
       "Long before a wall goes up, a rendering lets everyone in the room see the same idea. We build every visualization on the same material and lighting decisions the finished space will actually carry, so what you approve is what gets built.",
     heroImage: "/images/projects/visualization/karnal-modern-concept.jpg",
-    overviewImage: "/images/projects/visualization/karnal-stone-concept.jpg",
+    overviewImage: "/images/projects/visualization/commercial-building-1.jpg",
   },
   {
     slug: "landscape",
@@ -139,7 +139,7 @@ export const SERVICES: Service[] = [
     philosophyBody:
       "A building doesn't end at its walls. We treat the ground around it — courtyards, planting, hardscape — as part of the same design conversation, so architecture and landscape read as one composition.",
     heroImage: "/images/projects/landscape/landscaping.jpg",
-    overviewImage: "/images/projects/landscape/landscaping-2.jpg",
+    overviewImage: "/images/projects/visualization/group-housing-5.jpg",
   },
   {
     slug: "design-consultancy",
@@ -204,7 +204,7 @@ export const PROCESS_STEPS = [
     number: "01",
     title: "Understand",
     description: "We begin by understanding the site, requirements, lifestyle, aspirations and opportunities associated with the project.",
-    image: "/images/services/approach/01-understand.jpg",
+    image: "/images/services/approach/01-understand.png",
     tag: "Site Study",
   },
   {

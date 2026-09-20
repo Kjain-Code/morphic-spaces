@@ -160,7 +160,7 @@ export function ProjectsGallery({ projects }: { projects: Project[] }) {
       {/* Filter tabs */}
       <div className="border-b border-[var(--charcoal-10)] bg-[var(--ivory)] px-6 py-6 sm:px-10">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4">
-          <div className="flex flex-wrap items-center gap-x-7 gap-y-2">
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
             {categories.map((category, index) => {
               const isActive = active === category;
               return (
@@ -171,8 +171,8 @@ export function ProjectsGallery({ projects }: { projects: Project[] }) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, ease: EASE, delay: index * 0.06 }}
                   onClick={() => setActive(category)}
-                  className={`relative pb-1 text-[11px] uppercase tracking-[0.2em] transition-colors ${
-                    isActive ? "text-[var(--charcoal)]" : "text-[var(--taupe)] hover:text-[var(--charcoal-70)]"
+                  className={`relative pb-1.5 text-sm font-semibold uppercase tracking-[0.18em] transition-colors sm:text-base ${
+                    isActive ? "text-[var(--charcoal)]" : "text-[var(--charcoal-70)] hover:text-[var(--charcoal)]"
                   }`}
                 >
                   {category}
@@ -180,7 +180,7 @@ export function ProjectsGallery({ projects }: { projects: Project[] }) {
                     <motion.span
                       layoutId="filter-underline"
                       transition={{ duration: 0.4, ease: EASE }}
-                      className="absolute inset-x-0 -bottom-0.5 h-px bg-[var(--gold-dark)]"
+                      className="absolute inset-x-0 -bottom-0.5 h-0.5 bg-[var(--gold-dark)]"
                     />
                   )}
                 </motion.button>
@@ -188,7 +188,7 @@ export function ProjectsGallery({ projects }: { projects: Project[] }) {
             })}
           </div>
 
-          <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[var(--taupe)]">
+          <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-[var(--charcoal-70)]">
             <FilterIcon className="h-4 w-4" />
             Filter
           </div>

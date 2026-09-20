@@ -35,7 +35,7 @@ export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
   const galleryRef = useRef<HTMLDivElement>(null);
   const dragState = useRef({ active: false, moved: false, startX: 0, startScrollLeft: 0 });
   const suppressClick = useRef(false);
-  const autoScrollState = useRef({ direction: 1 as 1 | -1, paused: false });
+  const autoScrollState = useRef({ direction: 1 as 1 | -1, resumeAt: 0 });
   const prefersReducedMotion = useIsReducedMotion();
   const activeIndex = Math.max(
     0,
@@ -87,37 +87,64 @@ export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
     return () => gallery.removeEventListener("scroll", onScroll);
   }, [activeProject, projects]);
 
-  // A very slow, continuous drift across the strip — so the collection
-  // "shows itself" even before anyone touches it — pausing the instant a
-  // visitor hovers or drags, and reversing direction at either end rather
-  // than snapping back to the start. Skipped entirely for reduced motion.
+  // A slow, continuous drift across the strip from the first project to the
+  // last (then back again), so the collection "shows itself" without anyone
+  // touching it. Two things used to stop it dead around the 6th tile:
+  //  1. scrollLeft only holds whole pixels, so adding 0.35px a frame was
+  //     rounded away and the strip never moved — the fractional position is
+  //     now tracked here in `pos` and only written back to scrollLeft;
+  //  2. CSS scroll-snap (mandatory) pulled the strip back to the nearest tile
+  //     after every nudge — snapping is removed from the track below.
+  // It pauses while a visitor drags / swipes / uses the wheel, and picks up
+  // again ~2.5s later. Skipped entirely for reduced motion.
   useEffect(() => {
     if (prefersReducedMotion) return;
     const gallery = galleryRef.current;
     if (!gallery) return;
 
-    const SPEED = 0.35; // px per frame — gentle, not a marquee
+    const SPEED = 32; // px per second — gentle, not a marquee
     let rafId = 0;
+    let lastTime = performance.now();
+    let pos = gallery.scrollLeft;
+    let lastWritten = gallery.scrollLeft;
 
-    function step() {
-      const maxScroll = gallery!.scrollWidth - gallery!.clientWidth;
-      if (!autoScrollState.current.paused && !dragState.current.active && maxScroll > 0) {
-        let next = gallery!.scrollLeft + SPEED * autoScrollState.current.direction;
-        if (next >= maxScroll) {
-          next = maxScroll;
+    function step(now: number) {
+      const dt = Math.min(now - lastTime, 64) / 1000;
+      lastTime = now;
+
+      const el = gallery!;
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      const userBusy = dragState.current.active || now < autoScrollState.current.resumeAt;
+
+      // If something else moved the strip (a drag, the wheel, touch), follow it.
+      if (Math.abs(el.scrollLeft - lastWritten) > 1.5) pos = el.scrollLeft;
+
+      if (!userBusy && maxScroll > 0) {
+        pos += SPEED * dt * autoScrollState.current.direction;
+        if (pos >= maxScroll) {
+          pos = maxScroll;
           autoScrollState.current.direction = -1;
-        } else if (next <= 0) {
-          next = 0;
+        } else if (pos <= 0) {
+          pos = 0;
           autoScrollState.current.direction = 1;
         }
-        gallery!.scrollLeft = next;
+        el.scrollLeft = pos;
+        lastWritten = el.scrollLeft;
+      } else {
+        pos = el.scrollLeft;
+        lastWritten = el.scrollLeft;
       }
+
       rafId = requestAnimationFrame(step);
     }
 
     rafId = requestAnimationFrame(step);
     return () => cancelAnimationFrame(rafId);
   }, [prefersReducedMotion]);
+
+  function pauseAutoScroll(ms = 2500) {
+    autoScrollState.current.resumeAt = performance.now() + ms;
+  }
 
   function handlePointerDown(event: ReactPointerEvent<HTMLDivElement>) {
     const gallery = galleryRef.current;
@@ -131,6 +158,7 @@ export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
     };
     suppressClick.current = false;
     setIsDragging(false);
+    pauseAutoScroll();
     gallery.setPointerCapture(event.pointerId);
   }
 
@@ -152,6 +180,7 @@ export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
     if (gallery?.hasPointerCapture(event.pointerId)) gallery.releasePointerCapture(event.pointerId);
     dragState.current.active = false;
     setIsDragging(false);
+    pauseAutoScroll();
   }
 
   function handleTileClick(event: React.MouseEvent<HTMLAnchorElement>, project: Project) {
@@ -176,7 +205,7 @@ export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
           <div className="max-w-2xl">
             <p className="text-[13px] font-semibold uppercase tracking-[0.3em] text-[var(--gold-dark)]">Selected Work</p>
             <p className="mt-3 max-w-md text-sm font-light leading-relaxed text-[var(--charcoal-70)] sm:text-base">
-              Eighteen completed projects across architecture, interiors and commercial work — drag to move
+              {projects.length} projects across architecture, interiors, visualization and commercial work — drag to move
               through the collection.
             </p>
           </div>
@@ -215,13 +244,13 @@ export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
             onPointerCancel={handlePointerUp}
-            onMouseEnter={() => { autoScrollState.current.paused = true; }}
-            onMouseLeave={() => { autoScrollState.current.paused = false; }}
-            className={`flex snap-x snap-mandatory gap-1.5 overflow-x-auto px-6 pb-3 scrollbar-none sm:gap-2 sm:px-10 ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
-            style={{ touchAction: "pan-y" }}
+            onWheel={() => pauseAutoScroll()}
+            onTouchStart={() => pauseAutoScroll(4000)}
+            className={`flex gap-1.5 overflow-x-auto px-6 pb-3 scrollbar-none sm:gap-2 sm:px-10 ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
+            style={{ touchAction: "pan-y", overflowAnchor: "none" }}
             aria-label="Selected projects. Drag horizontally to explore."
           >
-            <div className="flex min-w-[calc(100%+6rem)] snap-x snap-mandatory justify-start gap-1.5 sm:gap-2 md:justify-center">
+            <div className="flex w-max min-w-full shrink-0 justify-start gap-1.5 sm:gap-2">
               {projects.map((project, index) => {
               const isActive = activeId === project.id;
 
@@ -244,7 +273,7 @@ export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
                   onFocus={() => setActiveId(project.id)}
                   onClick={(event) => handleTileClick(event, project)}
                   aria-label={`${project.title} — ${project.category}, ${project.location}, ${project.year}`}
-                  className={`relative h-[21rem] shrink-0 snap-center overflow-hidden rounded-xl bg-[var(--charcoal)] transition-[box-shadow] duration-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--gold)] sm:h-[25rem] ${
+                  className={`relative h-[21rem] shrink-0 overflow-hidden rounded-xl bg-[var(--charcoal)] transition-[box-shadow] duration-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--gold)] sm:h-[25rem] ${
                     isActive ? "ring-1 ring-[var(--gold-40)] ring-offset-2 ring-offset-[var(--ivory)]" : ""
                   }`}
                 >

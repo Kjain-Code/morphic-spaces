@@ -97,7 +97,7 @@ export function ServicesHero() {
           >
             <motion.div style={{ y: prefersReducedMotion ? 0 : imageY }} className="absolute -inset-y-10 inset-x-0">
               <Image
-                src="/images/services/service-render-1.png"
+                src="/images/projects/architecture/residence-banur.jpg"
                 alt="A Morphic Spaces residence facade, evening"
                 fill
                 sizes="(min-width: 1024px) 48vw, 90vw"
@@ -116,8 +116,8 @@ export function ServicesHero() {
             className="absolute bottom-6 left-0 z-10 h-36 w-32 overflow-hidden border border-[var(--gold-30)] bg-[var(--graphite)] sm:bottom-10 sm:h-52 sm:w-44 lg:bottom-20"
           >
             <Image
-              src="/images/services/service-render-2.png"
-              alt="Architectural material detail"
+              src="/images/projects/architecture/residence-yamuna-nagar.jpg"
+              alt="A Morphic Spaces residence facade detail"
               fill
               sizes="11rem"
               className="object-cover"
