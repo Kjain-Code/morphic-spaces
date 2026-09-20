@@ -18,8 +18,10 @@ export interface VideoScrubberProps {
   progress: MotionValue<number>;
 }
 
-/** currentTime eases toward targetTime by this fraction per frame — the "scrub feel." Tuned within the requested 0.08–0.18 range. */
+/** currentTime eases toward targetTime by this fraction per 60fps frame — the "scrub feel." Tuned within the requested 0.08–0.18 range. Applied per elapsed time (see tick), so a slower laptop gets the same feel instead of a lagging one. */
 const DAMPING = 0.12;
+/** Don't chase differences smaller than one video frame (24fps) — they change nothing on screen but still cost a decode. */
+const MIN_SEEK_DELTA_S = 1 / 24;
 /** Avoid issuing a new network/decode seek immediately after every completed seek. */
 const MIN_SEEK_INTERVAL_MS = 50;
 /** Replace a stale long-running seek when the scroll target has moved materially. */
@@ -113,11 +115,18 @@ export function VideoScrubber({ wrapperRef, progress }: VideoScrubberProps) {
   // imperative — refs only, no React state, so this never triggers a render.
   useEffect(() => {
     let frame = 0;
+    let lastFrameAt = performance.now();
 
     const tick = () => {
+      const frameNow = performance.now();
+      // Frame-rate independent easing: identical to the old fixed 0.12 at 60fps,
+      // but on a laptop running 30fps it eases twice as far per frame.
+      const elapsedFrames = Math.min((frameNow - lastFrameAt) / (1000 / 60), 6);
+      lastFrameAt = frameNow;
+      const damping = 1 - Math.pow(1 - DAMPING, elapsedFrames);
       const video = videoRef.current;
       if (video && durationRef.current > 0) {
-        currentTimeRef.current += (targetTimeRef.current - currentTimeRef.current) * DAMPING;
+        currentTimeRef.current += (targetTimeRef.current - currentTimeRef.current) * damping;
         // Only issue a new seek once the browser has finished the last one.
         // Writing currentTime every rAF tick (~16ms) regardless of `seeking`
         // works locally because a filesystem read resolves well inside that
@@ -130,7 +139,7 @@ export function VideoScrubber({ wrapperRef, progress }: VideoScrubberProps) {
         const targetDelta = Math.abs(video.currentTime - currentTimeRef.current);
         const canSeek = now - lastSeekAtRef.current >= MIN_SEEK_INTERVAL_MS;
         const staleSeek = video.seeking && now - lastSeekAtRef.current >= STALE_SEEK_INTERVAL_MS && targetDelta > 1;
-        if ((!video.seeking || staleSeek) && canSeek && targetDelta > 0.01) {
+        if ((!video.seeking || staleSeek) && canSeek && targetDelta > MIN_SEEK_DELTA_S) {
           video.currentTime = currentTimeRef.current;
           lastSeekAtRef.current = now;
         }
