@@ -185,7 +185,7 @@ export const SERVICES: Service[] = [
       "Layout Replanning",
       "Material & Finish Upgradation",
       "Adaptive Reuse",
-      "Design & Documentation",
+      "Design",
     ],
     philosophyHeading: "Respecting what's already there.",
     philosophyBody:

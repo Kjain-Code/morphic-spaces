@@ -1,319 +1,174 @@
 "use client";
 
 import Image from "next/image";
-import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
+import { motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import type { Project } from "@/components/projects/project-data";
 import { useIsReducedMotion } from "@/lib/use-reduced-motion";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-function ExploreIcon(props: { className?: string }) {
-  return (
-    <svg viewBox="0 0 40 40" fill="none" className={props.className} aria-hidden="true">
-      <circle cx="20" cy="20" r="18.5" stroke="currentColor" strokeWidth="0.75" />
-      <path d="M10 20h20m0 0-5-5m5 5-5 5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
-    </svg>
-  );
+/** How long each project stays in the centre before the next one slides in. */
+const SLIDE_MS = 1500;
+/** Duration of the slide itself. */
+const MOVE_S = 0.65;
+
+/**
+ * Per-slot layout for the coverflow. Offset 0 is the large centre card;
+ * ±1 / ±2 are the smaller cards tucked behind it on either side (the
+ * fpssubtitle.com "Featured Films" reference). Anything further out sits
+ * just beyond ±2, fully transparent, so cards fade in from the right and
+ * fade out to the left as the strip advances. `x` is a percentage of the
+ * card's own width.
+ */
+const SLOTS: Record<number, { x: number; scale: number; opacity: number; shade: number }> = {
+  0: { x: 0, scale: 1, opacity: 1, shade: 0 },
+  1: { x: 72, scale: 0.74, opacity: 1, shade: 0.35 },
+  2: { x: 123, scale: 0.56, opacity: 0.9, shade: 0.55 },
+  3: { x: 160, scale: 0.44, opacity: 0, shade: 0.7 },
+};
+
+function slotFor(offset: number) {
+  const abs = Math.min(Math.abs(offset), 3);
+  const slot = SLOTS[abs];
+  const sign = offset < 0 ? -1 : 1;
+  return { ...slot, x: slot.x * sign };
 }
 
 /**
- * "Drag to Explore" — a horizontal strip of narrow project tiles that
- * expands the hovered (or tapped, on tablets) one into a wide preview,
- * adapted from the client's own supplied Skiper "HoverExpand" reference:
- * kept the concept (narrow rests, one wide active tile, image + caption)
- * but rebuilt on next/image, this codebase's own EASE/color tokens, and a
- * slower power-out-style transition so it reads as considered rather than
- * snappy. The track is independently draggable; the page itself never takes
- * on the horizontal overflow. It also drifts on its own — a slow, reversing
- * auto-scroll that pauses the moment a visitor hovers or drags — so the
- * collection reveals itself without requiring a first interaction.
+ * "Selected Work" — an automatic horizontal coverflow carousel. One project
+ * sits large in the centre and every few seconds the next one slides in from
+ * the right while the previous one steps back to the left. No dragging,
+ * clicking or hovering needed — it simply keeps moving through the whole
+ * collection, looping endlessly. It pauses only while it is off-screen or
+ * the tab is hidden, so it never jumps ahead unseen.
  */
 export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
-  const [activeId, setActiveId] = useState<string | null>(projects[0]?.id ?? null);
-  const [isDragging, setIsDragging] = useState(false);
-  const galleryRef = useRef<HTMLDivElement>(null);
-  const dragState = useRef({ active: false, moved: false, startX: 0, startScrollLeft: 0 });
-  const suppressClick = useRef(false);
-  const autoScrollState = useRef({ direction: 1 as 1 | -1, resumeAt: 0 });
+  const [active, setActive] = useState(0);
+  const [inView, setInView] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useIsReducedMotion();
-  const activeIndex = Math.max(
-    0,
-    projects.findIndex((project) => project.id === activeId),
-  );
-  const activeProject = projects[activeIndex] ?? projects[0];
+  const total = projects.length;
 
+  // Only run while the section is actually on screen.
   useEffect(() => {
-    if (!activeProject) return;
-    const gallery = galleryRef.current;
-    if (!gallery) return;
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { threshold: 0.2 });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
-    const updateActiveProject = () => {
-      const galleryCenter = gallery.getBoundingClientRect().left + gallery.clientWidth / 2;
-      let closestProject = activeProject;
-      let closestDistance = Number.POSITIVE_INFINITY;
-
-      gallery.querySelectorAll<HTMLElement>("[data-project-index]").forEach((tile) => {
-        const rect = tile.getBoundingClientRect();
-        const distance = Math.abs(rect.left + rect.width / 2 - galleryCenter);
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestProject = projects[Number(tile.dataset.projectIndex)] ?? closestProject;
-        }
-      });
-
-      setActiveId((currentId) => (currentId === closestProject.id ? currentId : closestProject.id));
-    };
-
-    // The strip fires 'scroll' continuously — every drag pointermove and
-    // every auto-drift animation frame both set scrollLeft directly, which
-    // can raise far more than one 'scroll' event per frame. Recomputing the
-    // closest tile (an 18-element querySelectorAll + getBoundingClientRect,
-    // which forces layout) on every single one of those was the source of
-    // the reported scroll/drag lag. Gate it behind requestAnimationFrame so
-    // it runs at most once per rendered frame no matter how many 'scroll'
-    // events land in between.
-    let ticking = false;
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        updateActiveProject();
-        ticking = false;
-      });
-    };
-
-    gallery.addEventListener("scroll", onScroll, { passive: true });
-    return () => gallery.removeEventListener("scroll", onScroll);
-  }, [activeProject, projects]);
-
-  // A slow, continuous drift across the strip from the first project to the
-  // last (then back again), so the collection "shows itself" without anyone
-  // touching it. Two things used to stop it dead around the 6th tile:
-  //  1. scrollLeft only holds whole pixels, so adding 0.35px a frame was
-  //     rounded away and the strip never moved — the fractional position is
-  //     now tracked here in `pos` and only written back to scrollLeft;
-  //  2. CSS scroll-snap (mandatory) pulled the strip back to the nearest tile
-  //     after every nudge — snapping is removed from the track below.
-  // It pauses while a visitor drags / swipes / uses the wheel, and picks up
-  // again ~2.5s later. Skipped entirely for reduced motion.
+  // Auto-advance, one project at a time.
   useEffect(() => {
-    if (prefersReducedMotion) return;
-    const gallery = galleryRef.current;
-    if (!gallery) return;
-
-    const SPEED = 32; // px per second — gentle, not a marquee
-    let rafId = 0;
-    let lastTime = performance.now();
-    let pos = gallery.scrollLeft;
-    let lastWritten = gallery.scrollLeft;
-
-    function step(now: number) {
-      const dt = Math.min(now - lastTime, 64) / 1000;
-      lastTime = now;
-
-      const el = gallery!;
-      const maxScroll = el.scrollWidth - el.clientWidth;
-      const userBusy = dragState.current.active || now < autoScrollState.current.resumeAt;
-
-      // If something else moved the strip (a drag, the wheel, touch), follow it.
-      if (Math.abs(el.scrollLeft - lastWritten) > 1.5) pos = el.scrollLeft;
-
-      if (!userBusy && maxScroll > 0) {
-        pos += SPEED * dt * autoScrollState.current.direction;
-        if (pos >= maxScroll) {
-          pos = maxScroll;
-          autoScrollState.current.direction = -1;
-        } else if (pos <= 0) {
-          pos = 0;
-          autoScrollState.current.direction = 1;
-        }
-        el.scrollLeft = pos;
-        lastWritten = el.scrollLeft;
-      } else {
-        pos = el.scrollLeft;
-        lastWritten = el.scrollLeft;
-      }
-
-      rafId = requestAnimationFrame(step);
-    }
-
-    rafId = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(rafId);
-  }, [prefersReducedMotion]);
-
-  function pauseAutoScroll(ms = 2500) {
-    autoScrollState.current.resumeAt = performance.now() + ms;
-  }
-
-  function handlePointerDown(event: ReactPointerEvent<HTMLDivElement>) {
-    const gallery = galleryRef.current;
-    if (!gallery) return;
-
-    dragState.current = {
-      active: true,
-      moved: false,
-      startX: event.clientX,
-      startScrollLeft: gallery.scrollLeft,
+    if (!inView || total < 2) return;
+    let timer: ReturnType<typeof setTimeout>;
+    const tick = () => {
+      timer = setTimeout(() => {
+        if (document.visibilityState === "visible") setActive((i) => (i + 1) % total);
+        tick();
+      }, SLIDE_MS);
     };
-    suppressClick.current = false;
-    setIsDragging(false);
-    pauseAutoScroll();
-    gallery.setPointerCapture(event.pointerId);
-  }
-
-  function handlePointerMove(event: ReactPointerEvent<HTMLDivElement>) {
-    const gallery = galleryRef.current;
-    if (!gallery || !dragState.current.active) return;
-
-    const distance = event.clientX - dragState.current.startX;
-    if (Math.abs(distance) < 5 && !dragState.current.moved) return;
-
-    dragState.current.moved = true;
-    suppressClick.current = true;
-    setIsDragging(true);
-    gallery.scrollLeft = dragState.current.startScrollLeft - distance;
-  }
-
-  function handlePointerUp(event: ReactPointerEvent<HTMLDivElement>) {
-    const gallery = galleryRef.current;
-    if (gallery?.hasPointerCapture(event.pointerId)) gallery.releasePointerCapture(event.pointerId);
-    dragState.current.active = false;
-    setIsDragging(false);
-    pauseAutoScroll();
-  }
-
-  function handleTileClick(event: React.MouseEvent<HTMLAnchorElement>, project: Project) {
-    if (suppressClick.current) {
-      event.preventDefault();
-      suppressClick.current = false;
-      return;
-    }
-    // Tap-to-expand, not hover-to-expand: the first tap on a tile just
-    // widens it into preview (never navigates); tapping the tile again,
-    // now that it's already the active/expanded one, follows the link.
-    if (activeId !== project.id) {
-      event.preventDefault();
-      setActiveId(project.id);
-    }
-  }
+    tick();
+    return () => clearTimeout(timer);
+  }, [inView, total, active]);
 
   return (
-    <section className="border-t border-[var(--charcoal-10)] bg-[var(--ivory)] py-16 sm:py-20" aria-label="Selected work">
+    <section
+      ref={sectionRef}
+      className="overflow-hidden border-t border-[var(--charcoal-10)] bg-[var(--ivory)] py-12 sm:py-14"
+      aria-label="Selected work"
+    >
       <div className="mx-auto max-w-7xl px-6 sm:px-10">
-        <div className="flex flex-col gap-4 border-b border-[var(--charcoal-15)] pb-8 sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex flex-col gap-4 border-b border-[var(--charcoal-15)] pb-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
             <p className="text-[13px] font-semibold uppercase tracking-[0.3em] text-[var(--gold-dark)]">Selected Work</p>
-            <p className="mt-3 max-w-md text-sm font-light leading-relaxed text-[var(--charcoal-70)] sm:text-base">
-              {projects.length} projects across architecture, interiors, visualization and commercial work — drag to move
-              through the collection.
-            </p>
-          </div>
-          <div className="flex items-center gap-4 self-start text-[10px] uppercase tracking-[0.2em] text-[var(--charcoal-70)] sm:self-end">
-            <motion.span
-              animate={prefersReducedMotion ? undefined : { x: [0, 4, 0] }}
-              transition={prefersReducedMotion ? undefined : { duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-            >
-              Drag to explore
-            </motion.span>
-            <ExploreIcon className="h-11 w-11 text-[var(--gold-dark)]" />
+            <p className="mt-3 text-sm font-light uppercase tracking-[0.22em] text-[var(--charcoal-70)]">Through the collection</p>
           </div>
         </div>
+      </div>
 
-        <div className="mt-8 flex items-center justify-between text-[10px] uppercase tracking-[0.22em] text-[var(--taupe)]">
-          <span>Move across the collection</span>
-          <span className="relative flex h-6 min-w-16 items-center justify-end overflow-hidden text-[var(--charcoal-70)]" aria-live="polite">
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.span
-                key={activeProject?.number}
-                initial={{ y: prefersReducedMotion ? 0 : 12, opacity: prefersReducedMotion ? 1 : 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: prefersReducedMotion ? 0 : -12, opacity: prefersReducedMotion ? 1 : 0 }}
-                transition={{ duration: prefersReducedMotion ? 0 : 0.35, ease: EASE }}
+      {/* Stage — full width so the side cards can run off the edges. */}
+      <div className="relative mt-8 sm:mt-10">
+        <div className="relative mx-auto aspect-[3/2] w-[min(66vw,25rem)]">
+          {projects.map((project, index) => {
+            // Shortest signed distance from the active card, looping round.
+            let offset = (index - active + total) % total;
+            if (offset > total / 2) offset -= total;
+            const slot = slotFor(offset);
+            const isCenter = offset === 0;
+            const isHidden = Math.abs(offset) > 2;
+
+            return (
+              <motion.div
+                key={project.id}
+                initial={false}
+                animate={{ x: `${slot.x}%`, scale: slot.scale, opacity: slot.opacity }}
+                transition={{ duration: prefersReducedMotion ? 0 : MOVE_S, ease: EASE }}
+                className="absolute inset-0 overflow-hidden rounded-xl bg-[var(--charcoal)] shadow-[0_24px_60px_-20px_rgba(23,22,20,0.45)]"
+                style={{ zIndex: 10 - Math.abs(offset), pointerEvents: isCenter ? "auto" : "none" }}
+                aria-hidden={!isCenter}
               >
-                {activeProject?.number} / {String(projects.length).padStart(2, "0")}
-              </motion.span>
-            </AnimatePresence>
-          </span>
-        </div>
+                <Image
+                  src={project.image}
+                  alt={isCenter ? `${project.title} — ${project.category} project in ${project.location}` : ""}
+                  fill
+                  sizes="(min-width: 640px) 400px, 66vw"
+                  priority={index < 3}
+                  loading={index < 3 ? undefined : isHidden ? "lazy" : "eager"}
+                  className="object-cover"
+                />
 
-        <div className="relative mt-3 -mx-6 sm:-mx-10">
-          <div
-            ref={galleryRef}
-            onPointerDown={handlePointerDown}
-            onPointerMove={handlePointerMove}
-            onPointerUp={handlePointerUp}
-            onPointerCancel={handlePointerUp}
-            onWheel={() => pauseAutoScroll()}
-            onTouchStart={() => pauseAutoScroll(4000)}
-            className={`flex gap-1.5 overflow-x-auto px-6 pb-3 scrollbar-none sm:gap-2 sm:px-10 ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
-            style={{ touchAction: "pan-y", overflowAnchor: "none" }}
-            aria-label="Selected projects. Drag horizontally to explore."
-          >
-            <div className="flex w-max min-w-full shrink-0 justify-start gap-1.5 sm:gap-2">
-              {projects.map((project, index) => {
-              const isActive = activeId === project.id;
+                {/* Side cards sit slightly darker so the centre one reads first. */}
+                <motion.div
+                  initial={false}
+                  animate={{ opacity: slot.shade }}
+                  transition={{ duration: prefersReducedMotion ? 0 : MOVE_S, ease: EASE }}
+                  className="absolute inset-0 bg-black"
+                />
 
-              return (
-                <motion.a
-                  key={project.id}
-                  href={`/projects/${project.id}`}
-                  data-project-index={index}
-                  initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                    width: isActive ? "min(20rem, 58vw)" : "5rem",
-                  }}
-                  transition={{
-                    opacity: { duration: prefersReducedMotion ? 0 : 0.4, delay: prefersReducedMotion ? 0 : index * 0.04 },
-                    y: { duration: prefersReducedMotion ? 0 : 0.5, delay: prefersReducedMotion ? 0 : index * 0.04, ease: EASE },
-                    width: { duration: prefersReducedMotion ? 0 : 0.7, ease: EASE },
-                  }}
-                  onFocus={() => setActiveId(project.id)}
-                  onClick={(event) => handleTileClick(event, project)}
-                  aria-label={`${project.title} — ${project.category}, ${project.location}, ${project.year}`}
-                  className={`relative h-[21rem] shrink-0 overflow-hidden rounded-xl bg-[var(--charcoal)] transition-[box-shadow] duration-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--gold)] sm:h-[25rem] ${
-                    isActive ? "ring-1 ring-[var(--gold-40)] ring-offset-2 ring-offset-[var(--ivory)]" : ""
-                  }`}
+                {/* Caption — only on the centre card. */}
+                <motion.div
+                  initial={false}
+                  animate={{ opacity: isCenter ? 1 : 0, y: isCenter || prefersReducedMotion ? 0 : 12 }}
+                  transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: isCenter && !prefersReducedMotion ? 0.35 : 0, ease: EASE }}
+                  className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/75 via-black/10 to-transparent p-5 sm:p-7"
                 >
-                  <Image
-                    src={project.image}
-                    alt={`${project.title} — ${project.category} project in ${project.location}`}
-                    fill
-                    sizes="(min-width: 640px) 320px, 80vw"
-                    className="object-cover transition-[filter,transform] duration-700"
-                    style={{ filter: isActive ? "brightness(0.96)" : "brightness(0.66)", transform: isActive ? "scale(1.03)" : "scale(1)" }}
+                  <span className="text-[10px] uppercase tracking-[0.25em] text-[var(--gold)]">
+                    {project.number} — {project.category}
+                  </span>
+                  <p className="mt-2 font-serif text-xl font-light leading-tight text-[var(--ivory-90)] sm:text-3xl">{project.title}</p>
+                  <p className="mt-2 text-[10px] uppercase tracking-[0.18em] text-[var(--ivory-55)]">
+                    {project.location} · {project.year}
+                  </p>
+                </motion.div>
+
+                {isCenter && (
+                  <a
+                    href={`/projects/${project.id}`}
+                    className="absolute inset-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--gold)]"
+                    aria-label={`${project.title} — ${project.category}, ${project.location}, ${project.year}`}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/5 to-transparent" />
-                  <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
-                    <span className="text-[10px] uppercase tracking-[0.25em] text-[var(--gold)]">{project.number} — {project.category}</span>
-                    <AnimatePresence initial={false}>
-                      {isActive && (
-                        <motion.div
-                          initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 14 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: prefersReducedMotion ? 0 : 8 }}
-                          transition={{ duration: prefersReducedMotion ? 0 : 0.45, ease: EASE }}
-                        >
-                          <p className="mt-2 font-serif text-xl font-light leading-tight text-[var(--ivory-90)] sm:text-2xl">{project.title}</p>
-                          <p className="mt-2 text-[10px] uppercase tracking-[0.18em] text-[var(--ivory-55)]">{project.location} · {project.year}</p>
-                          <span className="mt-2 inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-[var(--gold)]">
-                            View Project
-                            <span aria-hidden="true">→</span>
-                          </span>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                </motion.a>
-                );
-              })}
-            </div>
-          </div>
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-[var(--ivory)] to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-[var(--ivory)] to-transparent" />
+                )}
+              </motion.div>
+            );
+          })}
         </div>
+
+        {/* Soft fade at both edges so the outer cards melt into the page. */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-10 bg-gradient-to-r from-[var(--ivory)] to-transparent sm:w-32" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-20 w-10 bg-gradient-to-l from-[var(--ivory)] to-transparent sm:w-32" />
+      </div>
+
+      {/* Progress line — fills while the current project is on show. */}
+      <div className="mx-auto mt-8 h-px w-[min(66vw,25rem)] overflow-hidden bg-[var(--charcoal-10)]">
+        <motion.div
+          key={active}
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: inView ? 1 : 0 }}
+          transition={{ duration: inView ? SLIDE_MS / 1000 : 0, ease: "linear" }}
+          className="h-full origin-left bg-[var(--gold-dark)]"
+        />
       </div>
     </section>
   );

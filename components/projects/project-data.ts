@@ -216,8 +216,19 @@ export const PROJECTS: Project[] = [
     gallery: ["/images/projects/visualization/karnal-corner-gallery-1.jpg"],
   },
   {
-    id: "residence-at-banur",
+    id: "karnal-jali-concept",
     number: "16",
+    category: "Residential",
+    title: "Jali Residence Concept, Karnal",
+    location: "Karnal",
+    year: "2025",
+    description:
+      "A slim three-storey Karnal residence concept, its white and stone facade framed by a deep, timber-lined roof canopy that shades a planted top-floor terrace. A full-height terracotta jali screen runs up beside the stair core, glowing warmly once the wall lights come on, while stacked balconies with glass railings open the front rooms to the street. At ground level a low boundary wall, a slatted gate and a simple name plaque keep the entrance calm and private.",
+    image: "/images/projects/visualization/karnal-jali-concept.jpg",
+  },
+  {
+    id: "residence-at-banur",
+    number: "17",
     category: "Residential",
     title: "Residence at Banur",
     location: "Banur",
@@ -229,7 +240,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "residence-at-banur-interior",
-    number: "17",
+    number: "18",
     category: "Interiors",
     title: "Residence at Banur, Interior",
     location: "Banur",
@@ -245,7 +256,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "arora-residence-panchkula",
-    number: "18",
+    number: "19",
     category: "Residential",
     title: "Arora Residence, Panchkula",
     location: "Panchkula",
@@ -257,7 +268,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "panchkula-duplex-interior",
-    number: "19",
+    number: "20",
     category: "Interiors",
     title: "A Panchkula Duplex, Interior",
     location: "Panchkula",
@@ -273,7 +284,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "residential-apartments-concept",
-    number: "20",
+    number: "21",
     category: "Residential",
     title: "Residential Apartments Concept",
     location: "India",
@@ -285,7 +296,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "commercial-building-concept",
-    number: "21",
+    number: "22",
     category: "Commercial",
     title: "Commercial Building Concept",
     location: "India",
@@ -296,7 +307,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "group-housing-concept",
-    number: "22",
+    number: "23",
     category: "Residential",
     title: "Group Housing Concept",
     location: "India",
@@ -315,7 +326,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "pg-building-concept",
-    number: "23",
+    number: "24",
     category: "Residential",
     title: "PG Building Concept",
     location: "India",
