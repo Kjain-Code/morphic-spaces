@@ -43,7 +43,6 @@ export const SERVICES: Service[] = [
       "Master Planning",
       "Concept Development",
       "Building Planning",
-      "Municipal & Approval Drawings",
       "Working Drawings",
       "Construction Documentation",
       "Consultant Coordination",

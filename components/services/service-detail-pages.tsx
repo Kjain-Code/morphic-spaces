@@ -185,7 +185,10 @@ function buildGalleryItems(service: Service, images: string[]): GalleryItem[] {
     }))
     .map((item, position) => ({ item, order: rank(item, position) }))
     .sort((a, b) => a.order - b.order)
-    .map(({ item }) => item);
+    .map(({ item }) => item)
+    // One tile per project: if a project has several photos in this folder
+    // (main image + gallery shots), keep only the first so its name doesn't repeat.
+    .filter((item, index, all) => !item.project || all.findIndex((other) => other.project?.id === item.project?.id) === index);
 }
 
 function ServiceGallery({

@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { animate, motion, useMotionValue } from "motion/react";
+import { useCallback, useEffect, useRef, useState, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent } from "react";
 import type { Project } from "@/components/projects/project-data";
 import { useIsReducedMotion } from "@/lib/use-reduced-motion";
 
@@ -41,14 +41,113 @@ function slotFor(offset: number) {
  * the right while the previous one steps back to the left. No dragging,
  * clicking or hovering needed — it simply keeps moving through the whole
  * collection, looping endlessly. It pauses only while it is off-screen or
- * the tab is hidden, so it never jumps ahead unseen.
+ * the tab is hidden, so it never jumps ahead unseen. Visitors can also drag
+ * (mouse), swipe (touch) or scroll sideways (trackpad) to move through it.
  */
 export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
   const [active, setActive] = useState(0);
   const [inView, setInView] = useState(false);
+  const [dragging, setDragging] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useIsReducedMotion();
   const total = projects.length;
+
+  // ---- Drag / swipe -------------------------------------------------------
+  // The auto-advance below keeps running exactly as before; dragging just
+  // lets the visitor take over for a moment. While a drag is in progress the
+  // stage follows the pointer, auto-advance pauses, and on release it steps
+  // to the previous/next project(s) and the auto timer restarts from there.
+  const dragX = useMotionValue(0);
+  const drag = useRef({ startX: 0, startY: 0, active: false, horizontal: false, moved: false });
+  const wheelLock = useRef(0);
+
+  const step = useCallback(
+    (by: number) => {
+      if (!by || total < 2) return;
+      setActive((i) => (((i + by) % total) + total) % total);
+    },
+    [total],
+  );
+
+  useEffect(() => {
+    if (!dragging) return;
+
+    const onMove = (e: PointerEvent) => {
+      const d = drag.current;
+      const dx = e.clientX - d.startX;
+      const dy = e.clientY - d.startY;
+      // Decide direction once: horizontal = carousel drag, vertical = let the page scroll.
+      if (!d.horizontal) {
+        if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+        if (Math.abs(dy) > Math.abs(dx)) {
+          d.active = false;
+          setDragging(false);
+          return;
+        }
+        d.horizontal = true;
+      }
+      d.moved = true;
+      dragX.set(dx * 0.6);
+    };
+
+    const onUp = (e: PointerEvent) => {
+      const d = drag.current;
+      const dx = e.clientX - d.startX;
+      d.active = false;
+      setDragging(false);
+      if (d.horizontal) {
+        const cardW = stageRef.current?.offsetWidth ?? 400;
+        const threshold = Math.min(60, cardW * 0.15);
+        if (Math.abs(dx) > threshold) {
+          // A long fling can skip more than one project.
+          const steps = Math.max(1, Math.round(Math.abs(dx) / (cardW * 0.7)));
+          step(dx < 0 ? steps : -steps);
+        }
+      }
+      animate(dragX, 0, { duration: prefersReducedMotion ? 0 : MOVE_S, ease: EASE });
+    };
+
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onUp);
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onUp);
+    };
+  }, [dragging, dragX, step, prefersReducedMotion]);
+
+  const onPointerDown = (e: ReactPointerEvent) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    drag.current = { startX: e.clientX, startY: e.clientY, active: true, horizontal: false, moved: false };
+    setDragging(true);
+  };
+
+  // Stop the centre card's link from opening after a drag.
+  const onClickCapture = (e: ReactMouseEvent) => {
+    if (drag.current.moved) {
+      e.preventDefault();
+      e.stopPropagation();
+      drag.current.moved = false;
+    }
+  };
+
+  // Trackpad / shift+wheel horizontal scrolling — one project per gesture.
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el) return;
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY) || Math.abs(e.deltaX) < 12) return;
+      e.preventDefault();
+      const now = Date.now();
+      if (now - wheelLock.current < MOVE_S * 1000) return;
+      wheelLock.current = now;
+      step(e.deltaX > 0 ? 1 : -1);
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [step]);
 
   // Only run while the section is actually on screen.
   useEffect(() => {
@@ -61,7 +160,7 @@ export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
 
   // Auto-advance, one project at a time.
   useEffect(() => {
-    if (!inView || total < 2) return;
+    if (!inView || dragging || total < 2) return;
     let timer: ReturnType<typeof setTimeout>;
     const tick = () => {
       timer = setTimeout(() => {
@@ -71,7 +170,7 @@ export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
     };
     tick();
     return () => clearTimeout(timer);
-  }, [inView, total, active]);
+  }, [inView, dragging, total, active]);
 
   return (
     <section
@@ -89,8 +188,14 @@ export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
       </div>
 
       {/* Stage — full width so the side cards can run off the edges. */}
-      <div className="relative mt-8 sm:mt-10">
-        <div className="relative mx-auto aspect-[3/2] w-[min(66vw,25rem)]">
+      <div
+        className={`relative mt-8 select-none sm:mt-10 ${dragging ? "cursor-grabbing" : "cursor-grab"}`}
+        style={{ touchAction: "pan-y" }}
+        onPointerDown={onPointerDown}
+        onClickCapture={onClickCapture}
+        onDragStart={(e) => e.preventDefault()}
+      >
+        <motion.div ref={stageRef} style={{ x: dragX }} className="relative mx-auto aspect-[3/2] w-[min(66vw,25rem)]">
           {projects.map((project, index) => {
             // Shortest signed distance from the active card, looping round.
             let offset = (index - active + total) % total;
@@ -113,6 +218,7 @@ export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
                   src={project.image}
                   alt={isCenter ? `${project.title} — ${project.category} project in ${project.location}` : ""}
                   fill
+                  draggable={false}
                   sizes="(min-width: 640px) 400px, 66vw"
                   priority={index < 3}
                   loading={index < 3 ? undefined : isHidden ? "lazy" : "eager"}
@@ -153,7 +259,7 @@ export function ProjectFilmstrip({ projects }: { projects: Project[] }) {
               </motion.div>
             );
           })}
-        </div>
+        </motion.div>
 
         {/* Soft fade at both edges so the outer cards melt into the page. */}
         <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-10 bg-gradient-to-r from-[var(--ivory)] to-transparent sm:w-32" />
