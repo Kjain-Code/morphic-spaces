@@ -8,6 +8,7 @@ import { fraunces } from "@/lib/fonts";
 import { useIsReducedMotion } from "@/lib/use-reduced-motion";
 import { PROJECTS, type Project } from "@/components/projects/project-data";
 import { SERVICES, type Service } from "@/lib/services-data";
+import { RelatedReading } from "@/components/services/related-reading";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -360,6 +361,7 @@ function ArchitecturePage({ service, images }: { service: Service; images: strin
 
       <SubServicesList service={service} />
       <ServiceGallery items={items} service={service} label="Selected architecture" heading="Built, Lived, Remembered." />
+      <RelatedReading service={service} />
       <NextService service={service} />
       <FinalCTA />
     </>
@@ -421,6 +423,7 @@ function InteriorPage({ service, images }: { service: Service; images: string[] 
 
       <SubServicesList service={service} />
       <ServiceGallery items={items} service={service} label="Selected interiors" heading="Crafted, Lived, Cherished." />
+      <RelatedReading service={service} />
       <NextService service={service} />
       <FinalCTA />
     </>
@@ -477,6 +480,7 @@ function LandscapePage({ service, images }: { service: Service; images: string[]
 
       <SubServicesList service={service} />
       <ServiceGallery items={items} service={service} label="Landscape in context" heading="Planted, Grown, Enjoyed." />
+      <RelatedReading service={service} />
       <NextService service={service} />
       <FinalCTA />
     </>
@@ -566,6 +570,7 @@ function VisualizationPage({ service, images }: { service: Service; images: stri
 
       <SubServicesList service={service} />
       <ServiceGallery items={items} service={service} label="Visualized in detail" heading="Rendered, Reviewed, Realized." />
+      <RelatedReading service={service} />
       <NextService service={service} />
       <FinalCTA />
     </>
@@ -639,6 +644,7 @@ function ConsultancyPage({ service, images }: { service: Service; images: string
 
       <SubServicesList service={service} />
       <ServiceGallery items={items} service={service} label="Advised in context" heading="Advised, Refined, Delivered." />
+      <RelatedReading service={service} />
       <NextService service={service} />
       <FinalCTA />
     </>
@@ -713,6 +719,7 @@ function RenovationPage({ service, images }: { service: Service; images: string[
 
       <SubServicesList service={service} />
       <ServiceGallery items={items} service={service} label="Selected renovations" heading="Reimagined, Rebuilt, Renewed." />
+      <RelatedReading service={service} />
       <NextService service={service} />
       <FinalCTA />
     </>
