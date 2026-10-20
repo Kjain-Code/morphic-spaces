@@ -3,9 +3,12 @@ import { HomePage } from "@/components/home/home-page";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Architecture & Interior Design Studio in Chandigarh",
+  // Absolute: the homepage leads with the brand, so the "| Morphic Spaces"
+  // template would only repeat it.
+  title: "Morphic Spaces | Architecture & Interior Design Studio, Chandigarh Tricity",
+  absoluteTitle: true,
   description:
-    "Morphic Spaces shapes residential, commercial and bespoke spaces through architecture, interior design, materiality and detail across Chandigarh, the Tricity and Karnal.",
+    "Architecture and interior design studio shaping residential, commercial and bespoke spaces across Chandigarh, Panchkula, Mohali, Karnal and Gurugram.",
   path: "/",
   imageAlt: "Morphic Spaces architectural residence at dusk",
 });

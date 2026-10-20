@@ -4,42 +4,28 @@ import { PROJECTS } from "@/components/projects/project-data";
 import { SERVICES } from "@/lib/services-data";
 
 /**
- * Generates /sitemap.xml at build/request time (Next.js App Router
- * convention — no separate library needed). This was entirely missing
- * before, which is why Google Search Console couldn't fetch a sitemap no
- * matter what URL was submitted: there was nothing being served at
- * /sitemap.xml. Every real, indexable route is listed here — the four
- * static pages, every service detail page and every project detail page —
- * generated straight from the same data files the site itself renders from,
- * so a new project or service is picked up automatically. /recognition is
- * deliberately left out: it's still an empty placeholder page, and listing
- * a page with no real content in a sitemap does the site's SEO more harm
- * than good.
+ * /sitemap.xml, generated from the same data files the site renders from,
+ * so a new project or service is listed automatically on the next build.
+ * Only canonical, indexable, 200-status URLs are listed; /recognition is
+ * left out because it is a noindex placeholder.
+ *
+ * No <lastmod>: the only value available here was "now" at build time,
+ * which would claim every URL changed on every deploy. Google ignores
+ * lastmod that isn't consistently accurate, so omitting it is better than
+ * a misleading one. (changefreq/priority are likewise ignored by Google and
+ * have been dropped to keep the file honest and minimal.)
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
-
-  const staticRoutes: MetadataRoute.Sitemap = [
-    { url: `${SITE_URL}/`, lastModified, changeFrequency: "monthly", priority: 1 },
-    { url: `${SITE_URL}/about`, lastModified, changeFrequency: "yearly", priority: 0.7 },
-    { url: `${SITE_URL}/services`, lastModified, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${SITE_URL}/projects`, lastModified, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${SITE_URL}/contact`, lastModified, changeFrequency: "yearly", priority: 0.6 },
+  const paths = [
+    "/",
+    "/about",
+    "/services",
+    ...SERVICES.map((service) => `/services/${service.slug}`),
+    "/projects",
+    ...PROJECTS.map((project) => `/projects/${project.id}`),
+    "/contact",
   ];
 
-  const serviceRoutes: MetadataRoute.Sitemap = SERVICES.map((service) => ({
-    url: `${SITE_URL}/services/${service.slug}`,
-    lastModified,
-    changeFrequency: "monthly",
-    priority: 0.8,
-  }));
-
-  const projectRoutes: MetadataRoute.Sitemap = PROJECTS.map((project) => ({
-    url: `${SITE_URL}/projects/${project.id}`,
-    lastModified,
-    changeFrequency: "monthly",
-    priority: 0.7,
-  }));
-
-  return [...staticRoutes, ...serviceRoutes, ...projectRoutes];
+  // The homepage is listed exactly as its canonical tag renders it (no trailing slash).
+  return paths.map((path) => ({ url: path === "/" ? SITE_URL : `${SITE_URL}${path}` }));
 }

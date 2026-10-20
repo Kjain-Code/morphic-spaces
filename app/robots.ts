@@ -2,26 +2,18 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo";
 
 /**
- * Generates /robots.txt. Also missing entirely before this — between this
- * and the missing sitemap (see sitemap.ts), search engines had no reliable
- * way to discover the site's pages or find the sitemap on their own.
+ * /robots.txt — everything public is crawlable, CSS/JS/images included.
  *
- * /recognition is intentionally NOT disallowed here even though it's still
- * an empty placeholder route: disallowing crawl would stop Googlebot from
- * ever reaching the page's own `noindex` meta tag (see app/recognition/
- * page.tsx), which can paradoxically leave the bare URL indexed with no
- * snippet if it's ever discovered via an external link. Letting it crawl
- * and rely on `noindex` is the combination Google actually recommends.
+ * /recognition is intentionally NOT disallowed even though it's still an
+ * empty placeholder: a crawl block would stop Googlebot from ever reading
+ * that page's own `noindex` tag (see app/recognition/page.tsx). The
+ * non-standard `Host:` line that used to be emitted here was dropped — only
+ * Yandex ever read it, and the preferred domain is already signalled by
+ * canonicals and the sitemap.
  */
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [
-      {
-        userAgent: "*",
-        allow: "/",
-      },
-    ],
+    rules: [{ userAgent: "*", allow: "/" }],
     sitemap: `${SITE_URL}/sitemap.xml`,
-    host: SITE_URL,
   };
 }

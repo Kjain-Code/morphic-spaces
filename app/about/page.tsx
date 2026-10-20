@@ -11,9 +11,9 @@ import { Footer } from "@/components/layout/footer";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "About Morphic Spaces Studio",
+  title: "About the Studio & Founder Kunal",
   description:
-    "Morphic Spaces is an architecture and interior design studio founded by Kunal, creating distinctive, thoughtful and enduring spaces across residential, commercial and bespoke environments.",
+    "Meet Morphic Spaces, the architecture and interior design studio founded by Kunal — our philosophy, our approach and how we shape homes and commercial spaces.",
   path: "/about",
   imageAlt: "Morphic Spaces interior architecture detail",
 });

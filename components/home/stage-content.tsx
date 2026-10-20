@@ -68,17 +68,25 @@ export function StageContent({ progress }: StageContentProps) {
           className={`absolute inset-0 mx-auto flex w-full max-w-7xl flex-col px-6 sm:px-10 ${POSITION_CLASSES[content.position]}`}
         >
           <div className="max-w-2xl">
-            <p className="text-[11px] uppercase tracking-[0.4em] text-white/75">{content.label}</p>
-            <h1
-              className={`${fraunces.className} mt-5 text-4xl font-light uppercase leading-[0.98] tracking-tight text-white/90 sm:text-6xl lg:text-8xl`}
-            >
-              {content.headlineLines.map((line, index) => (
-                <Fragment key={line}>
-                  {index > 0 && <br />}
-                  {line}
-                </Fragment>
-              ))}
-            </h1>
+            {activeStage === 0 ? (
+              // The opening beat is the page's one H1 (it's what renders on
+              // load, and what crawlers see): brand label + headline in a
+              // single heading. Same classes as below, so it looks identical.
+              <h1>
+                <span className="block text-[11px] uppercase tracking-[0.4em] text-white/75">
+                  {content.label}
+                  <span className="sr-only"> — </span>
+                </span>
+                <StageHeadline lines={content.headlineLines} />
+              </h1>
+            ) : (
+              <>
+                <p className="text-[11px] uppercase tracking-[0.4em] text-white/75">{content.label}</p>
+                <h2>
+                  <StageHeadline lines={content.headlineLines} />
+                </h2>
+              </>
+            )}
             <p
               className={`mt-6 max-w-md text-sm leading-relaxed text-white/80 sm:text-lg ${isRight ? "ml-auto" : "mr-auto pr-16 sm:pr-0"}`}
             >
@@ -88,5 +96,22 @@ export function StageContent({ progress }: StageContentProps) {
         </motion.div>
       </AnimatePresence>
     </div>
+  );
+}
+
+/** The large editorial headline of a beat — a block span so it can sit inside either an h1 or an h2. */
+function StageHeadline({ lines }: { lines: string[] }) {
+  return (
+    <span
+      className={`${fraunces.className} mt-5 block text-4xl font-light uppercase leading-[0.98] tracking-tight text-white/90 sm:text-6xl lg:text-8xl`}
+    >
+      {lines.map((line, index) => (
+        <Fragment key={line}>
+          {index > 0 && <br />}
+          {index > 0 && " "}
+          {line}
+        </Fragment>
+      ))}
+    </span>
   );
 }

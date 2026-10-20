@@ -9,11 +9,12 @@ export const metadata: Metadata = {
     path: "/recognition",
     imageAlt: "Morphic Spaces architecture and interior design studio",
   }),
-  // Placeholder page with no real content yet — robots.ts already disallows
-  // crawling it, but that alone doesn't guarantee it stays out of search
-  // results if linked externally, so this explicitly overrides the
-  // index:true that createPageMetadata sets by default.
-  robots: { index: false, follow: false },
+  // Placeholder page with no real content yet. robots.ts deliberately does
+  // NOT block crawling it (a crawl block would hide this noindex), and it is
+  // excluded from sitemap.xml. Links are still followed so equity from any
+  // stray inbound link flows to the rest of the site. Switch back to
+  // createPageMetadata's default (index) once real recognition content exists.
+  robots: { index: false, follow: true },
 };
 
 export default function RecognitionPage() {

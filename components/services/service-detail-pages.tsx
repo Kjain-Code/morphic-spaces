@@ -11,11 +11,31 @@ import { SERVICES, type Service } from "@/lib/services-data";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-function Headline({ lines, className = "" }: { lines: ReactNode[]; className?: string }) {
+/**
+ * The page's H1. `kicker` (the service-name eyebrow above the headline) is
+ * rendered INSIDE the h1 so the heading names the service — "Architecture &
+ * Planning — We Design The Framework For Living." — instead of only the
+ * editorial line. The h1 itself carries no styles (preflight resets it), and
+ * the kicker and headline keep exactly the classes/animation they had as
+ * separate elements, so nothing changes visually.
+ */
+function Headline({ lines, className = "", kicker }: { lines: ReactNode[]; className?: string; kicker?: ReactNode }) {
   const reduced = useIsReducedMotion();
 
   return (
-    <h1 className={`${fraunces.className} font-light leading-[1.08] tracking-tight ${className}`}>
+    <h1>
+      {kicker && (
+        <motion.span
+          initial={{ opacity: 0, y: reduced ? 0 : 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: reduced ? 0 : 0.7, ease: EASE }}
+          className="block"
+        >
+          {kicker}
+          <span className="sr-only"> — </span>
+        </motion.span>
+      )}
+      <span className={`block ${fraunces.className} font-light leading-[1.08] tracking-tight ${className}`}>
       {lines.map((line, index) => (
         <span key={index} className="block overflow-hidden pb-[0.06em]">
           <motion.span
@@ -28,6 +48,7 @@ function Headline({ lines, className = "" }: { lines: ReactNode[]; className?: s
           </motion.span>
         </span>
       ))}
+      </span>
     </h1>
   );
 }
@@ -81,14 +102,18 @@ function HeroCopy({ service, statement, lines }: { service: Service; statement: 
 
   return (
     <div className="relative z-10">
-      <motion.div
-        initial={{ opacity: 0, y: reduced ? 0 : 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: reduced ? 0 : 0.7, ease: EASE }}
-      >
-        <Eyebrow>{service.number} / 06 &nbsp; {service.title}</Eyebrow>
-      </motion.div>
-      <Headline lines={lines} className="mt-8 max-w-2xl text-4xl text-[var(--ivory-90)] sm:text-6xl lg:text-7xl" />
+      <Headline
+        kicker={
+          <Eyebrow>
+            <span>
+              <span aria-hidden="true">{service.number} / 06 &nbsp; </span>
+              {service.title}
+            </span>
+          </Eyebrow>
+        }
+        lines={lines}
+        className="mt-8 max-w-2xl text-4xl text-[var(--ivory-90)] sm:text-6xl lg:text-7xl"
+      />
       <motion.p
         initial={{ opacity: 0, y: reduced ? 0 : 14 }}
         animate={{ opacity: 1, y: 0 }}
@@ -580,8 +605,8 @@ function ConsultancyPage({ service, images }: { service: Service; images: string
             <Eyebrow>Focused, not full-service</Eyebrow>
             <h2 className={`${fraunces.className} mt-6 text-4xl font-light leading-[1.05] text-[var(--ivory-90)] sm:text-6xl`}>A second opinion, held to the same rigor.</h2>
             <p className="mt-7 max-w-xl text-sm leading-relaxed text-[var(--ivory-55)] sm:text-base">
-              Whether it's reviewing a concept a client already has, unsticking a stalled decision or advising at one
-              key stage, our consultancy work follows the same process as a full project — just scoped to what's
+              Whether it&apos;s reviewing a concept a client already has, unsticking a stalled decision or advising at one
+              key stage, our consultancy work follows the same process as a full project — just scoped to what&apos;s
               actually needed.
             </p>
           </Reveal>
@@ -651,12 +676,12 @@ function RenovationPage({ service, images }: { service: Service; images: string[
       <section id="story" className="border-t border-[var(--ivory-10)] bg-[var(--graphite)] px-6 py-24 sm:px-10 sm:py-32">
         <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-12 lg:gap-16">
           <Reveal className="lg:col-span-4">
-            <Eyebrow>Working with what's there</Eyebrow>
+            <Eyebrow>Working with what&apos;s there</Eyebrow>
             <h2 className={`${fraunces.className} mt-6 text-4xl font-light leading-[1.05] text-[var(--ivory-90)] sm:text-5xl`}>Transformation, not demolition.</h2>
           </Reveal>
           <Reveal delay={0.12} className="lg:col-span-6 lg:col-start-7">
             <p className="max-w-xl text-lg font-light leading-relaxed text-[var(--ivory-70)]">
-              We look for what a structure already does well, then focus our intervention on what's holding it back —
+              We look for what a structure already does well, then focus our intervention on what&apos;s holding it back —
               layout, light, material or identity — so the result feels renewed rather than replaced.
             </p>
             <HeroLine className="mt-10 w-full" />

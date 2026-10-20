@@ -4,9 +4,9 @@ import { ContactForm } from "@/components/contact/contact-form";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Contact Morphic Spaces",
+  title: "Contact Us — Architecture & Interior Design Enquiries",
   description:
-    "Get in touch with Morphic Spaces to talk about your architecture or interior design project — message us on WhatsApp or send an enquiry directly.",
+    "Talk to Morphic Spaces about your architecture or interior project — call +91 90535 11417, WhatsApp us or send an enquiry. Studio at Dhakoli, Punjab.",
   path: "/contact",
   imageAlt: "Morphic Spaces studio contact page architectural detail",
 });

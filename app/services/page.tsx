@@ -11,9 +11,9 @@ import { ServicesClosing } from "@/components/services/services-closing";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Architecture, Interiors & Spatial Design Services",
+  title: "Architecture, Interior Design & 3D Visualization Services",
   description:
-    "Discover Morphic Spaces services in architecture, interior design, 3D visualization, landscape, design consultancy and renovation for residential and bespoke spaces across Chandigarh, Panchkula, Mohali, Karnal and Gurugram.",
+    "Architecture, interior design, 3D visualization, landscape, consultancy and renovation for homes and commercial spaces in Chandigarh, Panchkula, Mohali and Karnal.",
   path: "/services",
   imageAlt: "Morphic Spaces architectural facade and service studio imagery",
 });

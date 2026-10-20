@@ -10,8 +10,9 @@ import { PROJECTS } from "@/components/projects/project-data";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Architecture & Interior Design Projects",
-  description: "Explore Morphic Spaces residential, commercial and interior projects shaped through architecture, materiality and detail.",
+  title: "Architecture & Interior Design Projects in Panchkula, Mohali & Karnal",
+  description:
+    "Residences, interiors, commercial buildings and design concepts by Morphic Spaces across Panchkula, Mohali, Banur, Karnal, Kaithal, Yamuna Nagar and Gurugram.",
   path: "/projects",
   imageAlt: "Selected Morphic Spaces residential architecture project",
 });

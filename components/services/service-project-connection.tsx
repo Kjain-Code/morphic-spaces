@@ -72,7 +72,7 @@ export function ServiceProjectConnection() {
               viewport={{ once: true, margin: "-10% 0px" }}
               transition={{ duration: 0.7, ease: EASE, delay: index * 0.1 }}
             >
-              <Link href={`/projects#gallery`} className="group block">
+              <Link href={`/projects/${project.id}`} className="group block">
                 <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-[var(--charcoal)]">
                   <Image
                     src={project.image}

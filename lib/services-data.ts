@@ -18,6 +18,13 @@ export interface Service {
   subServices: string[];
   /** Maps to Project["category"] in project-data.ts, for the Featured Work section. Undefined = no matching real projects yet. */
   projectCategory?: "Residential" | "Interiors" | "Commercial";
+  /**
+   * Search-facing title/description for /services/<slug>. Written per
+   * service (not one city template) and kept to what the studio actually
+   * offers and the places its real projects are in (see project-data.ts).
+   */
+  seoTitle: string;
+  seoDescription: string;
   philosophyHeading: string;
   philosophyBody: string;
   heroImage: string;
@@ -48,6 +55,9 @@ export const SERVICES: Service[] = [
       "Consultant Coordination",
     ],
     projectCategory: "Residential",
+    seoTitle: "Residential & Commercial Architects, Chandigarh Tricity",
+    seoDescription:
+      "Architecture for homes, villas, farmhouses and commercial buildings — site planning to working drawings. Projects in Panchkula, Mohali, Banur and Karnal.",
     philosophyHeading: "Architecture as response.",
     philosophyBody:
       "We believe architecture begins with listening — to the site, the climate, the context and the people who will inhabit it. Every decision follows from that understanding, not from a fixed style imposed on it.",
@@ -79,6 +89,9 @@ export const SERVICES: Service[] = [
       "Styling & Design Development",
     ],
     projectCategory: "Interiors",
+    seoTitle: "Interior Designers in Panchkula, Mohali & Chandigarh",
+    seoDescription:
+      "Interiors for homes, villas, offices and retail — space planning, lighting, materials and custom joinery. Recent interiors in Panchkula, Mohali and Banur.",
     philosophyHeading: "Interiors as experience.",
     philosophyBody:
       "A room is more than its furniture. We shape interiors through proportion, material, light and texture, so a space feels considered the moment you enter it and only reveals more the longer you stay.",
@@ -108,6 +121,9 @@ export const SERVICES: Service[] = [
       "Concept Visualization",
       "Design Presentation Renders",
     ],
+    seoTitle: "3D Architectural Visualization, Renders & Walkthroughs",
+    seoDescription:
+      "Photorealistic exterior and interior 3D renders, walkthroughs and flythroughs that show materials, light and scale before anything is built.",
     philosophyHeading: "Visualization as clarity.",
     philosophyBody:
       "Long before a wall goes up, a rendering lets everyone in the room see the same idea. We build every visualization on the same material and lighting decisions the finished space will actually carry, so what you approve is what gets built.",
@@ -134,6 +150,9 @@ export const SERVICES: Service[] = [
       "Pathways & Outdoor Elements",
       "Landscape Lighting Concepts",
     ],
+    seoTitle: "Landscape, Courtyard & Outdoor Space Design",
+    seoDescription:
+      "Gardens, courtyards, terraces and outdoor living areas — hardscape, softscape, planting and lighting concepts planned together with the architecture.",
     philosophyHeading: "Landscape as continuation.",
     philosophyBody:
       "A building doesn't end at its walls. We treat the ground around it — courtyards, planting, hardscape — as part of the same design conversation, so architecture and landscape read as one composition.",
@@ -160,6 +179,9 @@ export const SERVICES: Service[] = [
       "Design Direction",
       "Project Design Advisory",
     ],
+    seoTitle: "Architecture & Interior Design Consultancy",
+    seoDescription:
+      "Focused design advice for ongoing projects — concept reviews, space planning, material and finish consultation and design audits at key stages.",
     philosophyHeading: "Guidance without taking over.",
     philosophyBody:
       "Not every project needs a studio full-time. Sometimes the most useful thing we can offer is a second opinion at the right moment — on a plan, a material choice or a stalled decision — held to the same rigor as our full projects.",
@@ -186,6 +208,9 @@ export const SERVICES: Service[] = [
       "Adaptive Reuse",
       "Design",
     ],
+    seoTitle: "Home & Commercial Renovation, Chandigarh Tricity",
+    seoDescription:
+      "Renovating existing homes and commercial spaces — layout replanning, façade upgrades, interior refurbishment and adaptive reuse, including work in Panchkula.",
     philosophyHeading: "Respecting what's already there.",
     philosophyBody:
       "An existing structure carries its own logic — its bones, its constraints, its history. We work with that logic rather than against it, finding where a space can be opened up, reorganized or refreshed without erasing what already works.",
@@ -293,3 +318,13 @@ export const WHAT_WE_CREATE = [
     description: "High-quality architectural and interior visualizations that communicate design with clarity and impact.",
   },
 ] as const;
+
+/**
+ * The service a project belongs to. Each project's main image lives in its
+ * service's own folder (public/images/projects/<service-slug>/ — see
+ * lib/service-images.ts), so the folder is the source of truth.
+ */
+export function getServiceForImage(imagePath: string): Service | undefined {
+  const folder = imagePath.split("/")[3];
+  return SERVICES.find((service) => service.slug === folder);
+}

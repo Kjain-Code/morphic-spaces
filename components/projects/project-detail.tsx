@@ -10,6 +10,8 @@ export interface ProjectDetailProps {
   project: Project;
   previous: Project;
   next: Project;
+  /** The service this project sits under (from its image folder), linked for context. */
+  service?: { slug: string; title: string };
 }
 
 /**
@@ -19,13 +21,15 @@ export interface ProjectDetailProps {
  * Deliberately reuses only the fields already in project-data.ts; no new
  * facts (location, year, client) are introduced here.
  */
-export function ProjectDetail({ project, previous, next }: ProjectDetailProps) {
+export function ProjectDetail({ project, previous, next, service }: ProjectDetailProps) {
+  const place = project.location === "India" ? "" : `, ${project.location}`;
+
   return (
     <>
       <section className="relative h-[85svh] w-full overflow-hidden bg-[var(--charcoal)] sm:h-dvh">
         <Image
           src={project.image}
-          alt={`${project.title} — ${project.category}`}
+          alt={`${project.title} — ${project.category.toLowerCase()} project by Morphic Spaces${project.title.includes(project.location) ? "" : place}`}
           fill
           sizes="100vw"
           priority
@@ -71,15 +75,26 @@ export function ProjectDetail({ project, previous, next }: ProjectDetailProps) {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="mx-auto max-w-2xl"
         >
-          <Link
-            href="/projects"
-            className="group inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.25em] text-[var(--taupe)] transition-colors hover:text-[var(--charcoal)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--bronze)]"
-          >
-            <motion.span aria-hidden="true" className="inline-block" whileHover={{ x: -4 }} transition={{ duration: 0.25 }}>
-              ←
-            </motion.span>
-            All Projects
-          </Link>
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+            <Link
+              href="/projects"
+              className="group inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.25em] text-[var(--taupe)] transition-colors hover:text-[var(--charcoal)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--bronze)]"
+            >
+              <motion.span aria-hidden="true" className="inline-block" whileHover={{ x: -4 }} transition={{ duration: 0.25 }}>
+                ←
+              </motion.span>
+              All Projects
+            </Link>
+            {service && (
+              <Link
+                href={`/services/${service.slug}`}
+                className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.25em] text-[var(--taupe)] transition-colors hover:text-[var(--charcoal)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--bronze)]"
+              >
+                {service.title}
+                <span aria-hidden="true">→</span>
+              </Link>
+            )}
+          </div>
 
           <p className="mt-10 text-[11px] uppercase tracking-[0.25em] text-[var(--taupe)]">
             Architecture / {project.category} — {project.location}, {project.year}
@@ -107,7 +122,7 @@ export function ProjectDetail({ project, previous, next }: ProjectDetailProps) {
                 >
                   <Image
                     src={src}
-                    alt={`${project.title} — additional view ${index + 1}`}
+                    alt={`${project.title}${project.title.includes(project.location) ? "" : place} — view ${index + 2} of ${(project.gallery?.length ?? 0) + 1}`}
                     fill
                     sizes="(min-width: 640px) 33vw, 100vw"
                     className="object-cover"

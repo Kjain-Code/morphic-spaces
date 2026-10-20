@@ -3,7 +3,17 @@ import { Cormorant_Garamond, Manrope } from "next/font/google";
 import Script from "next/script";
 import { Navbar } from "@/components/layout/navbar";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
-import { absoluteUrl, SITE_DESCRIPTION, SITE_NAME, SITE_URL, SHARE_IMAGE } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/json-ld";
+import {
+  absoluteUrl,
+  ORGANIZATION_ID,
+  SERVICE_AREAS,
+  SHARE_IMAGE,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_URL,
+  WEBSITE_ID,
+} from "@/lib/seo";
 import "./globals.css";
 
 // Editorial display serif for large headings; body/UI sans below. Loaded as
@@ -39,13 +49,15 @@ export const metadata: Metadata = {
     "Morphic Spaces",
   ],
   authors: [{ name: "Morphic Spaces" }],
-  alternates: { canonical: absoluteUrl("/") },
-  robots: { index: true, follow: true },
+  // No canonical/robots here on purpose: every page sets its own canonical
+  // via createPageMetadata (lib/seo.ts). A canonical on the root layout was
+  // inherited by any route that didn't override it — including the 404
+  // page, which ended up canonicalised to the homepage with conflicting
+  // "noindex" + "index, follow" robots tags.
   icons: { icon: "/icon.png", apple: "/apple-icon.png" },
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: absoluteUrl("/"),
     siteName: "Morphic Spaces",
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
@@ -59,38 +71,58 @@ export const metadata: Metadata = {
   },
 };
 
-// Local-business structured data — read by search engines (rich results,
-// knowledge-panel style facts), not rendered visually. Every fact here
-// mirrors what the site itself states elsewhere (about/contact pages);
-// nothing invented.
-const jsonLd = {
+// Site-wide structured data — the one place the studio entity is declared.
+// Page-level schema (services, projects, breadcrumbs) points back to it by
+// @id instead of repeating the details. Every fact mirrors what the site
+// itself shows (footer, contact page, about page); nothing invented. The
+// address is reproduced exactly as published on the site — no postcode,
+// locality or map coordinates have been added because none are published.
+const siteJsonLd = {
   "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "@id": `${SITE_URL}/#organization`,
-  name: "Morphic Spaces",
-  description: SITE_DESCRIPTION,
-  url: SITE_URL,
-  image: absoluteUrl(SHARE_IMAGE),
-  founder: { "@type": "Person", name: "Kunal" },
-  telephone: "+91 90535 11417",
-  email: "morphicspaces@gmail.com",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Shop No. 18, Dhakoli",
-    addressRegion: "Punjab",
-    addressCountry: "IN",
-  },
-  sameAs: ["https://www.instagram.com/morphic_spaces"],
-  areaServed: ["Chandigarh", "Panchkula", "Mohali", "Karnal", "Gurugram"].map((name) => ({
-    "@type": "City",
-    name,
-  })),
-  knowsAbout: ["Architecture", "Interior Design", "Residential Design", "Commercial Design"],
+  "@graph": [
+    {
+      "@type": "ProfessionalService",
+      "@id": ORGANIZATION_ID,
+      name: SITE_NAME,
+      description: SITE_DESCRIPTION,
+      url: absoluteUrl("/"),
+      logo: absoluteUrl("/icon.png"),
+      image: absoluteUrl(SHARE_IMAGE),
+      founder: { "@type": "Person", name: "Kunal" },
+      telephone: "+91 90535 11417",
+      email: "morphicspaces@gmail.com",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Shop No. 18, Dhakoli",
+        addressRegion: "Punjab",
+        addressCountry: "IN",
+      },
+      sameAs: ["https://www.instagram.com/morphic_spaces"],
+      areaServed: SERVICE_AREAS.map((name) => ({ "@type": "City", name })),
+      knowsAbout: [
+        "Architecture",
+        "Interior Design",
+        "3D Architectural Visualization",
+        "Landscape Design",
+        "Renovation",
+        "Residential Design",
+        "Commercial Design",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": WEBSITE_ID,
+      url: absoluteUrl("/"),
+      name: SITE_NAME,
+      inLanguage: "en-IN",
+      publisher: { "@id": ORGANIZATION_ID },
+    },
+  ],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${manrope.variable}`}>
+    <html lang="en-IN" className={`${cormorant.variable} ${manrope.variable}`}>
       <body>
         {/* Every load (refresh included) starts at the top of the page —
             without this, the browser's own scroll restoration re-applies
@@ -108,11 +140,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           } catch (e) {}`,
           }}
         />
-        <Script
-          id="structured-data"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        <JsonLd id="structured-data" data={siteJsonLd} />
         <Navbar />
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>
